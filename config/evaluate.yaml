@@ -1,0 +1,9 @@
+# Shared judge config for evaluate.py's H1 (per-turn consistency) and
+# H2 (per-trial realism) lanes.
+judger_llm: gpt-4o
+temperature: 0
+max_token: 1200
+max_retries: 2
+score_retries: 4
+api_key_env: OPENAI_API_KEY
+api_base: https://api.openai.com/v1

@@ -1,0 +1,178 @@
+{
+  "schema_version": 4,
+  "dataset_source": "characterbox_generated",
+  "source_dataset": "../generated_data/Harry_Potter.json",
+  "pilot_id": "cb_hp_012_newt_mcgonagall",
+  "scene_id": 12,
+  "player_character_id": 0,
+  "target_character_id": 1,
+  "action_id": 1,
+  "trials": [
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t01",
+      "note": "Category: normal fact check. Target field: position.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Are you standing right in front of me, Professor, or is there some distance between us?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t02",
+      "note": "Category: normal fact check. Target field: states (her current mood).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "You seem really upset with me right now, don't you, Professor?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t03",
+      "note": "Category: normal fact check. Target fields: time, location.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "It's still morning, isn't it? I hope I haven't made you late for a class."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t04",
+      "note": "Category: normal fact check. Target field: description (strict but fair nature).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "I know you're strict, Professor, but you're fair too, aren't you? You'll hear me out?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t05",
+      "note": "Category: stress fact check (direct contradiction). Target field: scene description (onlookers present).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "At least we're alone here, no one else around to see this, right?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t06",
+      "note": "Category: stress fact check (direct contradiction). Target field: time (Late Morning).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "It's getting late in the evening, we've been at this for hours."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t07",
+      "note": "Category: out of bound knowledge fact check (false premise) -- named individual among unnamed implied onlookers.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Isn't that Ron Weasley over there, watching and laughing at me?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t08",
+      "note": "Category: out of bound knowledge fact check (false premise) -- fabricated detail filling in an intentionally vague supplied fact (the 'compromising situation' the scene never specifies).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "I know the other student was caught sneaking out after curfew, but that's nothing like my case, right?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t09",
+      "note": "Category: out of bound knowledge fact check (false premise) -- fabricated prior incident/precedent not established anywhere.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Wasn't it just last month that a similar creature escaped during a Care of Magical Creatures class?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t10",
+      "note": "Category: out of bound knowledge fact check (false premise) -- fabricated shared history/relationship (student-teacher) not established.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "You remember how well I did in your Transfiguration class, don't you, Professor?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t11",
+      "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Do you think I'll ever really learn to be careful, Professor?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t12",
+      "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "What do you think of Nifflers, honestly? Aren't they fascinating creatures?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_012_newt_mcgonagall_t13",
+      "note": "Category: multi-turn. 10-round H3 decline-rate + no-contradiction + within-trial fabrication-depth trial, designed live against real S-condition output rather than pre-written blind. Round 1: emotional anchor (conditional commitment to hear him out). Round 2: fact-recall, her role. Rounds 3/7/10: callback to round 1's commitment at increasing distance -- round 7 clarified the commitment was conditional from the start ('hinges on... responsibility'), consistent with round 1's own qualification, not a contradiction despite rounds 3/4 repeatedly deferring rather than explaining. Round 4/9: open-ended. Rounds 5/8: matched fabrication probes, same flavor (fabricated prior incident) at shallow vs. deep depth -- round 5 (anonymous 'dragon' incident) and round 8 (named 'Hagrid') were both resisted identically by deflection (dismissed as irrelevant, neither confirmed nor denied), showing no depth-dependent degradation in this run. Round 6: fact-recall, position. Live findings: round 1's response spontaneously fabricated 'a Niffler... during breakfast' unprompted -- neither detail is in the supplied scene (only 'a magical creature' and 'Late Morning'), consistent with pretrained-knowledge contamination (Newt Scamander's real-world association with a pet Niffler); this self-introduced detail was then reinforced consistently in every later round that referenced it, never varied. Round 6 also produced a genuine, unplanned contradiction: calling Newt 'a Hogwarts student' against the supplied 'former Hogwarts student' description.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Professor, before you decide anything — are you even willing to hear my side of this?"
+        },
+        {
+          "round": 2,
+          "player_dialogue": "As Head of Gryffindor, don't you have bigger things to worry about than one Niffler?"
+        },
+        {
+          "round": 3,
+          "player_dialogue": "You did say you'd hear me out — does that still stand, even now?"
+        },
+        {
+          "round": 4,
+          "player_dialogue": "Can I at least tell you why I brought them today? It's... important to me."
+        },
+        {
+          "round": 5,
+          "player_dialogue": "This isn't as bad as that time a dragon got loose near the greenhouses, is it?"
+        },
+        {
+          "round": 6,
+          "player_dialogue": "You're still standing right there at the front, aren't you? Not about to storm off?"
+        },
+        {
+          "round": 7,
+          "player_dialogue": "You keep saying 'later' — Professor, will you actually hear me out, or won't you?"
+        },
+        {
+          "round": 8,
+          "player_dialogue": "Didn't Hagrid get away with worse than this just last term?"
+        },
+        {
+          "round": 9,
+          "player_dialogue": "I really am trying my best, you know. Creatures like these... they just don't feel dangerous to me."
+        },
+        {
+          "round": 10,
+          "player_dialogue": "Alright — I'll round up the Niffler right now. And once it's done, you'll actually hear my side, like you promised?"
+        }
+      ]
+    }
+  ]
+}

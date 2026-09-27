@@ -1,0 +1,65 @@
+# Adapted from CharacterBox config/play.yaml.
+# Research configuration changes are recorded in docs/characterbox-change-record.md.
+
+# name of LLM model, 'custom' for custom model
+narrator_llm: gpt-4o-mini
+character_llm: gpt-4o-mini
+# path for scenes data
+scene_path: data/generated_data/Harry_Potter.json
+# scene id
+scene_id: 31
+# number of rounds
+round: 10
+# False for controlled one-human/one-NPC trials. If omitted, Simulator keeps
+# CharacterBox's original dynamic behavior.
+dynamic_play: False
+# YAML-only controlled-play selectors. These keep ordinary simulator execution
+# independent from fixed pilot manifests. The target/action values are source
+# IDs in the selected CharacterBox scene, not duplicated source content.
+target_character_id: 0
+action_id: 0
+dataset_source: characterbox_generated
+trial_id: null
+context_condition: S
+priority_config_path: config/context_priorities.json
+priority_policy_id: primary_four_level
+# Reusable run-config auto-loaded whenever --pilot selects a manifest. It
+# supplies the pilot's conditions and priority_policy_id so pilot files no
+# longer embed run-behavior fields alongside scene/trial content.
+pilot_config_path: config/pilot_run_config.json
+# number of max retries for LLM API
+max_retries: 1
+# maximum number of tokens for LLM
+max_token: 300
+# temperature for LLM
+temperature: 0.5
+# Optional integer seed for OpenAI's best-effort reproducible sampling (not a hard
+# guarantee -- see docs/characterbox-provenance.md, 2026-09-09 entry). null/omitted
+# runs normal stochastic generation. Set an integer to make a specific pilot run
+# reproducible; use a different integer (or null) per repeat if you want repeated
+# stochastic samples per docs/research-contract.md §9, not identical duplicates.
+seed: 1
+# verbose mode
+verbose: True
+
+# API credentials must be supplied securely at runtime; never commit them here.
+character_api_key: ""
+character_api_base: "https://api.openai.com/v1"
+narrator_api_key: ""
+narrator_api_base: "https://api.openai.com/v1"
+
+# The id of the character played by human (Albus Dumbledore in pilot scene 31).
+play_role: 1
+
+# path to save records
+save_record: True
+# CharacterBox's GPT-2-based estimator is inaccurate for gpt-4o-mini and emits
+# overlength warnings for long dynamic prompts. Records still save when disabled.
+calculate_cost: False
+record_dir: output/record
+character_record_path: character.jsonl
+round_record_path: round.jsonl
+plot_record_path: plot.jsonl
+all_record_path: all.jsonl
+narrator_record_path: narrator.jsonl
+trajectory_record_path: trajectory.jsonl

@@ -1,0 +1,15 @@
+# CharacterBox pins this version. Reuse it for schema compatibility in Step 2.
+pydantic==1.10.12
+
+langchain==0.1.11
+langchain-community==0.0.27
+langchain-core==0.1.46
+langchain-experimental==0.0.53
+
+# CharacterBox's OpenAI-compatible provider versions, used only by the playable
+# simulator. API credentials are read from the environment, never this file.
+langchain-openai==0.1.1
+openai==1.55.3
+
+# Prevent newer aiohttp releases from breaking this Python 3.9 LangChain stack.
+aiohttp==3.9.5

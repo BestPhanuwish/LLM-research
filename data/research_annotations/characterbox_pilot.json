@@ -1,0 +1,158 @@
+{
+  "schema_version": 4,
+  "dataset_source": "characterbox_generated",
+  "source_dataset": "../generated_data/Harry_Potter.json",
+  "pilot_id": "cb_hp_019_luna_neville",
+  "scene_id": 19,
+  "player_character_id": 0,
+  "target_character_id": 1,
+  "action_id": 1,
+  "trials": [
+    {
+      "trial_id": "cb_hp_019_luna_neville_t01",
+      "note": "Category: normal fact check. Target field: action_reference (the reason for tonight's meeting).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "The perimeter seems clear. What did you want to tell me?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t02",
+      "note": "Category: normal fact check. Target field: position.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Are you still hiding, or can I see you now?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t03",
+      "note": "Category: normal fact check. Target fields: time, location.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Won't people notice we're both missing from the castle this late?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t04",
+      "note": "Category: normal fact check. Target field: description (his magical practice).",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Have you had a chance to practice any new spells since the last time we met?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t05",
+      "note": "Category: stress fact check (false premise). Target fields: description.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "The moon's out bright tonight, isn't it? Good visibility for us."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t06",
+      "note": "Category: stress fact check (false premise). Target fields: location, description.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "I heard this place used to be Hagrid's old cottage — is that right?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t07",
+      "note": "Category: stress fact check (false premise). Target fields: action_reference, location.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Since we're indoors and safe, we don't need to keep our voices down, do we?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t08",
+      "note": "Category: out of bound knowledge fact check (false premise). Target fields: description.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Wait, isn't Hermione supposed to be meeting us here too?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t09",
+      "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "You've always got my back, haven't you, Neville?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t10",
+      "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "What's going through your head right now?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t11",
+      "note": "Category: multi-turn. 10-round H3 decline-rate + no-contradiction trial, designed live against real S-condition output rather than pre-written blind. Round 1: emotional anchor (trust/devotion commitment). Round 2: fact-recall, position. Rounds 3/7/10: callback to round 1's commitment at increasing distance (short/medium/long-range no_contradiction checks). Round 4: open-ended, personality reflection. Round 5: false-premise (moon brightness vs. supplied scene description). Round 6: fact-recall, character description (bravery). Round 8: false-premise (fabricated third character, tests knowledge-boundary adherence too). Round 9: open-ended, future-oriented. Live S-run notes: round 5 and round 8 both produced a real world_consistency slip (agreed with both false premises rather than correcting them); rounds 3/7/9 all reaffirmed round 1's commitment with no contradiction.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Neville, before we get into everything — how are you holding up right now?"
+        },
+        {
+          "round": 2,
+          "player_dialogue": "Are you keeping low behind that rock, or can you see the whole area from where you're standing?"
+        },
+        {
+          "round": 3,
+          "player_dialogue": "What if something goes wrong out here — are you still with me?"
+        },
+        {
+          "round": 4,
+          "player_dialogue": "You've really grown a lot since our first year, you know? I still remember how nervous you used to be all the time."
+        },
+        {
+          "round": 5,
+          "player_dialogue": "The moon's out bright tonight, isn't it? Good visibility for us."
+        },
+        {
+          "round": 6,
+          "player_dialogue": "You've always been the brave one when it counts, haven't you, Neville?"
+        },
+        {
+          "round": 7,
+          "player_dialogue": "If it comes down to it, would you leave me behind to save yourself?"
+        },
+        {
+          "round": 8,
+          "player_dialogue": "Wait, isn't Hermione supposed to be meeting us here too?"
+        },
+        {
+          "round": 9,
+          "player_dialogue": "Once this is all over, what's the first thing you want to do?"
+        },
+        {
+          "round": 10,
+          "player_dialogue": "No matter what happens tonight, promise me you'll always have my back."
+        }
+      ]
+    }
+  ]
+}

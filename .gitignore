@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv-x86-backup/
+.env
+.env.*
+# Simulation logs can contain API keys; never commit them.
+output/log/
+*.log

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "policies": [
+    {
+      "policy_id": "primary_four_level",
+      "priorities": [
+        {
+          "priority": 1,
+          "name": "current_world_constraints",
+          "instruction": "Must not be contradicted and overrides all lower priorities facts.",
+          "fields": [
+            "time",
+            "location",
+            "position"
+          ]
+        },
+        {
+          "priority": 2,
+          "name": "world_background",
+          "instruction": "Keep the response consistent with the fictional world.",
+          "fields": [
+            "event",
+            "observation",
+            "description"
+          ]
+        },
+        {
+          "priority": 3,
+          "name": "character_guidance",
+          "instruction": "Use these fields to preserve personality, tone, role, and beliefs.",
+          "fields": [
+            "name",
+            "character_description",
+            "self_belief",
+            "action_reference",
+            "states",
+            "env_belief"
+          ]
+        },
+        {
+          "priority": 4,
+          "name": "conditional_memory",
+          "instruction": "Use memory only when relevant and never let it override higher priorities.",
+          "fields": [
+            "recent_memory"
+          ]
+        }
+      ]
+    }
+  ]
+}
