@@ -2,6 +2,8 @@
 # H2 (per-trial realism) lanes.
 judger_llm: gpt-4o
 temperature: 0
+# Best-effort reproducible judging (OpenAI seed; not a hard guarantee). null disables.
+seed: 1
 max_token: 1200
 max_retries: 2
 score_retries: 4

@@ -90,5 +90,36 @@ class ContextPriorityConfigTests(unittest.TestCase):
             validate_priority_config(config)
 
 
+    def test_five_level_policy_ranks_observation_last(self):
+        config = load_validated_priority_config(PRIORITY_CONFIG)
+        policy = next(
+            item for item in config["policies"]
+            if item["policy_id"] == "primary_five_level"
+        )
+        assigned_fields = [
+            field
+            for group in policy["priorities"]
+            for field in group["fields"]
+        ]
+
+        self.assertEqual([1, 2, 3, 4, 5], [item["priority"] for item in policy["priorities"]])
+        self.assertEqual(CHARACTERBOX_CONTEXT_FIELDS, set(assigned_fields))
+        self.assertEqual(["observation"], policy["priorities"][4]["fields"])
+        self.assertEqual(
+            ["self_belief", "env_belief", "recent_memory"],
+            policy["priorities"][3]["fields"],
+        )
+        self.assertIn("smaller priority number", policy["conflict_rule"])
+
+    def test_rejects_empty_conflict_rule(self):
+        config = copy.deepcopy(self.config)
+        config["policies"][0]["conflict_rule"] = " "
+
+        with self.assertRaisesRegex(
+            PriorityConfigValidationError,
+            "conflict_rule must be a non-empty string",
+        ):
+            validate_priority_config(config)
+
 if __name__ == "__main__":
     unittest.main()

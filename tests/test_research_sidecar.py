@@ -117,6 +117,19 @@ class ResearchSidecarTests(unittest.TestCase):
 
         validate_sidecar(sidecar, self.dataset)
 
+    def test_accepts_and_rejects_trial_types(self):
+        sidecar = copy.deepcopy(self.sidecar)
+        sidecar["trials"][0]["type"] = 2
+        validate_sidecar(sidecar, self.dataset)
+
+        for bad_type in (0, 4, "1", True):
+            sidecar["trials"][0]["type"] = bad_type
+            with self.assertRaisesRegex(
+                SidecarValidationError,
+                r"type must be one of \[1, 2, 3\]",
+            ):
+                validate_sidecar(sidecar, self.dataset)
+
     def test_rejects_blank_note(self):
         sidecar = copy.deepcopy(self.sidecar)
         sidecar["trials"][0]["note"] = "   "
@@ -237,7 +250,7 @@ class ResearchSidecarTests(unittest.TestCase):
         validated = validate_pilot_config(copy.deepcopy(self.pilot_config))
 
         self.assertEqual(["U", "S", "P"], validated["conditions"])
-        self.assertEqual("primary_four_level", validated["priority_policy_id"])
+        self.assertEqual("primary_five_level", validated["priority_policy_id"])
 
     def test_pilot_config_rejects_duplicate_conditions(self):
         config = copy.deepcopy(self.pilot_config)

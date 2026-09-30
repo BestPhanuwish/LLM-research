@@ -17,7 +17,14 @@ ALLOWED_MANIFEST_FIELDS = {
     "action_id",
     "trials",
 }
-ALLOWED_TRIAL_FIELDS = {"trial_id", "turns", "note"}
+ALLOWED_TRIAL_FIELDS = {"trial_id", "turns", "note", "type"}
+# Optional trial type, carried into trajectory and evaluation rows as trial_type
+# so analysis can be restricted to one kind of trial.
+TRIAL_TYPES = {
+    1: "normal (fact check and open-ended)",
+    2: "stress (direct contradiction)",
+    3: "multi-turn",
+}
 ALLOWED_TURN_FIELDS = {"round", "player_dialogue"}
 ALLOWED_PILOT_CONFIG_FIELDS = {"schema_version", "conditions", "priority_policy_id"}
 
@@ -120,6 +127,15 @@ def validate_sidecar(sidecar, dataset):
             _require(
                 isinstance(note, str) and note.strip(),
                 f"{trial_id}: note must be a non-empty string when present",
+            )
+
+        if "type" in trial:
+            trial_type = trial.get("type")
+            _require(
+                isinstance(trial_type, int)
+                and not isinstance(trial_type, bool)
+                and trial_type in TRIAL_TYPES,
+                f"{trial_id}: type must be one of {sorted(TRIAL_TYPES)}",
             )
 
         turns = trial.get("turns")

@@ -207,6 +207,27 @@ class CharacterBoxStructuredResponseTests(TestCase):
             memory.saved_contexts[0][1]["add_memory"],
         )
 
+    def test_dialogue_cleanup_handles_mixed_straight_and_curly_quotes(self):
+        character, _, memory, _ = self._make_character()
+        chain = FakeChain(
+            "Mira leans closer, her voice barely above a whisper, "
+            "\"Rowan left before sunset.\u201d She glances at the gate."
+        )
+        now = datetime(2026, 8, 8, 18, 0, 0)
+
+        with patch.object(Character, "chain", return_value=chain):
+            response, _ = character.generate_dialogue(
+                observation="The visitor asks again.",
+                plot="Mira should answer the visitor.",
+                now=now,
+            )
+
+        self.assertEqual("Rowan left before sunset.", response)
+        self.assertEqual(
+            "Mira: Rowan left before sunset.",
+            memory.saved_contexts[0][1]["add_memory"],
+        )
+
     def test_unstructured_condition_changes_only_prompt_rendering(self):
         character, _, memory, chain, response, detail = (
             self._generate_for_condition("U")

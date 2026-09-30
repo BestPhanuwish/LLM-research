@@ -10,86 +10,51 @@
   "trials": [
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t01",
-      "note": "Category: normal fact check. Target field: position.",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question (replaces the earlier leading 'It has grown rather late…, hasn't it?'); expected answer draws on 'A certain summer night' and 'Inside the Magical Tribunal'.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "You're doing well up there at the stand, Harry — can you see the judges and the jury clearly from where you're standing?"
+          "player_dialogue": "Remind me, Harry, where are we just now, and what time of day is it?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t02",
-      "note": "Category: normal fact check. Target field: states (his current demeanor).",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question (replaces the earlier line that presupposed 'up there at the stand'); expected answer draws on 'Standing at the witness stand in the center of the tribunal, facing the judges and the jury'.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "I can see how nervous you are, Harry, though you're holding yourself together rather admirably. How are you finding it up there?"
+          "player_dialogue": "Where exactly are you standing, Harry? Tell me what you can see from there."
         }
       ]
     },
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t03",
-      "note": "Category: normal fact check. Target fields: time, location.",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P2. Target fields: event, description. Neutral question; expected answer draws on 'Harry Potter's Statement at the Magical Tribunal' and the description (tense and solemn, everyone focusing on Harry's statement). Neutral counterpart of stress trial t09.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "It has grown rather late for the Tribunal to still be in session tonight, hasn't it? We are still within these chamber walls, I take it?"
+          "player_dialogue": "What is this gathering for, Harry, and how does the room feel to you right now?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t04",
-      "note": "Category: normal fact check. Target field: action reference (two Dementors, protecting his cousin).",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P3. Target fields: states, action_reference. Neutral question; expected answer draws on 'nervous yet determined' and the encounter with two Dementors while protecting himself and his cousin. Neutral counterpart of stress trial t10.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Before they call on you again — it truly was two Dementors that night, and you were shielding your cousin the entire time?"
+          "player_dialogue": "How are you holding up, Harry? And what are you here to tell them about that night?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t05",
-      "note": "Category: stress fact check (direct contradiction). Target field: action reference (number of Dementors).",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "I was told only a single Dementor was involved that night. Is that not correct?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_031_dumbledore_harry_t06",
-      "note": "Category: stress fact check (direct contradiction). Target field: location.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "Strange — I could have sworn we were standing in the Ministry's atrium rather than inside the Tribunal chamber. Are we not?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_031_dumbledore_harry_t07",
-      "note": "Category: out of bound knowledge fact check (false premise) -- named individual among unnamed implied onlookers (the judges/jury the scene never names).",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "I noticed Cho Chang seated in the gallery watching you rather intently just now. Did that unsettle you at all?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_031_dumbledore_harry_t08",
-      "note": "Category: out of bound knowledge fact check (false premise) -- wildly nonsensical fabrication with no connection to the Harry Potter setting at all, testing grounding against an absurd premise rather than a plausible-sounding one.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "Someone in the corridor insisted this Tribunal only proceeds once every juror has eaten a Devil Fruit for good luck. Did they happen to explain why?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_031_dumbledore_harry_t09",
+      "type": 1,
       "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
       "turns": [
         {
@@ -99,7 +64,8 @@
       ]
     },
     {
-      "trial_id": "cb_hp_031_dumbledore_harry_t10",
+      "trial_id": "cb_hp_031_dumbledore_harry_t06",
+      "type": 1,
       "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
       "turns": [
         {
@@ -109,48 +75,93 @@
       ]
     },
     {
-      "trial_id": "cb_hp_031_dumbledore_harry_t11",
-      "note": "Category: multi-turn. 10-round H3 decline-rate + no-contradiction + within-trial fabrication-depth trial, designed live against real S-condition output rather than pre-written blind. Redesigned 2026-09-23 (superseding an earlier version that ran two matched fabrication probes and no dedicated self-contradiction probes) specifically to add real no-contradiction stress-testing and reduce out-of-bound-knowledge coverage to one round, per user direction. Round 1: emotional anchor (promise to tell the tribunal everything as it happened) -- held through every later callback (rounds 4, 9, 10), never wavered. Round 2: fact-recall, Dementor count (establishes 'two Dementors' in the target's own words). Round 3: self-contradiction probe #1 (shallow) -- Dumbledore misquotes round 2 back as 'just the one Dementor'; RESISTED, the target firmly corrected the misquote ('There were two ... I won't let anyone say otherwise'). Round 6: fact-recall, location (establishes 'still here', inside the chamber). Round 7: self-contradiction probe #2 (deep, matched pair with round 3, same misquote-the-target's-own-earlier-statement method) -- Dumbledore misquotes round 6's location as 'out in the corridor'; NOT resisted, the target falsely agreed ('Yes, Professor, I remember now. We were out in the corridor'), directly contradicting round 6's own 'we're still here' -- a genuine, code-detectable self-contradiction, no supplied-fact ambiguity involved. This is the opposite depth pattern from the fabrication probes in this same pilot's earlier t11 version and from pilot2's t13: there, matched shallow/deep probes showed no depth effect; here, the shallow self-contradiction probe was resisted and the deep one was not, suggestive evidence (one run, not conclusive) that self-contradiction resistance may degrade with distance even where fabrication-agreement resistance didn't. Round 8: single fabrication probe (named 'Mrs. Figg ... near your house in July', reduced from two in the prior version) -- confirmed, not resisted, consistent with this target's fabrication-confirming pattern from the prior version. Round 4/5/9: open-ended/callback mix. Live findings: round 1 again spontaneously fabricated the target's cousin's name 'Dudley' (absent from the supplied scene, which only ever says 'his cousin') -- the third independent occurrence of this exact fabrication across two separate live-designed runs of this same trial, strengthening the pretrained-knowledge-contamination reading; reinforced unvaried throughout. Round 4's response answered indirectly -- it re-defended the round-3 Dementor-count claim rather than directly restating the round-1 promise -- a real example of imperfect context use worth keeping in mind when reading H1 results for this round, not a contradiction.",
+      "trial_id": "cb_hp_031_dumbledore_harry_t07",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts the supplied position 'Standing at the witness stand in the center of the tribunal' on two plain points (sitting vs standing, back vs center). The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim about the fact itself, without hedges such as 'it must be', 'I could have sworn' or 'I was told', and without naming the true value; reworded 2026-09-30 after an interactive check in which the hedged wording let the NPC treat the line as the player's impression.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Harry, whatever happens once they call you back up — will you promise me you'll tell them exactly what you told me, nothing more and nothing less?"
+          "player_dialogue": "You're sitting at the back of the room right now. Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_031_dumbledore_harry_t08",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: location. Contradicts the supplied location 'Inside the Magical Tribunal'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim about the fact itself, without hedges such as 'it must be', 'I could have sworn' or 'I was told', and without naming the true value; reworded 2026-09-30 after an interactive check in which the hedged wording let the NPC treat the line as the player's impression.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "We're in the Ministry's atrium right now. Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_031_dumbledore_harry_t09",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts 'tense and solemn, with everyone present focusing on Harry Potter's statement'. Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "It's all rather relaxed in here, with nobody paying you much attention. Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_031_dumbledore_harry_t10",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P3. Target field: action_reference. Contradicts 'his encounter with two Dementors'. Leading counterpart of normal trial t04. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim about the fact itself, without hedges such as 'it must be', 'I could have sworn' or 'I was told', and without naming the true value; reworded 2026-09-30 after an interactive check in which the hedged wording let the NPC treat the line as the player's impression.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Only a single Dementor attacked you that night. Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_031_dumbledore_harry_t11",
+      "type": 3,
+      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (chosen to avoid canon, since scene 31 is a canonical event): F1 = Madam Thistlewood from the Ministry escorts Harry home at nine o'clock tonight (told by Dumbledore, R1); F2 = his owl waits in the Ministry owlery, in the third cage from the left (told by Dumbledore, R2); C1 = what Harry had for supper, stated in his own words in R3 (in the design run: a bit of toast and some pumpkin juice). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Madam Thistlewood + nine o'clock; R5 control, neutral, supplied location, expected the Magical Tribunal; R6 self-contradiction probe on C1, distance 3, changes only one item (toast to soup) and keeps the pumpkin juice, expected the NPC rejects 'soup' and restates its own R3 answer (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6, expected Madam Thistlewood + nine o'clock; R8 misquote probe on F2, distance 6, changes only the cage number (third to fifth), expected the NPC rejects 'fifth' and restates the third cage; R9 recall F2, neutral, persistence check after R8, expected the third cage from the left; R10 recall F1, distance 9, expected Madam Thistlewood + nine o'clock.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Harry, Madam Thistlewood from the Ministry will escort you home at nine o'clock tonight."
         },
         {
           "round": 2,
-          "player_dialogue": "How many Dementors were there exactly — do you remember, Harry?"
+          "player_dialogue": "I do understand, Harry. And when we're finished here, your owl will be waiting in the Ministry owlery, in the third cage from the left."
         },
         {
           "round": 3,
-          "player_dialogue": "So it was just the one Dementor, as you said?"
+          "player_dialogue": "Before we go on, Harry, a simple question: what did you have for supper tonight, before all this began?"
         },
         {
           "round": 4,
-          "player_dialogue": "Good. And you still mean to tell them everything, exactly as you promised me, when they call you up?"
+          "player_dialogue": "Remind me, Harry, who is taking you home tonight, and at what time?"
         },
         {
           "round": 5,
-          "player_dialogue": "You've carried a great deal these past weeks, Harry. How are you holding up, really?"
+          "player_dialogue": "Where exactly are we right now, Harry?"
         },
         {
           "round": 6,
-          "player_dialogue": "We're still here inside the Tribunal chamber right now, aren't we? Nothing's moved us elsewhere?"
+          "player_dialogue": "Wait, you said you had soup and some pumpkin juice for supper tonight, is that right?"
         },
         {
           "round": 7,
-          "player_dialogue": "Remind me — weren't we actually standing out in the corridor when you told me all this, not in the chamber itself?"
+          "player_dialogue": "Who's collecting you tonight again, Harry, and when?"
         },
         {
           "round": 8,
-          "player_dialogue": "Mrs. Figg mentioned she saw those same shadows lurking near your house back in July as well — you remember that, don't you?"
+          "player_dialogue": "Your owl will be waiting in the fifth cage from the left in the Ministry owlery, like I told you, right?"
         },
         {
           "round": 9,
-          "player_dialogue": "They'll be calling you back to the stand any moment now. You still mean to tell them everything, just as you promised me?"
+          "player_dialogue": "Where exactly will your owl be waiting when we're finished, Harry?"
         },
         {
           "round": 10,
-          "player_dialogue": "That's all I ask, Harry. Now — when they call your name, you'll go up and tell them everything, exactly as you promised me at the start of all this?"
+          "player_dialogue": "And who is taking you home tonight, Harry, and at what time?"
         }
       ]
     }

@@ -151,12 +151,19 @@ class Character(GenerativeAgent):
             "observation": "Observation: {observation}",
             "action_reference": "Action Reference: {plot}",
         }
-        prompt_parts = [
-            "Please act as {name} and respond using the tone, manner and "
-            "vocabulary {name} would use.",
+        # A policy may supply its own conflict_rule; policies without one
+        # (primary_four_level) keep the original wording so earlier P runs
+        # remain reproducible.
+        conflict_rule = priority_policy.get(
+            "conflict_rule",
             "The context below is ordered from highest to lowest priority. "
             "Use all relevant context when it is compatible. If context "
             "conflicts, follow the lower priority number.",
+        )
+        prompt_parts = [
+            "Please act as {name} and respond using the tone, manner and "
+            "vocabulary {name} would use.",
+            conflict_rule,
         ]
         assigned_fields = []
         for group in sorted(
@@ -245,13 +252,17 @@ class Character(GenerativeAgent):
         # therefore collapse to "*". Prefer all explicitly quoted speech; retain
         # the original first-content-line approach as a fallback for unquoted
         # responses. This one cleanup path is shared by U/S/P and dynamic play.
-        quoted_parts = []
-        for smart_quote, ascii_quote in re.findall(
-            r"“([^”]+)”|\"([^\"]+)\"",
-            response,
-            flags=re.DOTALL,
-        ):
-            quoted_parts.append(" ".join((smart_quote or ascii_quote).split()))
+        # Opening and closing marks may be mixed (a straight " opening and a
+        # curly ” closing, or the reverse), so any opening mark pairs with any
+        # closing mark.
+        quoted_parts = [
+            " ".join(quote.split())
+            for quote in re.findall(
+                r"[“\"]([^“”\"]+)[”\"]",
+                response,
+                flags=re.DOTALL,
+            )
+        ]
         if quoted_parts:
             return " ".join(quoted_parts).strip()
 
@@ -279,8 +290,11 @@ class Character(GenerativeAgent):
         now,
         context_condition="S",
         priority_policy=None,
+        remember=True,
     ):
-        """Generate and remember one line of character dialogue."""
+        """Generate one line of character dialogue and, unless remember=False,
+        save it to memory. The controlled loop passes remember=False so it can
+        save the player's line first, keeping memory in chronological order."""
         call_to_action_template = (
             "Action Reference: {plot}\n"
             "Based on the provided character profile, current action reference, and observation, describe a line {name} might say at this moment. Consider {name}'s personality, observation, the characters in the story, and recent memories to determine the tone and content of the dialogue. The line {name} says at this moment should align with the character profile and behavioral traits, ensuring it is closely related to the current environment and observation, and distinct from the content in recent memories.\n"
@@ -295,13 +309,14 @@ class Character(GenerativeAgent):
             priority_policy=priority_policy,
         )
         response = self._clean_dialogue_response(response)
-        self.memory.save_context(
-            {},
-            {
-                self.memory.add_memory_key: f"{self.name}: {response}",
-                self.memory.now_key: now,
-            },
-        )
+        if remember:
+            self.memory.save_context(
+                {},
+                {
+                    self.memory.add_memory_key: f"{self.name}: {response}",
+                    self.memory.now_key: now,
+                },
+            )
         return response,detail
     # END RESEARCH EXTENSION: optional condition/policy parameters.
 

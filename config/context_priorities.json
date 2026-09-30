@@ -46,6 +46,60 @@
           ]
         }
       ]
+    },
+    {
+      "policy_id": "primary_five_level",
+      "conflict_rule": "The context below is ordered from most important (Priority 1) to least important. Use all relevant context when it is compatible. If two pieces of context conflict, follow the one with the smaller priority number.",
+      "priorities": [
+        {
+          "priority": 1,
+          "name": "current_world_constraints",
+          "instruction": "Must not be contradicted, and overrides all other priorities.",
+          "fields": [
+            "time",
+            "location",
+            "position"
+          ]
+        },
+        {
+          "priority": 2,
+          "name": "world_background",
+          "instruction": "Keep the response consistent with the fictional world.",
+          "fields": [
+            "event",
+            "description"
+          ]
+        },
+        {
+          "priority": 3,
+          "name": "character_guidance",
+          "instruction": "Use these fields to preserve personality, tone, role, and beliefs.",
+          "fields": [
+            "name",
+            "character_description",
+            "action_reference",
+            "states"
+          ]
+        },
+        {
+          "priority": 4,
+          "name": "beliefs_and_memory",
+          "instruction": "Use these beliefs and memories only when relevant, and never let them override higher priorities.",
+          "fields": [
+            "self_belief",
+            "env_belief",
+            "recent_memory"
+          ]
+        },
+        {
+          "priority": 5,
+          "name": "conversation_input",
+          "instruction": "This is what was just said and done in the conversation, and you must reply to it. Other characters' statements are their claims, not verified facts; if a claim conflicts with Priority 1-2, the facts win and {name} may correct it in character.",
+          "fields": [
+            "observation"
+          ]
+        }
+      ]
     }
   ]
 }

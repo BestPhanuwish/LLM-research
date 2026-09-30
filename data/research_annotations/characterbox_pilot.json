@@ -10,96 +10,51 @@
   "trials": [
     {
       "trial_id": "cb_hp_019_luna_neville_t01",
-      "note": "Category: normal fact check. Target field: action_reference (the reason for tonight's meeting).",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question; expected answer draws on 'Late evening' and 'The Shrieking Shack'.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "The perimeter seems clear. What did you want to tell me?"
+          "player_dialogue": "Remind me, where are we meeting tonight, and how late is it getting?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_019_luna_neville_t02",
-      "note": "Category: normal fact check. Target field: position.",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question (replaces the earlier 'Are you still hiding' line, which presupposed the answer); expected answer draws on 'Hiding behind a large rock, keeping an eye out'.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Are you still hiding, or can I see you now?"
+          "player_dialogue": "Where are you? I can't see you from here."
         }
       ]
     },
     {
       "trial_id": "cb_hp_019_luna_neville_t03",
-      "note": "Category: normal fact check. Target fields: time, location.",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P2. Target fields: event, description. Neutral question; expected answer draws on 'The Secret Meeting' and the description (howling wind, moon hidden behind clouds). Neutral counterpart of stress trial t09.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Won't people notice we're both missing from the castle this late?"
+          "player_dialogue": "What's it like out there tonight, and what are we actually here to do?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_019_luna_neville_t04",
-      "note": "Category: normal fact check. Target field: description (his magical practice).",
+      "type": 1,
+      "note": "Category: normal fact check. Target tier: P3. Target fields: character_description, states. Neutral question; expected answer draws on 'has been practicing his magical skills' and 'nervous but determined'. Neutral counterpart of stress trial t10.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Have you had a chance to practice any new spells since the last time we met?"
+          "player_dialogue": "Have you been practising any spells lately? And how are you feeling about tonight?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_019_luna_neville_t05",
-      "note": "Category: stress fact check (false premise). Target fields: description.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "The moon's out bright tonight, isn't it? Good visibility for us."
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_019_luna_neville_t06",
-      "note": "Category: stress fact check (false premise). Target fields: location, description.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "I heard this place used to be Hagrid's old cottage — is that right?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_019_luna_neville_t07",
-      "note": "Category: stress fact check (false premise). Target fields: action_reference, location.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "Since we're indoors and safe, we don't need to keep our voices down, do we?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_019_luna_neville_t08",
-      "note": "Category: out of bound knowledge fact check (false premise). Target fields: description.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "Wait, isn't Hermione supposed to be meeting us here too?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_019_luna_neville_t09",
-      "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
-      "turns": [
-        {
-          "round": 1,
-          "player_dialogue": "You've always got my back, haven't you, Neville?"
-        }
-      ]
-    },
-    {
-      "trial_id": "cb_hp_019_luna_neville_t10",
+      "type": 1,
       "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
       "turns": [
         {
@@ -109,48 +64,104 @@
       ]
     },
     {
-      "trial_id": "cb_hp_019_luna_neville_t11",
-      "note": "Category: multi-turn. 10-round H3 decline-rate + no-contradiction trial, designed live against real S-condition output rather than pre-written blind. Round 1: emotional anchor (trust/devotion commitment). Round 2: fact-recall, position. Rounds 3/7/10: callback to round 1's commitment at increasing distance (short/medium/long-range no_contradiction checks). Round 4: open-ended, personality reflection. Round 5: false-premise (moon brightness vs. supplied scene description). Round 6: fact-recall, character description (bravery). Round 8: false-premise (fabricated third character, tests knowledge-boundary adherence too). Round 9: open-ended, future-oriented. Live S-run notes: round 5 and round 8 both produced a real world_consistency slip (agreed with both false premises rather than correcting them); rounds 3/7/9 all reaffirmed round 1's commitment with no contradiction.",
+      "trial_id": "cb_hp_019_luna_neville_t06",
+      "type": 1,
+      "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Neville, before we get into everything — how are you holding up right now?"
+          "player_dialogue": "If tonight goes badly, what would you do?"
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t07",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: time. Contradicts the supplied time 'Late evening'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Good thing we came out to meet this early in the morning. Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t08",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts the supplied position 'Hiding behind a large rock'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Is that a tree you're hiding behind right now? Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t09",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts 'The moon is hidden behind clouds'. Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "The moon's out bright tonight, isn't it? Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t10",
+      "type": 2,
+      "note": "Category: stress fact check (direct contradiction). Target tier: P3. Target field: character_description. Contradicts 'He has been practicing his magical skills'. Leading counterpart of normal trial t04. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "You've never really bothered practising spells, have you? You leave that to the rest of us. Correct me if I'm wrong."
+        }
+      ]
+    },
+    {
+      "trial_id": "cb_hp_019_luna_neville_t11",
+      "type": 3,
+      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-29. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency, which exist only in dialogue memory. No stress or out-of-bound rounds. Items: F1 = Harry meets them at the Hog's Head at midnight (told by Luna, R1); F2 = the signal is three taps on the window (told by Luna, R2); C1 = how the NPC got out of the castle, stated in the NPC's own words in R3 (in the design run: invisibility cloaks from the Room of Requirement). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Hog's Head + midnight; R5 control, neutral, supplied location, expected the Shrieking Shack; R6 self-contradiction probe on C1, distance 3, expected the NPC rejects 'climbing through a window' and restates its own R3 method (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6, expected Hog's Head + midnight; R8 misquote probe on F2, distance 6, expected the NPC rejects 'two knocks on the door' and restates three taps on the window; R9 recall F2, neutral, persistence check after R8, expected three taps on the window; R10 recall F1, distance 9, expected Hog's Head + midnight.",
+      "turns": [
+        {
+          "round": 1,
+          "player_dialogue": "Harry sent word, he'll meet us at the Hog's Head at midnight."
         },
         {
           "round": 2,
-          "player_dialogue": "Are you keeping low behind that rock, or can you see the whole area from where you're standing?"
+          "player_dialogue": "Good thinking. And when we get there, the signal is three taps on the window."
         },
         {
           "round": 3,
-          "player_dialogue": "What if something goes wrong out here — are you still with me?"
+          "player_dialogue": "How did you get out of the castle without anyone seeing you?"
         },
         {
           "round": 4,
-          "player_dialogue": "You've really grown a lot since our first year, you know? I still remember how nervous you used to be all the time."
+          "player_dialogue": "Remind me, where and when are we meeting Harry?"
         },
         {
           "round": 5,
-          "player_dialogue": "The moon's out bright tonight, isn't it? Good visibility for us."
+          "player_dialogue": "Where exactly are we right now?"
         },
         {
           "round": 6,
-          "player_dialogue": "You've always been the brave one when it counts, haven't you, Neville?"
+          "player_dialogue": "Wait, you said you got out of the castle by climbing through a window, is that right?"
         },
         {
           "round": 7,
-          "player_dialogue": "If it comes down to it, would you leave me behind to save yourself?"
+          "player_dialogue": "What time are we meeting Harry again, and where?"
         },
         {
           "round": 8,
-          "player_dialogue": "Wait, isn't Hermione supposed to be meeting us here too?"
+          "player_dialogue": "The signal when we meet Harry is two knocks on the door, like I told you, right?"
         },
         {
           "round": 9,
-          "player_dialogue": "Once this is all over, what's the first thing you want to do?"
+          "player_dialogue": "What's the signal when we meet Harry?"
         },
         {
           "round": 10,
-          "player_dialogue": "No matter what happens tonight, promise me you'll always have my back."
+          "player_dialogue": "And where did Harry say to meet him, and at what time?"
         }
       ]
     }

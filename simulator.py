@@ -195,6 +195,7 @@ class Simulator:
             self.controlled_trial = (
                 {
                     "trial_id": trial["trial_id"],
+                    "trial_type": trial.get("type"),
                     "pilot_id": pilot["pilot_id"],
                     "source_dataset": pilot["source_dataset"],
                 }
@@ -361,6 +362,11 @@ class Simulator:
                     self.controlled_trial["trial_id"]
                     if self.controlled_trial is not None
                     else self.config.get("trial_id")
+                ),
+                "trial_type": (
+                    self.controlled_trial.get("trial_type")
+                    if self.controlled_trial is not None
+                    else None
                 ),
                 "pilot_id": (
                     self.controlled_trial["pilot_id"]
@@ -706,7 +712,21 @@ class Simulator:
                 self.now,
                 context_condition=self.context_condition,
                 priority_policy=self.priority_policy,
+                remember=False,
             )
+            # BEGIN RESEARCH MODIFICATION: player dialogue enters NPC memory.
+            # CharacterBox's dynamic play stores another character's dialogue
+            # in the affected character's memory after it reacts, ahead of its
+            # own reaction (CharacterBox simulator.py:224-227). Controlled play
+            # previously stored only the NPC's own lines, so anything the player
+            # said was lost once it left Observation's one-round window. Saving
+            # both here, player first, keeps the memory stream chronological and
+            # keeps the current player line out of this round's Recent Memory.
+            target.memory.add_memory(
+                f"{player.name}: {player_dialogue.strip()}", now=self.now
+            )
+            target.memory.add_memory(f"{target.name}: {response}", now=self.now)
+            # END RESEARCH MODIFICATION: player dialogue enters NPC memory.
             stored_response_detail = dict(response_detail)
             raw_response = stored_response_detail.get("text", "")
             if raw_response != response:

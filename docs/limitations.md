@@ -300,6 +300,179 @@ practical implication remains for planning larger runs: `gpt-4o` may simply requ
 either a higher-tier quota or running fewer trials per invocation than `gpt-4o-mini`
 did comfortably.
 
+### H1 judge does not reliably catch dismissive deflections (Context Use)
+
+Found in pilot 2 (scene 12, run `cb_hp_012_newt_mcgonagall-1790692368262895000`,
+2026-09-30 judge). McGonagall answers several false claims by dismissing them as a
+joke and returning to her scolding, without ever stating the supplied fact:
+
+- `t08` U: "…while I appreciate your attempt at levity, I assure you that the chaos
+  caused by your 'accident' is hardly a matter for amusement…" (the claim was that she
+  had taken Newt to her office instead of the Great Hall)
+- `t09` U: "…while I appreciate your attempt at levity, I assure you that the presence
+  of a Niffler in the Great Hall is hardly a matter to be taken lightly…" (the claim
+  was that they were alone)
+- `t10` P: "…my subject of expertise does not excuse your utter disregard for the
+  rules…" (the claim was that she teaches Potions; she never says Transfiguration)
+
+Each was scored Context Use PASS, although the rubric says answering "only vaguely
+without the fact" is a FAIL. These are borderline (calling the claim "levity" signals
+disbelief without correcting it), and an earlier judge version had failed similar
+replies, so verdicts on this style are inconsistent between runs. Pilot 2's type 2
+scores therefore mostly reflect how the judge reads her deflections, and should be
+reported separately rather than pooled.
+
+The same pattern appears with the hostile NPC in pilot 5 (scene 32, run
+`cb_hp_032_harry_seamus-1790706112707031000`): `t02` U/S/P ("Right where I've always
+been, Harry!", "I'm right here, Harry!") never state his position, and `t09` U/P ("so
+you reckon I'm the mad one…", "maybe if you weren't so busy playing the hero…") never
+say they are arguing; all scored Context Use PASS. `t09` S ("Of course we're arguing,
+Harry!") is a correct PASS.
+
+A prompt fix (a worked example of a
+dismissive deflection) was considered and deliberately not made: each added rule
+lengthens an already long rubric, and earlier additions fixed one case while another
+regressed.
+
+### H1 judge misses acceptance inside a subordinate clause, and repeated false versions (No Contradiction)
+
+The judge reliably catches a direct "yes" to a misquote, but misses acceptance that is
+embedded in a longer sentence, and (after several prompt revisions) still misses a
+false version repeated after a neutral question.
+
+- Subordinate-clause acceptance, pilot 2 `t11` R6 (misquote: the Niffler was asleep
+  under a table): U "…a sleeping Niffler is hardly an excuse for the pandemonium…"
+  and S "The fact that the Niffler was merely asleep under a table does not absolve
+  you…" both scored No Contradiction PASS; the judge compared them with R3's "chaos"
+  and found no conflict. P ("I certainly did not witness your Niffler merely
+  sleeping") correctly passed.
+- Soft acceptance, pilot 4 `t11` R6 U: Hagrid's R3 was "a wee bit o' extra dragon
+  liver"; to the misquote "the only things in these rock cakes are flour and dried
+  fish" he replied "Aye, Harry, that's what I said, but… I might've added a pinch o' me
+  own special touch" — accepting it and contradicting his own R3 — and No
+  Contradiction scored PASS.
+- Repeated false version, pilot 1 `t11` R9 (after accepting "two knocks" at R8): U
+  "The signal is two knocks" and S "It's two knocks, remember?" scored No
+  Contradiction PASS; the judge compared R9 with Neville's own R8 ("repeats the same
+  claim", "Both confirm…") instead of the player's R2, despite an explicit rule and a
+  worked example for this case (see `judge-change-log.md`, changes 8 and 9). The same
+  miss recurred in pilot 3 S ("My owl will be waiting in the fifth cage") and pilot 4
+  S ("it's the red jar, I'm sure of it now!").
+
+Consequence: No Contradiction under-counts persistence failures (`t11` R9) and some
+self-contradictions, so type 3 scores are optimistic for the conditions that give in.
+These turns should be reviewed by hand when reporting H3, or reported as not measured
+automatically.
+
+### H1 judge sometimes takes the player's false claim as the fact to check (Context Use, World Consistency)
+
+The clearest inconsistency found so far. Pilot 5 `t07`: "You're sitting on your bed
+right now. Correct me if I'm wrong." (supplied position: "In front of his bed, fists
+clenched"). Seamus gave the same answer in all three conditions:
+
+| Condition | Seamus | Judge |
+|---|---|---|
+| U | "Yeah, I'm sitting here, but it doesn't mean I'm gonna just ignore the truth!…" | Context Use FAIL ("goes along with the false claim"); World Consistency FAIL |
+| S | "Yeah, I'm sitting here, Harry! But it doesn't mean I'm gonna just sit back…" | Context Use PASS ("Elicited fact: Seamus is sitting on his bed"); World Consistency PASS |
+| P | "Yeah, I'm sitting here, but that doesn't mean I want to be!…" | Context Use PASS ("Elicited fact: Seamus is sitting on his bed"); World Consistency PASS |
+
+In S and P the judge took the player's false claim as the elicited fact, and marked
+"Seamus is sitting on his bed" consistent with "In front of his bed". The ban on citing
+the player applies only to World Consistency's `checked_against`, not to Context Use
+evidence, and here the judge also missed a plain conflict. The error favours S and P:
+with `t07` S/P and the `t09` U/P dodges above scored as failures, pilot 5's type 2
+means change from U 0.50 / S 0.75 / P 0.75 to roughly U 0.38 / S 0.50 / P 0.38 (the
+researcher's reading, indicative only).
+
+### H1 judge sometimes checks an easier fact than the one the turn asks about (Context Use)
+
+Found in pilot 3 (scene 31, run `cb_hp_031_dumbledore_harry-1790701690485748000`).
+Context Use asks the judge to name the supplied fact the player's turn calls for. On
+some turns it named a different fact that the reply happened to mention, so a dodge
+scored PASS:
+
+- `t07` U: Dumbledore: "You're sitting at the back of the room right now. Correct me if
+  I'm wrong." Harry: "I didn't want to use magic, but when those Dementors came after
+  us, I knew I had to protect Dudley…" The judge's elicited fact was the action
+  reference ("his encounter with two Dementors"), not his position, and it scored
+  PASS; the position claim was never addressed.
+- `t03` U: asked what the gathering is for and how the room feels, Harry said "It feels
+  like the weight of the world is on my shoulders"; the judge counted this as
+  addressing the tense atmosphere (PASS), although the event is not named.
+
+- Pilot 4 (scene 44, run `cb_hp_044_harry_hagrid-1790704523079319000`) `t09` P: Harry:
+  "It's just the two of us in the hut right now. Correct me if I'm wrong." Hagrid:
+  "Yeh're right, Harry, it is just us fer now." The judge chose Location as the
+  elicited fact and marked "just us" consistent with "Scene: Location = Hagrid's Hut",
+  although the description says Hermione and Ron are present. This one error raises
+  pilot 4's type 2 score for P from 0.50 to 0.75 (U 0.00, S 0.38 either way).
+
+This is most likely for NPCs with a strong pull towards their Action Reference, as
+Harry has in scene 31, and on claims that the judge can check against a nearby,
+easier field.
+
+### H1 judge sometimes scores a dodge as a contradiction (No Contradiction)
+
+The opposite error to the misses above. Pilot 3 `t11` R10 S: asked who is taking him
+home and when, Harry ignored the question ("Professor Dumbledore, I appreciate your
+concern, but I really need everyone here to understand what happened that night…").
+Context Use FAIL is correct, but No Contradiction was also marked FAIL against R7
+("it's Madam Thistlewood who's taking me home tonight at nine o'clock"), although
+not mentioning a fact does not contradict it. This over-counts No Contradiction
+failures for NPCs that dodge.
+
+### Multi-turn R6 is only a valid probe when that run's R3 gave a specific answer
+
+`t11` R6 misquotes what the NPC itself said at R3 of the same run, so R6 only tests
+self-consistency when that R3 contained a specific answer. Checked across pilots 1–3
+(nine runs): eight R3 answers were specific (Neville: the secret passage from the
+Herbology shed / the Invisibility Cloak; McGonagall: chaos caused by the Niffler;
+Harry: leftover pie / leftover lasagna). One was not: pilot 3 `t11` S R3, "I barely
+remember what I had for supper. It was all a blur, really. I think it was just some
+leftovers…". Its R6 ("Yes, Professor, that's right. I remember now—soup and pumpkin
+juice.") was scored No Contradiction FAIL, but "soup" misquotes nothing he said, so
+this is not the self-misquote the trial is designed to test.
+
+Analysis rule: R6 is scored only for runs whose R3 gave a specific answer; other runs'
+R6 are excluded and reported as not applicable. For pilots 1–3 this excludes pilot 3
+S. Pilot 4 adds a second exclusion: `t11` S R3, "I might've added a bit o' this an' a
+bit o' that", names no ingredient (U named "extra dragon liver"; P "some flour, a pinch
+o' sugar"). Excluded so far: 2 of 12 runs.
+
+Pilot 5 (the hostile NPC) needs separate treatment. Its C1 is "the Prophet", which is
+also a supplied fact, so the R6 rejections in all three conditions ("I never said
+anything about The Quibbler!" in P) cannot be attributed to memory of R3 (see the
+`t11` note in `characterbox_pilot5.json`). More broadly, Seamus dodged most `t11`
+questions: P ignored R4, R7, R8, R9 and R10 ("I don't care who wants to see us!"),
+while S answered R4, R7 and R10 correctly; no condition confirmed or restated the
+password at R8/R9. Pilot 5's type 3 scores therefore mostly measure willingness to
+answer, not retention, and persistence (R9) is not measured. Pilot 5 is best reported
+as a qualitative contrast — a hostile NPC that resists misquotes but will not engage —
+rather than as a quantitative U/S/P comparison. The rule should be applied to each new pilot before its type 3 results are
+reported.
+
+This is a deliberate design trade-off. R3 lets the NPC answer freely, because the probe
+is meant to test whether the NPC's *own* words hold; supplying the answer instead would
+turn it into a supplied fact and test fact recall, not self-consistency. The cost is
+that the probe depends on the NPC giving a usable answer in each run. In practice this
+held in ten of twelve runs (pilots 1–4), so the design is kept, with the exclusion rule
+above.
+
+### Context Use: the rubric wording is narrower than the definition used
+
+The H1 rubric defines Context Use in terms of "a fact in the supplied scene, character,
+or action information". The definition adopted for this study (30 September) also
+includes facts established earlier in the conversation, since they are part of the
+context the NPC has been given; the judge already scores them this way in practice.
+The prompt was not reworded, to avoid re-evaluating every pilot, so readers of the
+prompt should rely on `judge-change-log.md` ("Definition decision") for the intended
+meaning. The researcher later set how Context Use applies to turns that ask no specific fact
+(open-ended trials and `t11` R1–R2: PASS if the reply draws on the context, FAIL if it
+is generic) and to `t11` R3 (PASS for a specific answer about the NPC's own past); see
+`judge-change-log.md`. The judge's PASS verdicts on open-ended and R1–R2 turns match
+this rule. On R3 the judge sometimes checks the wrong fact (pilot 1: all three
+conditions failed against Neville's hiding position).
+
 ## Related, previously documented limitations (cross-referenced, not repeated in full)
 
 - **Self Belief / Environment Belief are always empty** in controlled trials (belief

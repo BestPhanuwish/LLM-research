@@ -392,6 +392,7 @@ class SimulatorModeTests(TestCase):
             "cb_hp_019_luna_neville_t01",
             simulator.controlled_trial["trial_id"],
         )
+        self.assertEqual(1, simulator.controlled_trial["trial_type"])
         self.assertEqual(1, simulator.controlled_target_id)
         self.assertEqual(
             "Neville whispers to Luna, reminding her to keep her voice down so "
@@ -406,7 +407,7 @@ class SimulatorModeTests(TestCase):
 
         self.assertEqual("P", simulator.context_condition)
         self.assertEqual(
-            "primary_four_level",
+            "primary_five_level",
             simulator.priority_policy["policy_id"],
         )
 
@@ -481,6 +482,7 @@ class SimulatorModeTests(TestCase):
         target = SimpleNamespace(
             id=1,
             name="Neville Longbottom",
+            memory=SimpleNamespace(add_memory=Mock()),
             generate_dialogue=Mock(
                 return_value=(
                     "Keep your voice down.",
@@ -513,6 +515,7 @@ class SimulatorModeTests(TestCase):
             simulator.now,
             context_condition="P",
             priority_policy=policy,
+            remember=False,
         )
         self.assertEqual(2, len(messages))
         self.assertEqual(1, len(messages[0]))
@@ -541,6 +544,7 @@ class SimulatorModeTests(TestCase):
         target = SimpleNamespace(
             id=1,
             name="Neville Longbottom",
+            memory=SimpleNamespace(add_memory=Mock()),
             generate_dialogue=Mock(
                 return_value=("Keep your voice down.", {"text": "raw reply"})
             ),
@@ -571,6 +575,7 @@ class SimulatorModeTests(TestCase):
             simulator.now,
             context_condition="S",
             priority_policy=None,
+            remember=False,
         )
         self.assertEqual(
             ["pilot_manifest"],
@@ -596,6 +601,7 @@ class SimulatorModeTests(TestCase):
         target = SimpleNamespace(
             id=1,
             name="Neville Longbottom",
+            memory=SimpleNamespace(add_memory=Mock()),
             generate_dialogue=Mock(
                 return_value=("Keep your voice down.", {"text": "reply"})
             ),
@@ -619,6 +625,7 @@ class SimulatorModeTests(TestCase):
             simulator.now,
             context_condition="S",
             priority_policy=None,
+            remember=False,
         )
         self.assertEqual(1, len(messages[0]))
         self.assertEqual(
@@ -645,6 +652,7 @@ class SimulatorModeTests(TestCase):
         target = SimpleNamespace(
             id=1,
             name="Neville Longbottom",
+            memory=SimpleNamespace(add_memory=Mock()),
             generate_dialogue=Mock(return_value=("Hello.", {"text": "reply"})),
         )
         simulator.characters = {0: player, 1: target}
@@ -669,12 +677,66 @@ class SimulatorModeTests(TestCase):
             simulator.now,
             context_condition="U",
             priority_policy=None,
+            remember=False,
         )
         self.assertEqual(1, len(messages[0]))
         self.assertEqual(
             ["dialogue", "dialogue"],
             [item["type"] for item in simulator.records[0]],
         )
+
+    def test_controlled_rounds_store_player_then_npc_lines_in_npc_memory(self):
+        simulator = Simulator(
+            {"dynamic_play": False, "play_role": 0},
+            logging.getLogger("controlled-memory-order-test"),
+        )
+        player = SimpleNamespace(
+            id=0,
+            name="Luna Lovegood",
+            take_action=Mock(),
+            generate_dialogue=Mock(
+                side_effect=[
+                    ("Harry meets us at midnight.", {"text": "", "source": "human"}),
+                    ("When is Harry coming?", {"text": "", "source": "human"}),
+                ]
+            ),
+        )
+        target = SimpleNamespace(
+            id=1,
+            name="Neville Longbottom",
+            memory=SimpleNamespace(add_memory=Mock()),
+            generate_dialogue=Mock(
+                side_effect=[
+                    ("Midnight, got it.", {"text": "Midnight, got it."}),
+                    ("At midnight.", {"text": "At midnight."}),
+                ]
+            ),
+        )
+        simulator.characters = {0: player, 1: target}
+        simulator.character_record = {0: [], 1: []}
+        simulator.round_obs = {0: [], 1: []}
+        simulator.controlled_target_id = 1
+        simulator.controlled_action_reference = "Neville should answer quietly."
+        simulator.context_condition = "S"
+        simulator.priority_policy = None
+        simulator.round_cnt = 1
+        simulator.play()
+
+        simulator.round()
+        simulator.round_cnt = 2
+        simulator.round()
+
+        self.assertEqual(
+            [
+                "Luna Lovegood: Harry meets us at midnight.",
+                "Neville Longbottom: Midnight, got it.",
+                "Luna Lovegood: When is Harry coming?",
+                "Neville Longbottom: At midnight.",
+            ],
+            [call.args[0] for call in target.memory.add_memory.call_args_list],
+        )
+        for call in target.generate_dialogue.call_args_list:
+            self.assertFalse(call.kwargs["remember"])
 
     def test_controlled_second_round_reuses_previous_transcript(self):
         simulator = Simulator(
@@ -701,6 +763,7 @@ class SimulatorModeTests(TestCase):
         target = SimpleNamespace(
             id=1,
             name="Neville Longbottom",
+            memory=SimpleNamespace(add_memory=Mock()),
             generate_dialogue=Mock(
                 side_effect=[
                     ("First reply.", {"text": "Raw first reply."}),

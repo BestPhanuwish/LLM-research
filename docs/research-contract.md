@@ -4,6 +4,7 @@
 **Date:** 2 August 2026  
 **Scope revision:** 4 August 2026 — reduced to a CharacterBox-compatible minimum viable study  
 **Priority-tier revision:** 30 August 2026 — §3's P tier description corrected to match `config/context_priorities.json` (current state and environment belief moved to Priority 3 / character guidance); see `docs/characterbox-provenance.md` for rationale  
+**Priority-tier revision:** 29 September 2026 — §3's P policy replaced by the five-level `primary_five_level` (Observation moved to its own lowest tier; beliefs moved to Priority 4; conflict wording clarified); pilot-phase revision made after inspecting pilot output; see `docs/characterbox-provenance.md`  
 **Working title:** *Generating Consistent LLM-Based NPC Dialogue by Structuring and Prioritising Game Context*
 
 ## 1. Purpose
@@ -49,16 +50,24 @@ For identical inputs, S must produce the same fully formatted dialogue prompt an
 
 P contains the same factual information and 13 CharacterBox context fields as S. A reusable configuration groups those fields under ordered priority levels. Trial sidecars do not assign priorities and do not copy CharacterBox world values.
 
-The initial tiers are (corrected 30 August 2026 to match `config/context_priorities.json`; see the change note below):
+The current tiers (policy `primary_five_level`, revised 29 September 2026; see the change notes below) are:
 
-1. **Current world constraints:** Time, Location, and Position. These must not be contradicted and override lower levels.
-2. **World background:** Event, Observation, and Description. These keep the response inside the fictional setting and reflect what has actually happened so far.
-3. **Character guidance:** Name, Character Description, Self Belief, Action Reference, Current State, and Environment Belief. These preserve role, personality, tone, and beliefs. Current State and Action Reference are grouped here, subordinate to Observation, because controlled interaction never regenerates either mid-trial — both are frozen scene-start snapshots, while Observation is the only field carrying genuine new ground truth as a trial progresses.
-4. **Conditional memory:** Recent Memory. It is used only when relevant and must not override higher levels.
+1. **Current world constraints:** Time, Location, and Position. These must not be contradicted and override all other levels.
+2. **World background:** Event and Description. These keep the response inside the fictional setting.
+3. **Character guidance:** Name, Character Description, Action Reference, and Current State. These preserve role, personality, tone, and intended behaviour.
+4. **Beliefs and memory:** Self Belief, Environment Belief, and Recent Memory. These are used only when relevant and must not override higher levels.
+5. **Conversation input:** Observation. This is what was just said and done in the conversation, and the NPC must reply to it. Other characters' statements in it are their claims, not verified facts; if a claim conflicts with Priority 1–2, the facts win and the NPC may correct it in character.
 
-This tier assignment was revised once, on 30 August 2026, before any final-study generation: `Current State` and `Environment Belief` moved from World Background to Character Guidance, and `Event`/`Observation` moved (with `Description`) into World Background. The rule in the paragraph above — the policy cannot be changed after inspecting a gold response or model output — was not violated: this revision followed a reasoned discussion of field semantics (frozen snapshot vs. live ground truth), not inspection of any trial's generated output, and predates final-study generation.
+The P prompt states that Priority 1 is the most important level and that, when two pieces of context conflict, the one with the smaller priority number is followed.
 
-The primary four-level policy is declared before generation in `config/context_priorities.json`. It assigns every supported field exactly once. The same policy applies to every primary P trial and cannot be changed after inspecting a gold response or model output.
+**Revision history.** The tier assignment has been revised twice, both before any final-study generation:
+
+- *30 August 2026* (`primary_four_level`): `Current State` and `Environment Belief` moved from World Background to Character Guidance, and `Event`/`Observation` moved (with `Description`) into World Background. This followed a reasoned discussion of field semantics (frozen snapshot vs. live ground truth), not inspection of any trial's generated output.
+- *29 September 2026* (`primary_five_level`): `Observation` moved from World Background to its own lowest level, Conversation Input; `Self Belief` and `Environment Belief` moved from Character Guidance to a renamed Beliefs and Memory level, because CharacterBox generates them from the character's own observation and memories, so they are the character's interpretation rather than ground truth (they are never generated in controlled play and are currently empty, so this has no practical effect on existing pilots); the Priority 1 instruction and the conflict rule were reworded for clarity. In controlled play, Observation carries the player's line, so it can contain false premises; ranking it beside Description put a false claim at the same level as the fact it contradicts. **Unlike the first revision, this one was prompted by inspecting pilot output**, so it is treated as a pilot-phase development revision under §10: the pilot scenes that motivated it are not final-study evidence.
+
+Because Conversation Input's instruction says other characters' statements are claims rather than facts, and S carries no such statement, the P-versus-S contrast tests prioritisation together with that instruction (priority instructions are part of the intervention; see §5).
+
+The primary five-level policy is declared in `config/context_priorities.json`. It assigns every supported field exactly once. The superseded `primary_four_level` policy is retained in the same file only so earlier pilot runs remain reproducible. The primary policy must be frozen before final-study generation; once frozen, it applies to every primary P trial and cannot be changed after inspecting a gold response or model output.
 
 Arbitrary continuous weights such as `0.87` are excluded initially because their interpretation by an LLM and their assignment rationale would be unclear. The first implementation uses interpretable ordinal tiers.
 
@@ -169,7 +178,7 @@ CharacterBox scenes are evaluated against the supplied, manually verified scene 
 
 ## 10. Priority assignment guardrails
 
-The primary intervention assigns priorities by CharacterBox context field, not by individual fact or trial. Its four-level policy is global, inspectable, validated, and frozen before response generation. A field cannot appear at multiple levels or be omitted from a policy.
+The primary intervention assigns priorities by CharacterBox context field, not by individual fact or trial. Its five-level policy is global, inspectable, validated, and frozen before response generation. A field cannot appear at multiple levels or be omitted from a policy.
 
 Priority must not derive from the reference response wording, post-generation inspection, a target answer label, or a scenario-specific promotion made only because the tested question requires that field.
 

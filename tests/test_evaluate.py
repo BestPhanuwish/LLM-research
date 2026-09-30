@@ -145,6 +145,43 @@ class FormatTurnContextTests(TestCase):
         self.assertIn("Warn Luna about the incoming patrol.", prompt)
 
 
+class H1PromptRuleTests(TestCase):
+    def test_prompt_treats_dodging_as_context_use_failure(self):
+        prompt = build_h1_prompt(trajectory(), 1)
+
+        self.assertIn("Dodging is a failure", prompt)
+        self.assertIn("Going along with the player counts as a claim", prompt)
+        self.assertIn("Never write a supplied fact as the claim", prompt)
+
+    def test_prompt_examples_do_not_reuse_pilot_scene_content(self):
+        # The examples must not echo the scenes being evaluated, or the judge is
+        # primed on the exact trials it scores.
+        from evaluate import H1_METRIC_CRITERIA, H1_RESPONSE_FORMAT
+
+        rubric = H1_METRIC_CRITERIA + H1_RESPONSE_FORMAT
+        for pilot_term in ("Shrieking", "Luna", "Neville", "Hogwarts", "moon",
+                           "McGonagall", "Niffler", "Dumbledore", "Dementor"):
+            self.assertNotIn(pilot_term, rubric)
+
+
+class H1PromptExampleTests(TestCase):
+    def test_every_format_example_is_valid_and_writes_evidence_before_decision(self):
+        import re
+        from evaluate import H1_RESPONSE_FORMAT
+
+        blocks = re.findall(r"\n(\{\n.*?\n\})\n", H1_RESPONSE_FORMAT, re.S)[1:]
+        self.assertGreaterEqual(len(blocks), 6)
+        decisions = []
+        for block in blocks:
+            self.assertNotRegex(block, r'"decision": "[A-Z]+", "(evidence|contradicted_round)"')
+            example = json.loads(block)
+            dialogue = " ".join(c["quote"] for c in example["world_consistency"]["claims"])
+            decisions.append(parse_h1_response(json.dumps(example), dialogue)["no_contradiction"]["decision"])
+        # At least one full example shows No Contradiction failing on a fact only
+        # the player established, which the judge previously never saw in full.
+        self.assertGreaterEqual(decisions.count("FAIL"), 3)
+
+
 class ParseH1ResponseTests(TestCase):
     def test_parses_valid_response(self):
         parsed = parse_h1_response(VALID_H1_RESPONSE, NPC_DIALOGUE)
@@ -423,11 +460,105 @@ class ComputeConsistencyTests(TestCase):
 
 
 class EvaluateH1TurnTests(TestCase):
-    def test_retries_until_valid_response(self):
-        judge = FakeJudge(["not json", "still not json", VALID_H1_RESPONSE])
+    def _response_citing_player(self, consistent):
+        return json.dumps({
+            "context_use": {"decision": "PASS", "evidence": "Uses the patrol fact."},
+            "world_consistency": {"claims": [{
+                "quote": "Keep your voice down",
+                "claim": "the player should keep quiet",
+                "consistent": consistent,
+                "checked_against": "Round 2 — Player: 'we should be quiet'",
+            }]},
+            "no_contradiction": {"decision": "NA", "contradicted_round": None, "evidence": None},
+        })
+
+    def test_consistent_claim_citing_player_is_repaired_and_flagged(self):
+        judge = FakeJudge([self._response_citing_player(True)])
 
         result = evaluate_h1_turn(trajectory(), 1, judge, retries=3)
 
+        self.assertEqual(1, len(judge.prompts))
+        claim = result["decisions"]["world_consistency"]["claims"][0]
+        self.assertEqual(NO_SUPPLIED_FACT, claim["checked_against"])
+        self.assertTrue(claim["checked_against_repaired"])
+        self.assertEqual(1.0, result["consistency"])
+
+    def test_conversation_conflict_moves_out_of_world_consistency(self):
+        # Pilot 1 t11 U R8: the judge kept marking the claim inconsistent against
+        # "Round 2: ..." while No Contradiction correctly failed against round 2.
+        record = trajectory()
+        record["turns"][1]["npc_dialogue"] = "Um, yes, two knocks—just like we practiced."
+        response = json.dumps({
+            "context_use": {"decision": "FAIL", "evidence": "goes along with the false claim."},
+            "world_consistency": {"claims": [{
+                "quote": "Um, yes, two knocks",
+                "claim": "the signal is two knocks",
+                "consistent": False,
+                "checked_against": "Round 2: Signal = three taps on the window.",
+            }]},
+            "no_contradiction": {
+                "decision": "FAIL",
+                "contradicted_round": 1,
+                "evidence": "Round 1: 'three taps on the window.' This response: 'two knocks'.",
+            },
+        })
+        judge = FakeJudge([response])
+
+        result = evaluate_h1_turn(record, 2, judge, retries=3)
+
+        self.assertEqual(1, len(judge.prompts))
+        decisions = result["decisions"]
+        claim = decisions["world_consistency"]["claims"][0]
+        self.assertEqual("PASS", decisions["world_consistency"]["decision"])
+        self.assertEqual("FAIL", decisions["no_contradiction"]["decision"])
+        self.assertTrue(claim["checked_against_repaired"])
+        self.assertEqual(
+            {"consistent": False, "checked_against": "Round 2: Signal = three taps on the window."},
+            claim["original_verdict"],
+        )
+
+    def test_consistent_claim_citing_a_conversation_round_is_repaired(self):
+        response = json.dumps({
+            "context_use": {"decision": "PASS", "evidence": "Uses the patrol fact."},
+            "world_consistency": {"claims": [{
+                "quote": "Keep your voice down",
+                "claim": "the player should keep quiet",
+                "consistent": True,
+                "checked_against": "Round 2: Signal = three taps on the window",
+            }]},
+            "no_contradiction": {"decision": "NA", "contradicted_round": None, "evidence": None},
+        })
+        judge = FakeJudge([response])
+
+        result = evaluate_h1_turn(trajectory(), 1, judge, retries=3)
+
+        claim = result["decisions"]["world_consistency"]["claims"][0]
+        self.assertEqual(NO_SUPPLIED_FACT, claim["checked_against"])
+        self.assertTrue(claim["checked_against_repaired"])
+
+    def test_prompt_treats_earlier_player_facts_as_established(self):
+        prompt = build_h1_prompt(trajectory(), 1)
+
+        self.assertIn("a statement of fact the player made in an earlier turn is established", prompt)
+        self.assertIn("the earlier statement still holds", prompt)
+        self.assertIn("The player's current line is never evidence", prompt)
+        self.assertIn("Agreeing with the character's own earlier statement does not excuse a contradiction", prompt)
+
+    def test_prompt_requires_checking_misquotes_against_own_earlier_turns(self):
+        prompt = build_h1_prompt(trajectory(), 1)
+
+        self.assertIn("Check every claim in the current response", prompt)
+        self.assertIn("agreeing with a misquote of its own earlier words is a contradiction", prompt)
+        self.assertIn("Never cite the player's lines", prompt)
+
+    def test_retries_until_valid_response(self):
+        judge = FakeJudge(["not json", "still not json", VALID_H1_RESPONSE])
+
+        record = trajectory()
+        record["trial_type"] = 1
+        result = evaluate_h1_turn(record, 1, judge, retries=3)
+
+        self.assertEqual(1, result["trial_type"])
         self.assertEqual(3, len(judge.prompts))
         self.assertEqual("H1", result["hypothesis"])
         self.assertEqual("trial-001", result["trial_id"])
@@ -593,10 +724,13 @@ class EvaluateH2TrialTests(TestCase):
         )
         judge = FakeJudge(["No serious issue.", valid_scores])
 
-        result = evaluate_h2_trial(trajectory(), judge, score_retries=2)
+        record = trajectory()
+        record["trial_type"] = 2
+        result = evaluate_h2_trial(record, judge, score_retries=2)
 
         self.assertEqual("H2", result["hypothesis"])
         self.assertEqual(4.0, result["average"])
+        self.assertEqual(2, result["trial_type"])
 
 
 if __name__ == "__main__":

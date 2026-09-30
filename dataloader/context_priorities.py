@@ -46,6 +46,12 @@ def validate_priority_config(config):
         _require(isinstance(policy_id, str) and policy_id, "policy_id is required")
         _require(policy_id not in policy_ids, f"Duplicate policy_id: {policy_id}")
         policy_ids.add(policy_id)
+        if "conflict_rule" in policy:
+            _require(
+                isinstance(policy["conflict_rule"], str)
+                and policy["conflict_rule"].strip(),
+                f"{policy_id}: conflict_rule must be a non-empty string",
+            )
         priorities = policy.get("priorities")
         _require(
             isinstance(priorities, list) and priorities,
