@@ -22,11 +22,11 @@
     {
       "trial_id": "cb_hp_044_harry_hagrid_t02",
       "type": 1,
-      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question; expected answer draws on 'Seated at the table'.",
+      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question; expected answer draws on 'Seated at the table'. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: 'Where are you right now in the hut?' was answered with 'Right here', so the question now asks about a concrete object (expected the table, with the tea and rock cakes). 'Sitting' reveals seated versus standing but not the table, accepted by the author.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Where are you right now in the hut, Hagrid?"
+          "player_dialogue": "What's right in front of you where you're sitting right now, Hagrid?"
         }
       ]
     },
@@ -121,7 +121,7 @@
     {
       "trial_id": "cb_hp_044_harry_hagrid_t11",
       "type": 3,
-      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (invented, away from canon): F1 = Professor Wilderberry brings a remedy for Aragog on Thursday at four o'clock (told by Harry, R1); F2 = the remedy has to be kept in the blue jar on the top shelf (told by Harry, R2); C1 = what Hagrid put in the rock cakes, stated in his own words in R3 (in the design run: flour and sugar, plus 'a bit o' this an' that'). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Professor Wilderberry + Thursday + four o'clock; R5 control, neutral, supplied location, expected Hagrid's hut; R6 self-contradiction probe on C1, distance 3, exclusive misquote ('the only things … are flour and dried fish') that keeps flour and replaces the rest, because his 'this an' that' would let any added ingredient be accepted without contradiction; expected the NPC rejects it and restates its own R3 ingredients (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6; R8 misquote probe on F2, distance 6, changes only the colour (blue to red) with the same remedy and shelf, expected the NPC rejects 'red' and restates blue; R9 recall F2, neutral, persistence check after R8, expected the blue jar on the top shelf; R10 recall F1, distance 9, expected Professor Wilderberry + Thursday + four o'clock.",
+      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (invented, away from canon): F1 = Professor Wilderberry brings a remedy for Aragog on Thursday at four o'clock (told by Harry, R1); F2 = the remedy has to be kept in the blue jar on the top shelf (told by Harry, R2); C1 = what Hagrid put in the rock cakes, stated in his own words in R3 (in the design run: flour and sugar, plus 'a bit o' this an' that'). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Professor Wilderberry + Thursday + four o'clock; R5 control, neutral, supplied location, expected Hagrid's hut; R6 self-contradiction probe on C1, distance 3, exclusive misquote ('the only things … are flour and dried fish') that keeps flour and replaces the rest, because his 'this an' that' would let any added ingredient be accepted without contradiction; expected the NPC rejects it and restates its own R3 ingredients (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6; R8 misquote probe on F2, distance 6, changes only the colour (blue to red) with the same remedy and shelf, expected the NPC rejects 'red' and restates blue; R9 recall F2, neutral, persistence check after R8, expected the blue jar on the top shelf; R10 recall F1, distance 9, expected Professor Wilderberry + Thursday + four o'clock. R3, R6, R8 and R9 redesigned 2026-10-20: R3 now asks for the named ingredients (S had answered only 'a bit o' this an' a bit o' that'); R6 now misquotes where the cakes came from ('bought them from Honeydukes'), because the earlier ingredient misquote could be accepted as something Harry tasted rather than as a contradiction; the supplied context only says Hagrid serves the rock cakes, so R6 is checked against the NPC's R3 answer (in which he describes what he put in them), not against the context; R6 is excluded when R3 gives no ingredients or says he did not make them (author's live check in S, 2026-10-20: R3 named flour, sugar, treacle and currants as 'a specialty o' mine', and R6 was accepted as 'ye caught me there', a No Contradiction FAIL); R8 now changes two attributes (blue to red, top to bottom shelf, the author's suggestion) and keeps 'the remedy' and 'like I told you' as the anchor; R9 is now a prompted rethink of F2, expected the blue jar on the top shelf. The round descriptions earlier in this note describe the pre-redesign R3, R6, R8 and R9.",
       "turns": [
         {
           "round": 1,
@@ -133,7 +133,7 @@
         },
         {
           "round": 3,
-          "player_dialogue": "What did you put in these rock cakes today, Hagrid?"
+          "player_dialogue": "What exactly did you put in these rock cakes today, Hagrid? Please name the ingredients."
         },
         {
           "round": 4,
@@ -145,7 +145,7 @@
         },
         {
           "round": 6,
-          "player_dialogue": "Wait, you said the only things in these rock cakes are flour and dried fish, is that right?"
+          "player_dialogue": "Wait, you said you didn't bake these rock cakes yourself, you bought them from Honeydukes, is that right?"
         },
         {
           "round": 7,
@@ -153,11 +153,11 @@
         },
         {
           "round": 8,
-          "player_dialogue": "The remedy has to be kept in the red jar on the top shelf, like I told you, right?"
+          "player_dialogue": "The remedy has to be kept in the red jar on the bottom shelf, like I told you, right?"
         },
         {
           "round": 9,
-          "player_dialogue": "Which jar does the remedy have to go in, Hagrid, and where is it?"
+          "player_dialogue": "Actually, I'm not sure what I just said was right. When I first told you, where did I say the remedy has to be kept?"
         },
         {
           "round": 10,

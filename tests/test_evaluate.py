@@ -4,6 +4,7 @@ import json
 from unittest import TestCase
 
 from evaluate import (
+    _quote_is_verbatim,
     DECISION_TO_SCORE,
     NO_SUPPLIED_FACT,
     build_h1_prompt,
@@ -482,6 +483,64 @@ class EvaluateH1TurnTests(TestCase):
         self.assertEqual(NO_SUPPLIED_FACT, claim["checked_against"])
         self.assertTrue(claim["checked_against_repaired"])
         self.assertEqual(1.0, result["consistency"])
+
+    def test_rubric_versions_rebuild_older_prompts(self):
+        record = trajectory()
+        record["player"] = {"name": "Luna Lovegood"}
+        v11, v13, v14 = (build_h1_prompt(record, 1, v) for v in (11, 13, 14))
+
+        self.assertIn("getting at least one right and none wrong is PASS", v11)
+        self.assertNotIn("Characters present:", v11)
+        self.assertNotIn("concession phrased as a rebuttal", v11)
+        self.assertIn("Characters present:", v13)
+        self.assertIn("concession phrased as a rebuttal", v13)
+        self.assertNotIn("the decision is FAIL. ", v13.split("[World Consistency]")[0][-400:])
+        self.assertNotIn("acknowledging the question without answering it", v13)
+        self.assertIn("acknowledging the question without answering it", v14)
+        self.assertEqual(v14, build_h1_prompt(record, 1))
+        with self.assertRaises(ValueError):
+            build_h1_prompt(record, 1, 12)
+
+    def test_change_13_rubric_and_player_name(self):
+        record = trajectory()
+        record["player"] = {"name": "Luna Lovegood"}
+        prompt = build_h1_prompt(record, 1)
+
+        self.assertIn("Characters present:", prompt)
+        self.assertIn("Luna Lovegood, who speaks the lines marked Player", prompt)
+        self.assertIn("even if the response states another of them wrongly", prompt)
+        self.assertIn("a concession phrased as a rebuttal still goes along with the claim", prompt)
+        self.assertIn("A concession phrased as a rebuttal is also acceptance", prompt)
+        # Change 14: Context Use decision must follow its evidence; non-answers are dodges.
+        self.assertIn("if your evidence says the response accepts, goes along with, concedes, or does not correct the player's claim, the decision is FAIL", prompt)
+        self.assertIn("acknowledging the question without answering it", prompt)
+        # Records without a player profile render as before.
+        self.assertNotIn("Characters present:", build_h1_prompt(trajectory(), 1))
+
+    def test_quote_check_ignores_letter_case(self):
+        self.assertTrue(_quote_is_verbatim("we've got each other", "We've got each other's backs."))
+        self.assertFalse(_quote_is_verbatim("we have each other", "We've got each other's backs."))
+
+    def test_round_one_ignores_malformed_no_contradiction(self):
+        # Qwen2.5-14B (pilot 1 t05 S) answered PASS with no evidence on round 1 four
+        # times; the answer is replaced by NA anyway, so it must not fail the turn.
+        payload = json.loads(VALID_H1_RESPONSE)
+        payload["no_contradiction"] = {"evidence": None, "contradicted_round": None, "decision": "PASS"}
+
+        parsed = parse_h1_response(json.dumps(payload), NPC_DIALOGUE, round_number=1)
+
+        self.assertEqual("NA", parsed["no_contradiction"]["decision"])
+        with self.assertRaisesRegex(ValueError, "requires evidence"):
+            parse_h1_response(json.dumps(payload), NPC_DIALOGUE, round_number=2)
+
+    def test_turn_records_attempts_and_time(self):
+        judge = FakeJudge(["not json", self._response_citing_player(True)])
+
+        result = evaluate_h1_turn(trajectory(), 1, judge, retries=3)
+
+        self.assertEqual(2, result["judge_attempts"])
+        self.assertIsInstance(result["judge_seconds"], float)
+        self.assertGreaterEqual(result["judge_seconds"], 0)
 
     def test_conversation_conflict_moves_out_of_world_consistency(self):
         # Pilot 1 t11 U R8: the judge kept marking the claim inconsistent against

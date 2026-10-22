@@ -719,3 +719,51 @@ All three are recorded in `t13`'s `note` field and in `docs/limitations.md`.
 - Live findings (design run, S, one sample): Seamus answered with hostility throughout and dodged most questions not about the argument. He gave the F1 name but not the time at R4, dodged R7 entirely, and at R10 gave F1 in full ("Professor Merriweather wants to see us at eight o'clock tomorrow"), so the earlier gaps were refusals, not forgetting; the R5 location control was correct. At R6 he rejected the misquote outright ("I never said it was in The Quibbler! It's the bloody Daily Prophet"), the first NPC across pilots 1–5 to do so (with the caveat above). At R8 he recalled both versions but committed to neither ("Copper Kettle, Silver Kettle—what's the difference, Harry?"), and at R9 he dodged ("The password's not the bloody point!"), so persistence is not measured. Unprompted, he contradicted his supplied belief at R2 ("I'm not some daft git who'll swallow the Daily Prophet's nonsense") and reverted at R3 ("They've got their heads on straight"), a spontaneous self-contradiction. Across pilots 1–5 the design runs suggest a gradient: trusting NPCs (Neville, Harry, Hagrid) accepted the self-misquote, the stern authority (McGonagall) partly conceded, and the hostile peer (Seamus) rejected it; one sample each. A hostile NPC also limits measurement: facts cannot be checked when the NPC refuses to answer.
 - Verification: `python -m dataloader.research_sidecar data/research_annotations/characterbox_pilot5.json --pilot-config config/pilot_run_config.json` validates all 11 trials.
 - Licence notice: `third_party/characterbox/LICENSE` covers no part of this entry.
+
+### 2026-10-21 — Pilots 1–5 redesigned after the full human review
+
+- CharacterBox source: n/a — trial wording only; scenes, characters and actions unchanged (scenes 19, 12, 31, 44, 32).
+- Reuse category: Original (pilot manifest trial content).
+- Modifications: Player lines changed in all five pilot files, decided pilot by pilot by the researcher on 20–21 October 2026 from the notes in the pilot 1–5 human labels. Type 1: `t01` anchored to "right now" (pilots 1–3); `t02` position questions now ask for one concrete answer (pilots 1–5), with a precision request in pilots 2 and 5. Type 2: stress lines reduced to one plain, unambiguous, non-insulting present-tense claim (pilot 1 `t07`–`t10`, pilot 2 `t07`–`t10`, pilot 3 `t07`/`t09`, pilot 5 `t07`). Type 3 (`t11`): R3 asks for a concrete detail the scene does not supply (pilots 2–5), R6 rewritten to contradict any specific R3 answer (pilots 2, 4, 5), R8 changes two attributes of F2 and keeps the anchor (pilots 2–5; pilot 1 already did), R9 is a prompted rethink ("Actually, I'm not sure what I just said was right. When I first told you, …?", all pilots). Trial count (11 per pilot), `type` values and targets unchanged. Each changed trial's `note` records the reason; the full record and the resulting rules are in `docs/trial-design-guide.md` ("Redesign of pilots 1–5…").
+- Research rationale: The human review found position questions answered with "I'm right here", stress lines that let the NPC agree with surrounding remarks or had a reading compatible with the supplied fact, R3 answers that were vague or came from supplied facts, R8 one-attribute misquotes that were easy to wave away, and an R9 that could not separate forgetting from accepting the latest correction. Pilots 1–5 are development data, so the redesign does not touch any reported test result; all five are re-run once the design is locked, before test pilots 6–10 are generated. The P priority policy was not changed.
+- Live checks (researcher, gpt-4o-mini via OpenRouter, one sample each): pilot 2 `t02` answered only with the precision request (P); pilot 2 R8/R9 in P accepted the misquote and gave it as the original at R9 (see `limitations.md`, "The priority policy does not rank conversation facts…"); pilot 2 R3 "Calming Charm"; pilot 4 R3/R6 specific ingredients then "ye caught me there" (No Contradiction FAIL); pilot 5 `t02` dodged under three wordings, `t07` accepted ("Yeah…"), R3 "Dark Wizard Returns!", R6 rejected (see `limitations.md`, "Hostile scenes…").
+- Verification: `python -m dataloader.research_sidecar` validates all five pilot files (11 trials each); `python -m unittest discover -s tests` passes (146 tests).
+- Licence notice: `third_party/characterbox/LICENSE` covers no part of this entry.
+
+### 2026-10-21 — H2 prompts: the judge evaluates only the target character
+
+- CharacterBox source: CharacterBox `evaluate.py` at commit 5c19141e (critic prompt and scoring prompt), as adapted in `evaluate_characterbox.py`.
+- Reuse category: Adapted (one sentence added to each retained prompt).
+- Modifications: `build_critic_prompt()` and `build_score_prompt()` each add one sentence naming the evaluated character and stating that the other character's lines are fixed test inputs (`TARGET_ONLY_CRITIC_NOTE`, `TARGET_ONLY_SCORE_NOTE`). Exact wording and the full comparison with CharacterBox are in `characterbox-change-record.md` (`evaluate_characterbox.py`, "Target-only instruction"). Used by both `evaluate.py` (H2) and `evaluate_characterbox.py`.
+- Research rationale: Upstream trajectories are fully model-generated, so judging "the role-play" as a whole was coherent. In this study the player's lines are scripted probes, and about 1 in 5 of the 165 pilot 1–5 H2 critiques (gpt-4o judge) faulted them as out of place or redundant, which feeds into the score through the critique. The researcher approved the change on 2026-10-21, before the design freeze and before the planned re-run of all pilots, so no reported H2 result mixes the two prompt versions. Check after the change: re-run H2 on one pilot and count critiques that still mention the player's lines.
+- Verification: `python -m unittest discover -s tests` passes (147 tests, one new).
+- Licence notice: CharacterBox MIT licence (`third_party/characterbox/LICENSE`) covers the retained prompt text; the added sentences are original.
+
+### 2026-10-21 — H2 character block includes the NPC's position and state
+
+- CharacterBox source: CharacterBox `evaluate.py` at commit 5c19141e, as adapted in `evaluate_characterbox.py` (`format_trajectory()`).
+- Reuse category: Adapted (two fields added to the rendered character profile).
+- Modifications: `format_trajectory()` adds `Position:` and `State:` lines for the target when present. See `characterbox-change-record.md` ("Character block lists Position and State") and `judge-change-log.md` change 12.
+- Research rationale: In the judge bake-off a Qwen3-235B H2 judge penalised a supplied fact (Neville's large rock) as invented, because the judge never saw the NPC's position or state. Approved by the researcher on 2026-10-21, before the re-run of all pilots.
+- Verification: `python -m unittest discover -s tests` passes (148 tests, one new).
+- Licence notice: CharacterBox MIT licence covers the retained prompt text; the added lines are original.
+
+### 2026-10-21 — Judge model changed to Gemma 4 31B
+
+- CharacterBox source: n/a (configuration only).
+- Reuse category: Original (research configuration).
+- Modifications: `config/evaluate.yaml` sets `judger_llm: google/gemma-4-31b-it` (OpenRouter), replacing `openai/gpt-4o`, for both H1 and H2. Temperature 0, seed 1, max_token 4000, request_timeout 180 unchanged from the bake-off.
+- Research rationale: Chosen in a judge bake-off against the author's blind hand labels on pilots 1 and 2 (combined κ 0.852 over 294 items, the highest of seven candidates); see `judge-change-log.md`, "Judge model selection", and thesis Appendix A. The generator (gpt-4o-mini) is unchanged.
+- Verification: pilot 1 and 2 judge outputs in `output/evaluation/judge_selection/p1|p2/gemma-4-31b/`; agreement computed with `tools/judge_agreement_table.py`.
+- Licence notice: n/a.
+
+### 2026-10-22 — Final-study layout: seed and trajectory output options
+
+- CharacterBox source: `simulator.py` (`parse_args()`, `main()`, `Simulator.save_record()`).
+- Reuse category: Adapted (research extension).
+- Modifications: `simulator.py` gains `--seed` (overrides `seed` in `play.yaml`) and `--trajectory-output` (explicit trajectory file); the trajectory row's `generation` block records `seed`. New `tools/run_final.py` runs generation, H1 and H2 for one seed and pilot into `output/final/seed{N}/p{NN}/`, skipping completed steps. Seed 1 of pilots 1–5 was copied (not moved) into that layout from the development trajectories and `output/evaluation/prompt_versions/v3/h1_consistency.jsonl`, adding `generation.seed = 1` and `h1_rubric_version = 14` to the copies (both verified: `play.yaml` had `seed: 1`, and every stored prompt contains the version-14 rubric). `notebooks/results_dashboard.ipynb` now reads that layout, tags rows with seed and pilot, takes trial categories from `trial_type`, and reports breakdowns by trial type, pilot and seed. The researcher's labels for pilots 1–5 were exported from the `.numbers` sheets to CSV in `data/research_annotations/judge_validation/manual_label/` (735 scored items, 131 FAIL, matching the thesis).
+- Research rationale: The final study (design B) reports pilots 1–10 over several generation seeds, pooling pilots 1–5 with the new scenes; each run needs its seed on record and its own file so runs can be resumed, compared and reproduced.
+- Contract note: This supersedes the 2026-09-29 note that pilot scenes used to develop the policy should not be reported as final-study evidence. Under design B (decided by the researcher on 2026-10-22) pilots 1–5 are pooled with pilots 6–10, which are designed after the policy, trials and judge are frozen; the thesis states that five of the ten scenes were used for development and repeats the primary comparison on pilots 6–10 alone as a robustness check.
+- Verification: `python -m unittest discover -s tests` passes (161 tests, 8 new in `tests/test_run_final.py`); the dashboard executes headless on seed 1; `tools/judge_agreement_table.py` on the copied seed-1 files reproduces κ 1.000 (pilot 4) and 0.674 (pilot 5).
+- Licence notice: CharacterBox MIT licence covers the retained simulator code; the additions are original.
+

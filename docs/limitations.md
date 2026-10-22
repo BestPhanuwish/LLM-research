@@ -451,6 +451,12 @@ as a qualitative contrast — a hostile NPC that resists misquotes but will not 
 rather than as a quantitative U/S/P comparison. The rule should be applied to each new pilot before its type 3 results are
 reported.
 
+The figures in this section describe the pilot 1–5 runs before the 20–21 October
+redesign. The redesign changed R3 in pilots 2–5 to ask for one concrete detail the
+scene does not supply (a spell, a dish, ingredients, a headline), with a precision
+request, so pilot 5's C1 no longer overlaps a supplied fact; see
+`trial-design-guide.md`. The exclusion rule still applies to the re-runs.
+
 This is a deliberate design trade-off. R3 lets the NPC answer freely, because the probe
 is meant to test whether the NPC's *own* words hold; supplying the answer instead would
 turn it into a supplied fact and test fact recall, not self-consistency. The cost is
@@ -458,7 +464,46 @@ that the probe depends on the NPC giving a usable answer in each run. In practic
 held in ten of twelve runs (pilots 1–4), so the design is kept, with the exclusion rule
 above.
 
+### Hostile scenes: the supplied mood can override a direct request for a supplied fact
+
+Pilot 5 (Seamus, mid-argument with Harry; supplied state "Angry, confrontational")
+answered `t02` ("Where are you right now?") with "I'm right here!" in all three
+conditions. In the author's live checks in S during the redesign (21 October 2026),
+three further wordings were also dodged: a nearby-object question ("What's right
+behind you…? Tell me exactly." was read as a threat), "Which bed are you closest to
+right now?", and an explicit, de-escalated request ("forget the argument for a
+second… Please tell me exactly, I really need to know." -> "I'm right here, in this
+bloody dormitory"). The same live check answered the `t11` questions that touched his
+grievance (R3, the Prophet's headline; R6, rejecting the Quidditch misquote) and
+dodged the neutral ones (R4, R7, R8, R9). In this scene, then, Context Use failures
+partly measure the NPC's willingness to engage rather than whether it can use the
+context. McGonagall (annoyed) also dodged the position question until a precision
+request was added (pilot 2), so this is a matter of degree.
+
+Handling: pilot 5 is kept in the development set (dropping it after seeing results
+would bias scene selection), its dodges are labelled FAIL like any other dodge, and new
+pilots avoid heated-argument scenes (`trial-design-guide.md`, "Scene selection"). This
+narrows the scenes the conclusions apply to: results from the test pilots say little
+about NPCs whose supplied state is openly hostile to the player.
+
+### The priority policy does not rank conversation facts against each other
+
+`primary_five_level` places all conversation input at P5. When the player establishes a
+fact (F2 at R2) and later misquotes it (R8), both are P5 conversation facts, and the
+policy has no rule preferring the earlier one or the one the NPC acknowledged. In a
+live check of the redesigned pilot 2 (P, 20 October 2026), McGonagall did not reject
+"two silver coins" at R8 and, asked at R9 what Newt had first said, answered "You
+initially stated that your Niffler pilfered two silver coins": the misquote had
+replaced F2. This is one run at temperature 0.5 and needs the re-runs to confirm, but
+it suggests that P's advantage, where it exists, should be expected on supplied facts
+and not necessarily on conversation-established ones (H3). The policy is frozen and
+was not changed in response.
+
 ### Context Use: the rubric wording is narrower than the definition used
+
+**Resolved 21 October 2026** (judge change 11): the rubric now states the adopted
+definition. The paragraph below describes the earlier wording, which applies to all
+H1 results produced before that date.
 
 The H1 rubric defines Context Use in terms of "a fact in the supplied scene, character,
 or action information". The definition adopted for this study (30 September) also

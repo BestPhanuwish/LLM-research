@@ -12,7 +12,7 @@ The principal comparison is **P versus S**, because it isolates the additional e
 
 ## Project status
 
-**Steps 1–3 are complete; Step 4 has one validated simulator-compatible CharacterBox pilot manifest and one validated four-level priority policy; Step 5 U/S/P prompt branches pass deterministic tests; and Step 6 can run the same scripted pilot turn through fresh U, S, and P Simulator instances. Ordinary YAML-controlled play and fixed pilot execution are separate commands. An Apple Silicon OpenMP guard prevents the observed PyTorch/FAISS retrieval crash. Fifty-six tests pass.**
+**As of 22 Oct 2026:** generation (U/S/P), the H1 consistency judge (final rubric, validated against the researcher's labels on five pilots), and the H2 realism judge are complete. The final study runs pilots 1–10 over several generation seeds; seed 1 of pilots 1–5 is in place (H1 only), and pilots 6–10 are being designed. 161 tests pass. See [Reproducing the final study](#reproducing-the-final-study).
 
 The project currently copies CharacterBox's original character/scene records and single-scene loader with targeted documented adaptations. A schema-v4 pilot manifest selects one scene, player, target, and source Action Reference shared by an ordered list of independent trials, each with its own scripted dialogue-only turns, without modifying CharacterBox runtime records. Conditions and priority-policy ID live separately in the reusable `config/pilot_run_config.json`, auto-loaded whenever `--pilot` selects a manifest. The manifest is used only when explicitly selected with `--pilot`; ordinary `simulator.py -c config/play.yaml` execution reads editable play selectors from YAML, runs once, and requests terminal dialogue. Explicit pilot execution retains model/provider/output settings from YAML, applies the fixed experiment selectors, creates a fresh Character and memory for every (trial, condition) pair, skips Narrator/autonomous generation, and saves condition-labelled CharacterBox records. The machine-readable field-equivalence trace, consolidated paired-result format, original-story dataset, and evaluation pipeline remain unimplemented.
 
@@ -41,6 +41,100 @@ python -m pip install -r requirements.txt
 ```
 
 To leave the environment later, run `deactivate`.
+
+## Reproducing the final study
+
+Everything the thesis reports is produced by the commands in this section, from files in this repository.
+
+### What is fixed
+
+| Part | Setting | Where |
+|---|---|---|
+| Character model | `openai/gpt-4o-mini` via OpenRouter, temperature 0.5, max 300 tokens | `config/play.yaml` |
+| Generation seed | 1, 2, 3, … — one per repeat of the whole study | `--seed` (overrides `seed` in `play.yaml`) |
+| Conditions | U, S, P; P uses the `primary_five_level` priority policy | `config/pilot_run_config.json`, `config/context_priorities.json` |
+| Scenes and trials | One manifest per pilot (scene, player, target, 11 trials) | `data/research_annotations/characterbox_pilot*.json` |
+| H1 consistency judge | `google/gemma-4-31b-it` via OpenRouter, temperature 0, seed 1, max 4000 tokens, rubric version 14 | `config/evaluate.yaml`, `evaluate.py` |
+| H2 realism judge | CharacterBox's critique-then-score evaluation, same judge model, with changes 10 and 12 | `evaluate_characterbox.py`, `docs/judge-change-log.md` |
+
+| Pilot | Manifest | `pilot_id` | Scene |
+|---|---|---|---|
+| 1 | `characterbox_pilot.json` | `cb_hp_019_luna_neville` | 19 |
+| 2 | `characterbox_pilot2.json` | `cb_hp_012_newt_mcgonagall` | 12 |
+| 3 | `characterbox_pilot3.json` | `cb_hp_031_dumbledore_harry` | 31 |
+| 4 | `characterbox_pilot4.json` | `cb_hp_044_harry_hagrid` | 44 |
+| 5 | `characterbox_pilot5.json` | `cb_hp_032_harry_seamus` | 32 |
+| 6–10 | `characterbox_pilot6.json` … `characterbox_pilot10.json` | to be added | |
+
+Pilots 1–5 were also used to develop the trials and the H1 rubric; the rubric's agreement with the researcher's labels is measured on them (below).
+
+### Layout
+
+One folder per generation seed and pilot:
+
+```text
+output/final/
+  seed1/
+    p01/
+      trajectory.jsonl        33 rows: 11 trials x 3 conditions (simulator.py)
+      h1_consistency.jsonl    60 rows: one per target-character turn (evaluate.py --h1-only)
+      h2_realism.jsonl        33 rows: one per trial and condition (evaluate.py --h2-only)
+      failed_judgements.jsonl only if a judge call failed after every retry
+    p02/ ...
+  seed2/ ...
+```
+
+Every trajectory row records its seed (`generation.seed`), and every H1 row its rubric version (`h1_rubric_version`). Seed 1 of pilots 1–5 is the development run judged with the final rubric, copied from `output/record/Harry_Potter/trajectory/…-p{1..5}.jsonl` and `output/evaluation/prompt_versions/v3/h1_consistency.jsonl`; those runs predate both fields, so `generation.seed = 1` (from `play.yaml` at the time) and `h1_rubric_version = 14` (checked against the stored prompts) were added to the copies.
+
+### Run
+
+Set the OpenRouter key in the terminal session only (both the character model and the judges read `OPENAI_API_KEY`):
+
+```bash
+export OPENAI_API_KEY="your-openrouter-key"
+```
+
+Generate and judge one seed for any pilots:
+
+```bash
+python tools/run_final.py --seed 2 --pilot 1 2 3 4 5 6 7 8 9 10
+```
+
+For each pilot this runs, in order: `simulator.py --pilot <manifest> --seed N --trajectory-output output/final/seedN/pNN/trajectory.jsonl`, then `evaluate.py --h1-only`, then `evaluate.py --h2-only` into the same folder. Rerunning the same command after an interruption skips completed steps: generation is skipped when the trajectory is complete, and the judges skip every turn and trial already scored. A partial trajectory stops the run; delete that `trajectory.jsonl` and rerun. Other options:
+
+```bash
+python tools/run_final.py --seed 1 --pilot 1 2 3 4 5 --h2-only   # judge an existing trajectory with H2 only
+python tools/run_final.py --seed 3 --pilot 6 --dry-run             # print the commands without running them
+```
+
+On macOS, prefix long runs with `caffeinate -i` so the machine does not sleep.
+
+### Analyse
+
+Open `notebooks/results_dashboard.ipynb` and run all cells. It reads every `output/final/seed*/p*/` folder, shows which runs are complete (`runs_df`), and reports H1, H2, and H3 by condition, pooled and broken down by trial type, pilot, and seed. Set `SEEDS` or `PILOTS` in its first code cell to restrict the analysis, for example `PILOTS = [6, 7, 8, 9, 10]` to exclude the scenes used for development.
+
+Two more notebooks read the same layout:
+
+- `notebooks/trial_inspector.ipynb`: everything about one trial (set `SEED`, `PILOT`, `TRIAL`): the scene, the U/S/P generation prompts and replies, the H1 judge prompts and decisions, and the H2 critique and scores.
+- `notebooks/judge_agreement.ipynb`: the final H1 judge against the researcher's blind labels (seed 1, pilots 1–5), with kappa by metric, trial type, condition, and pilot, and every disagreement exported to `output/comparison/final_judge_disagreements.csv`.
+
+### Judge reliability
+
+The researcher's blind labels for pilots 1–5 (seed 1) are in `data/research_annotations/judge_validation/manual_label/`: `human_labels_<pilot>.numbers` (the labelling sheet), `human_labels_<pilot>.csv` (an export of it), `blind_key_<pilot>.csv` (which of A/B/C is U/S/P), and `labelling_context_<pilot>.md` (what the researcher saw). To reproduce the agreement of the H1 judge for one pilot (Table "Agreement of the consistency judge" in the thesis):
+
+```bash
+L=data/research_annotations/judge_validation/manual_label
+python tools/judge_agreement_table.py \
+  --human $L/human_labels_harry_hagrid.csv --key $L/blind_key_harry_hagrid.csv \
+  --results output/final/seed1/p04/h1_consistency.jsonl \
+  --out output/comparison/agreement_harry_hagrid
+```
+
+The judge selection and rubric development runs behind Appendices C and D of the thesis are kept in `output/evaluation/judge_selection/` and `output/evaluation/prompt_versions/v1|v2|v3/`; `docs/judge-change-log.md` records every rubric change and the reason for it.
+
+### Limits of reproducibility
+
+The seeds make generation and judging repeatable only on a best-effort basis: OpenAI and OpenRouter do not guarantee identical output for the same seed, and OpenRouter may route a request to a different provider. Rerunning a seed will therefore give very similar but not always identical replies and decisions; the saved files under `output/final/` are the record the thesis reports. Hosted models are also retired over time, after which a run can only be reproduced with a substitute model.
 
 ## Run the project
 
@@ -97,7 +191,7 @@ Then run the primary evaluator:
 
 ```bash
 python evaluate.py \
-  output/record/Harry_Potter/trajectory/gpt-4o-mini_gpt-4o-mini_trajectory.jsonl
+  output/record/Harry_Potter/trajectory/openai-gpt-4o-mini_openai-gpt-4o-mini_trajectory.jsonl
 ```
 
 Like `evaluate_characterbox.py` below, it defaults to the latest complete run in the file (add `--generation-run-id <printed-id>` to select an older one explicitly). It evaluates every trial in that run, both hypotheses, in one pass:
@@ -112,7 +206,7 @@ output/evaluation/h1_consistency.jsonl
 output/evaluation/h2_realism.jsonl
 ```
 
-Pass `--h1-output`/`--h2-output` to change either path, and `-c`/`--config` to use a config other than the default `config/evaluate.yaml`.
+Pass `--h1-output`/`--h2-output` to change either path, and `-c`/`--config` to use a config other than the default `config/evaluate.yaml`. Use `--h1-rubric-version 11|13|14` to judge with an earlier version of the H1 rubric (default: `h1_rubric_version` in the config, currently 14; see `docs/judge-change-log.md`). Add `--h1-only` or `--h2-only` to run one hypothesis alone; the other lane's output file is then not created or appended to. A turn or record the judge cannot score after every retry is logged to `failed_judgements.jsonl` next to the output and skipped, so one bad answer does not stop the run; re-running the same command skips everything already scored by that judge and retries only what is missing.
 
 ### CharacterBox-compatible supervisor demo
 
@@ -120,7 +214,7 @@ This is a preliminary, CharacterBox-only demo mode kept separate from the primar
 
 ```bash
 python evaluate_characterbox.py \
-  output/record/Harry_Potter/trajectory/gpt-4o-mini_gpt-4o-mini_trajectory.jsonl
+  output/record/Harry_Potter/trajectory/openai-gpt-4o-mini_openai-gpt-4o-mini_trajectory.jsonl
 ```
 
 By default, it reads the final non-empty JSONL row, takes that row's `generation_run_id`, collects only rows with the same ID, and then requires that selected run to contain exactly its declared U/S/P conditions. It does not evaluate every row in the file. If the last run is incomplete, it stops instead of silently selecting an older run. To select a known run explicitly, add `--generation-run-id <printed-id>`. The evaluator omits condition names and priority labels from judge prompts and makes two judge calls per condition: one critique and one seven-metric scoring call. Results are appended to:

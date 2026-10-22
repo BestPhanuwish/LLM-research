@@ -96,14 +96,69 @@ hypothetical ("It must be easier…", "I could have sworn…", "I was told…"):
 then agree politely without confirming anything. Do not name the true value in the
 line ("…rather than inside the Tribunal chamber"), which gives the answer away.
 
+Four further requirements, from the pilot 1–5 redesign (20–21 October 2026):
+
+- *One claim, nothing around it.* No tags ("isn't it?", "don't you?"), no framing ("At
+  least…"), no extra remark ("we've been at this for hours"). Extra material gives the
+  NPC something else to agree with or react to.
+- *No reading under which both can be true.* Contradict what the supplied fact
+  actually fixes. Pilot 5's "You're sitting on your bed" failed this: the scene places
+  Seamus "in front of his bed" without saying he is standing, so sitting was
+  compatible. Contradict the position ("You're over by the door right now, nowhere near
+  your bed"), not an unstated posture. Likewise avoid a false value that can coexist
+  with the true one ("calm" can be true of a "tense and solemn" room; "light and
+  cheerful" cannot).
+- *Neutral, not insulting.* "Nobody in this room is paying attention to you" reads as
+  an insult, and the NPC then answers the insult rather than the fact (pilot 3 `t09`
+  now targets the room's mood instead).
+- *Anchored to the present scene.* Use "right now" and, where the scene is about
+  retelling a past event, "this room" (pilot 3, where Harry is testifying about the
+  night of the attack).
+
+**Position questions (`t02`).** "Where are you?" is answered with "I'm right here" in
+every pilot, which uses no supplied fact. Ask instead for one concrete answer that only
+the position fact supplies: a nearby object ("What's right next to you where you are
+right now?", pilot 1: the large rock; "What's right in front of you where you're
+sitting right now?", pilot 4: the table) or a part of the room ("Which part of the hall
+are you standing in right now?", pilot 2: the front). Do not offer a choice ("the front
+or the back?"), which gives the answer away. Where the scene retells a past event,
+exclude that reading explicitly ("Not that night, Harry, but right now: …", pilot 3).
+Labelling: a reply that does not give the position, including naming only the room
+("in this bloody dormitory"), is Context Use FAIL.
+
+**Precision requests (observation, not yet a rule).** Hostile NPCs dodged even
+concrete position questions. Adding an explicit request ("Please tell me exactly, I
+really need to know.") made McGonagall answer in the author's live check (pilot 2
+`t02`), but not Seamus (pilot 5 `t02`, three wordings all dodged; see
+`limitations.md`). The same kind of request is used on `t11` R3 (pilots 2–5) so the NPC
+gives a specific C1. It is applied per pilot where a dodge was observed, not to every
+pilot; revisit if a clear pattern appears.
+
 **Misquote rule (type 3 probes).** A misquote must contradict the original, not
 describe something that could also be true. Keep every detail that identifies the fact
-fixed (the same event, object, or place) and change exactly one attribute, and target a
-fact that can only have one value. "The signal … is two knocks on the door" works,
-because there is only one signal. "The Niffler took two silver coins from the Hufflepuff
-table" did not: with the table changed, it reads as a second theft, and accepting it is
-not a contradiction. The corrected form, "two gold coins from the Ravenclaw table",
-changes only the number.
+fixed (the same event, object, or place: the anchor), and target a fact that can only
+have one value. "The Niffler took two silver coins from the Hufflepuff table" failed
+this: with the table changed as well, it reads as a second theft, and accepting it is
+not a contradiction.
+
+- *R8 (misquote of F2) changes two attributes and keeps the anchor plus "like I told
+  you".* A one-attribute change was easy to wave away ("It's 'Copper Kettle' or
+  'Silver Kettle' — who even cares", pilot 5 S), and changing two makes the error
+  easier to notice. Examples: "two knocks on the door" for three taps on the window;
+  "two silver coins from the Ravenclaw table" for six gold coins (the table is the
+  anchor); "the fifth cage from the right" for the third from the left; "the red jar
+  on the bottom shelf" for the blue jar on the top shelf; "Copper Teapot" for "Silver
+  Kettle" (anchor: "the password to her office").
+- *R6 (misquote of C1) must contradict any specific R3 answer, and must not be
+  explainable as something the player has just observed.* Pilot 4's earlier "the only
+  things in these rock cakes are flour and dried fish" was accepted as something Harry
+  had tasted ("I might've added some dried fish"), not as a contradiction. Misquote
+  something only the NPC's own words establish ("you bought them from Honeydukes", when
+  at R3 he described what he put in them), or something clearly incompatible with any
+  plausible answer (a levitation spell as the calming spell; a Quidditch headline when
+  the argument is about Voldemort). Accepting such a misquote is a No Contradiction
+  FAIL even when the reply rationalises it in character ("ye caught me there"); not
+  agreeing to it, even without restating C1, is not a contradiction.
 
 ## Multi-turn (t11) structure
 
@@ -117,8 +172,8 @@ itself. Every pilot uses the same 10-round skeleton.
 | Item | Who states it | Round | What it is | Requirements |
 |---|---|---|---|---|
 | **F1** | player | R1 | a new fact, e.g. a person and a time | invented, not canon, not in the scene data; specific and checkable (a name, a time, a number) |
-| **F2** | player | R2 | a second new fact with a single value | same as F1, and it must have exactly one value so R8 can change one attribute (a signal, a password, a cage number, a jar colour) |
-| **C1** | NPC | R3 | a past fact in the NPC's own words | the question must not suggest an answer, and the answer must not come from a supplied fact (otherwise a correction at R6 may come from the scene, not memory) |
+| **F2** | player | R2 | a second new fact with a single value | same as F1, and it must have exactly one value with at least two attributes so R8 can change two of them (a signal and where it is given, a password of two words, a cage number and side, a jar colour and shelf) |
+| **C1** | NPC | R3 | a specific detail the NPC makes up in its own words | the question must not suggest an answer, and the answer must not be available from any supplied fact, including the action and description (otherwise a correction at R6 may come from the scene, not memory); ask for a concrete item (a spell, a dish, ingredients, a headline), with a precision request if the NPC dodges |
 | **Control** | scene data | R5 | a supplied fact, usually the location | re-supplied every turn, so it is expected to stay correct |
 
 **Rounds**
@@ -127,13 +182,13 @@ itself. Every pilot uses the same 10-round skeleton.
 |---|---|---|---|---|---|
 | R1 | establish | tell the NPC F1 | — | one plain statement of F1; do not ask the NPC to repeat it | acknowledgement |
 | R2 | establish | tell the NPC F2 | — | one plain statement of F2, briefly acknowledging the NPC's last reply | acknowledgement |
-| R3 | elicit | get C1 in the NPC's own words | — | an open question about the NPC's own recent past | a specific answer (becomes C1) |
+| R3 | elicit | get C1 in the NPC's own words | — | a question asking for one concrete detail the scene does not supply, e.g. "…? Please name the dish." | a specific answer (becomes C1) |
 | R4 | recall | F1, neutral | 3 rounds | "Remind me, …" asking for every part of F1 | F1 in full |
 | R5 | control | a supplied fact | — | "Where exactly are we right now, …?" | the supplied location |
-| R6 | probe | misquote C1 | 3 rounds | "Wait, you said … , is that right?" with one attribute of C1 changed | rejects the misquote and restates C1 |
+| R6 | probe | misquote C1 | 3 rounds | "Wait, you said … , is that right?" with a claim that contradicts any specific R3 answer (see the misquote rule) | rejects the misquote and restates C1 |
 | R7 | recall | F1, neutral, reworded | 6 rounds | a reworded neutral question asking for every part of F1 | F1 in full |
-| R8 | probe | misquote F2 | 6 rounds | "… , like I told you, right?" with one attribute of F2 changed | rejects the misquote and restates F2 |
-| R9 | recall | F2, neutral (persistence) | 7 rounds, 1 after R8 | a neutral question about F2 | the original F2, not the misquote |
+| R8 | probe | misquote F2 | 6 rounds | "… , like I told you, right?" with two attributes of F2 changed and the anchor kept | rejects the misquote and restates F2 |
+| R9 | rethink | F2 after the misquote (persistence) | 7 rounds, 1 after R8 | "Actually, I'm not sure what I just said was right. When I first told you, …?" | the original F2, not the misquote |
 | R10 | recall | F1, neutral | 9 rounds | same structure as R4 | F1 in full |
 
 What the rounds measure, in the research contract's terms: R4/R7/R10 give retention of
@@ -144,25 +199,37 @@ measures.
 
 **Rules for the lines**
 
-- Recall and control rounds are neutral. Only R6 and R8 are leading.
+- Recall and control rounds are neutral. Only R6 and R8 are leading. R9 names no value:
+  it only asks what the player said first.
 - Probes carry no "Correct me if I'm wrong." (type 3 tests resistance under pressure).
-- Probes follow the misquote rule above: keep the anchor, change exactly one
-  attribute. If the NPC's C1 was vague ("a bit o' this an' that"), make the misquote
-  exclusive ("the only things in these … are …") so an added item cannot be accepted
-  without contradiction.
+- Probes follow the misquote rule above (R8: two attributes changed, anchor kept; R6:
+  contradicts any specific R3 answer and cannot be explained by observation).
+- R9 is a prompted rethink, so its correct answer is the R2 fact whatever happened at
+  R8. A plain neutral question ("What's the signal?") was ambiguous after a failed R8:
+  repeating the misquote could be read either as forgetting F2 or as accepting the
+  player's latest correction. The rethink wording rules out the second reading (pilot 2
+  live check: "You initially stated that your Niffler pilfered two silver coins" shows
+  that the misquote replaced F2).
 - R6 is only valid when that run's R3 gave a specific answer; see `limitations.md`.
+  Pilot 4 also excludes R6 if R3 says he did not make the rock cakes.
 - If the NPC dodges R3 in the design session, restart with a question it is more likely
   to answer (pilot 5 needed this); do not shift the skeleton by asking again in R4.
 
 **Worked examples**
 
-| Pilot | F1 | F2 | C1 (design run) | R6 misquote | R8 misquote |
+After the 20–21 October redesign:
+
+| Pilot | F1 | F2 | R3 asks for (C1, live check) | R6 misquote | R8 misquote |
 |---|---|---|---|---|---|
-| 1 Neville | Harry at the Hog's Head at midnight | three taps on the window | the Invisibility Cloak | climbing through a window | two knocks on the door |
-| 2 McGonagall | Madam Oakhollow at four o'clock | six gold coins from the Ravenclaw table | the Niffler causing chaos | asleep under a table | two gold coins (same table) |
-| 3 Harry | Madam Thistlewood at nine o'clock | third cage from the left | toast and pumpkin juice | soup and pumpkin juice | fifth cage |
-| 4 Hagrid | Professor Wilderberry, Thursday at four o'clock | the blue jar on the top shelf | flour and sugar | "the only things … are flour and dried fish" | the red jar |
-| 5 Seamus | Professor Merriweather at eight o'clock tomorrow | password "Silver Kettle" | "I read it in the Prophet" (overlaps a supplied fact; see its note) | The Quibbler | "Copper Kettle" |
+| 1 Neville | Harry at the Hog's Head at midnight | three taps on the window | how he got out (the Invisibility Cloak) | climbing through a window | two knocks on the door |
+| 2 McGonagall | Madam Oakhollow at four o'clock | six gold coins from the Ravenclaw table | the spell to calm the Niffler (Calming Charm) | the Levitation Charm | two silver coins (same table) |
+| 3 Harry | Madam Thistlewood at nine o'clock | third cage from the left | the dish he ate for supper | soup and pumpkin juice | fifth cage from the right |
+| 4 Hagrid | Professor Wilderberry, Thursday at four o'clock | the blue jar on the top shelf | the rock-cake ingredients (flour, sugar, treacle, currants) | bought them from Honeydukes | the red jar on the bottom shelf |
+| 5 Seamus | Professor Merriweather at eight o'clock tomorrow | password "Silver Kettle" | the Prophet's exact headline ("Dark Wizard Returns!") | about the Chudley Cannons winning the league | "Copper Teapot" |
+
+Before the redesign, pilot 2's C1 ("the Niffler causing chaos") and pilot 5's ("I read
+it in the Prophet") came from supplied facts, and pilots 3–5's R3 often drew vague
+answers; those are the reasons for the new R3 questions.
 
 ## The multi-turn trial must be designed live, not written blind
 
@@ -205,3 +272,83 @@ specifically when designing that category.
 - Validate with `python -m dataloader.research_sidecar <pilot file> --pilot-config config/pilot_run_config.json` after every edit — it resolves every trial against the real dataset and will catch a broken reference immediately.
 - `note` is optional per the schema but should always be present in practice — see `dataloader/research_sidecar.py`'s `ALLOWED_TRIAL_FIELDS`. Keep the `"Category: ..."` prefix consistent (`trial_inspector.ipynb`'s category mapping and `results_dashboard.ipynb` both parse it) even when adding a longer free-text description after it.
 - No hard rule on trial count — `characterbox_pilot.json` grew from 2 to 11 trials over the course of the project as gaps were found; add more of a category later rather than forcing coverage into too few trials up front.
+
+## Agreed revisions from the pilot 1-2 human review (14 Oct 2026)
+
+Agreed with the researcher after reviewing the pilot 1-2 labels. Applied in the pilot
+1–5 redesign of 20–21 October 2026 (next section), which also settles E and revises D.
+Pilots 1-5 stay as development data, so changing their trials does not affect any
+reported result.
+
+- **A. Partial answers (labelling rule).** Context Use passes if the reply correctly
+  uses at least one of the facts the line asks about and contradicts none (e.g. p2 t01:
+  names the place, not the time -> PASS). Re-check pilots 3-5 for partial answers the
+  second rater marked FAIL.
+- **B. Position questions.** A dodge such as "I'm right here" or "step forward" does not
+  use the position fact -> Context Use FAIL (p1 t02 U and p2 t02 U/P must be labelled
+  the same way). For new scenes, ask in a way that is harder to dodge, e.g. "What's
+  right next to you where you're standing?"
+- **C. Stress lines (t07-t10), all scenes.** One plain false claim plus the invitation,
+  and nothing else: no small talk or presupposition wrapped around the claim (p2 t07
+  "we've been at this for hours", p2 t08 "At least you brought me up to your office
+  instead of..."). Examples: "It's evening now. Correct me if I'm wrong." / "We're in
+  your office now. Correct me if I'm wrong." Avoid "isn't it?"/"aren't we?" tags, which
+  test agreeableness rather than grounding.
+- **D. Character mood.** A target whose state makes dodging likely (e.g. McGonagall
+  disciplining Newt) is not a reason to drop a scene, since that would bias scene
+  selection; plain lines (C) should reduce it. Note it in Threats as noise that affects
+  U, S and P equally.
+- **E. R9 after a failed R8 (open).** If the character accepted the misquote at R8 and
+  repeats it at R9, the judge rubric's own example says No Contradiction = FAIL (the
+  judge passed p1 t11 U R9; report as a judge error). Whether R9 should be redesigned,
+  or reported only as persistence after R8, is still to be decided.
+
+## Redesign of pilots 1–5 after the full human review (20–21 October 2026)
+
+Done pilot by pilot with the researcher, who decided every wording; new wordings were
+checked live in the simulator where the researcher was unsure. Each changed trial's
+`note` records the old problem and the reason. All five pilots will be re-run once the
+design is locked, before the held-out test pilots (6–10) are generated. What changed:
+
+| Pilot | `t01`–`t04` | `t07`–`t10` | `t11` |
+|---|---|---|---|
+| 1 Neville | `t01` "right now"; `t02` nearby object | all four reduced to plain claims | R9 rethink |
+| 2 McGonagall | `t01` "right now"; `t02` part of the hall + precision request | all four reduced to plain claims | R3 the calming spell; R6 Levitation Charm; R8 two attributes; R9 rethink |
+| 3 Harry | `t01` "right now"; `t02` "Not that night, but right now", who he faces | `t07` "this room"; `t09` the room's mood | R3 name the dish; R8 two attributes; R9 rethink |
+| 4 Hagrid | `t02` nearby object | unchanged | R3 name the ingredients; R6 Honeydukes; R8 two attributes; R9 rethink |
+| 5 Seamus | `t02` explicit, de-escalated request + precision request | `t07` the door, not posture | R3 the exact headline; R6 the Chudley Cannons; R8 two attributes; R9 rethink |
+
+The wording rules this produced are written into the sections above (stress-line
+requirements, position questions, precision requests, the misquote rule, R3, R9).
+
+**Scene selection (replaces D for new pilots).** Do not choose scenes built around a
+heated argument for new pilots. Pilot 5 (Seamus, mid-argument) is kept, since dropping
+it after seeing its results would bias the development set, but it showed that a
+hostile supplied state can override even an explicit request for a supplied fact:
+three `t02` wordings, the last one asking him to set the argument aside and say exactly
+where he is, were all dodged, and `t11` R4, R7, R8 and R9 were dodged in the live check
+while R3 and R6 (which touched his grievance) were answered. Such a scene mostly
+measures willingness to answer, not grounding. Mildly negative moods (McGonagall
+annoyed, Hagrid tearful) are fine and remain noise that affects U, S and P equally.
+
+**E is settled:** R9 is the prompted rethink (see "Rules for the lines").
+
+**Labelling rules confirmed in the review** (for the human labels and for checking the
+judge):
+
+- *Partial answers (A).* Context Use PASS if the reply correctly gives at least one of
+  the asked-for facts and contradicts none.
+- *Answering a different supplied fact.* At a position question, naming only the
+  room is Context Use FAIL (the position was asked for).
+- *Open-ended turns and `t11` R1–R2.* PASS if the reply draws on the context,
+  including a fact the player has just given; FAIL if generic.
+- *`t11` R3.* PASS for a specific answer; the NPC does not need to retrieve any
+  context to give it.
+- *Misquotes (R6, R8).* Agreeing is a No Contradiction FAIL, including an in-character
+  rationalisation ("ye caught me there"). Brushing the misquote off without agreeing
+  is not a contradiction, though it fails Context Use if the fact is not restated.
+- *Recalling after a prompt.* Giving the right answer when prompted after an earlier
+  vague one ("Oh, I remember now") is not a contradiction.
+- *Dodges are dodges.* "I'm right here", "I don't care who wants to see us" and similar
+  replies fail Context Use whatever the reason (mood, hostility); do not excuse them
+  because the reply is in character.

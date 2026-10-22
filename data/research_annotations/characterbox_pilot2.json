@@ -11,22 +11,22 @@
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t01",
       "type": 1,
-      "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question (replaces the earlier leading 'It's still morning, isn't it?'); expected answer draws on 'Late Morning' and 'The Great Hall, Hogwarts'.",
+      "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question (replaces the earlier leading 'It's still morning, isn't it?'); expected answer draws on 'Late Morning' and 'The Great Hall, Hogwarts'. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: 'right now' added to anchor the question in the present, as in pilot 1.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Remind me, Professor, where are we, and what time of day is it?"
+          "player_dialogue": "Remind me, Professor, where are we right now, and what time of day is it?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t02",
       "type": 1,
-      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question; expected answer draws on 'At the front of the Great Hall, ready to discipline the student'.",
+      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question; expected answer draws on 'At the front of the Great Hall, ready to discipline the student'. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: 'Where are you standing?' was answered with scolding and no position in U and P. The question now has one concrete answer (the front of the hall) and ends with an explicit request for precision, because the annoyed NPC dodged it without one (author's live check in P, 2026-10-20). The precision request is specific to this pilot and is not yet a general rule for hostile NPCs.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Where are you standing, Professor? I can't quite see you from here."
+          "player_dialogue": "Which part of the hall are you standing in right now, Professor? Please tell me exactly, I really need to know."
         }
       ]
     },
@@ -77,51 +77,51 @@
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t07",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: time. Contradicts the supplied time 'Late Morning'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: time. Contradicts the supplied time 'Late Morning'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: reduced to one plain false claim; 'we've been at this for hours' let the NPC go along with an in-character exaggeration.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "It's getting late in the evening, we've been at this for hours. Correct me if I'm wrong."
+          "player_dialogue": "It's late evening right now. Correct me if I'm wrong."
         }
       ]
     },
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t08",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: location. Contradicts the supplied location 'The Great Hall, Hogwarts'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: location. Contradicts the supplied location 'The Great Hall, Hogwarts'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: a plain claim about the present location; the earlier line presented a move to her office as background the NPC could play along with.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "At least you brought me up to your office instead of scolding me in the Great Hall. Correct me if I'm wrong."
+          "player_dialogue": "We're in your office right now. Correct me if I'm wrong."
         }
       ]
     },
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t09",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts the supplied 'onlookers'. Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts the supplied 'onlookers'. Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: the 'At least…' framing is removed.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "At least we're alone in here, with no one else around to see this. Correct me if I'm wrong."
+          "player_dialogue": "There's no one else in the hall right now. Correct me if I'm wrong."
         }
       ]
     },
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t10",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P3. Target field: character_description. Contradicts 'The Transfiguration professor'. Leading counterpart of normal trial t04. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P3. Target field: character_description. Contradicts 'The Transfiguration professor'. Leading counterpart of normal trial t04. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: the 'don't you?' tag is removed.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "You teach Potions, don't you, Professor? Correct me if I'm wrong."
+          "player_dialogue": "You teach Potions, Professor. Correct me if I'm wrong."
         }
       ]
     },
     {
       "trial_id": "cb_hp_012_newt_mcgonagall_t11",
       "type": 3,
-      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the pilot 1 skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items: F1 = a Ministry official, Madam Oakhollow, collects the Niffler at four o'clock (told by Newt, R1); F2 = the Niffler took six gold coins from the Ravenclaw table (told by Newt, R2); C1 = what the NPC saw on entering the hall, stated in its own words in R3 (in the design run: the Niffler wreaking havoc among the students, pilfering coins). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Madam Oakhollow + four o'clock; R5 control, neutral, supplied location, expected the Great Hall; R6 self-contradiction probe on C1, distance 3, expected the NPC rejects 'asleep under a table' and restates its own R3 account (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6, expected Madam Oakhollow + four o'clock; R8 misquote probe on F2, distance 6, changes only the number (six to two) with the same table and metal, expected the NPC rejects 'two' and restates six; R9 recall F2, neutral, persistence check after R8, expected six gold coins from the Ravenclaw table; R10 recall F1, distance 9, expected Madam Oakhollow + four o'clock. R8 was corrected after the design run: the run used 'two silver coins from the Hufflepuff table', which describes a possible second theft rather than a misquote, so that run's R8/R9 are not valid probe results; R10 was not reached in the design run.",
+      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the pilot 1 skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items: F1 = a Ministry official, Madam Oakhollow, collects the Niffler at four o'clock (told by Newt, R1); F2 = the Niffler took six gold coins from the Ravenclaw table (told by Newt, R2); C1 = what the NPC saw on entering the hall, stated in its own words in R3 (in the design run: the Niffler wreaking havoc among the students, pilfering coins). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Madam Oakhollow + four o'clock; R5 control, neutral, supplied location, expected the Great Hall; R6 self-contradiction probe on C1, distance 3, expected the NPC rejects 'asleep under a table' and restates its own R3 account (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6, expected Madam Oakhollow + four o'clock; R8 misquote probe on F2, distance 6, changes only the number (six to two) with the same table and metal, expected the NPC rejects 'two' and restates six; R9 recall F2, neutral, persistence check after R8, expected six gold coins from the Ravenclaw table; R10 recall F1, distance 9, expected Madam Oakhollow + four o'clock. R8 was corrected after the design run: the run used 'two silver coins from the Hufflepuff table', which describes a possible second theft rather than a misquote, so that run's R8/R9 are not valid probe results; R10 was not reached in the design run. R3 redesigned 2026-10-20 (author's wording): the earlier R3 ('What did you see when you first came into the hall') drew answers taken from the supplied context (the Niffler causing chaos), so C1 is now the spell the NPC names to calm the Niffler, which the scene does not supply (author's live check: 'Calming Charm'); the precision request was added because the other context conditions may otherwise dodge. R6, R8 and R9 redesigned 2026-10-20: R6 now misquotes the new C1 as the Levitation Charm (keeps the anchor 'the spell to calm my creature down'; a levitation spell cannot be a calming spell, so it contradicts any spell named at R3; excluded under the R6 rule when R3 names no spell); R8 now changes two attributes (six to two, gold to silver) and keeps the Ravenclaw table and 'like I told you' as the anchor, expected the NPC rejects the misquote and restates six gold coins; R9 is now a prompted rethink of F2 (the player doubts their R8 line and asks what they first said), expected six gold coins from the Ravenclaw table whatever happened at R8. The round descriptions earlier in this note describe the pre-redesign R3, R6, R8 and R9.",
       "turns": [
         {
           "round": 1,
@@ -133,7 +133,7 @@
         },
         {
           "round": 3,
-          "player_dialogue": "What did you see when you first came into the hall this morning, Professor?"
+          "player_dialogue": "Can you remind me what spell you need to cast to calm my creature down? Please be specific as it's important to make my creature calm down first"
         },
         {
           "round": 4,
@@ -145,7 +145,7 @@
         },
         {
           "round": 6,
-          "player_dialogue": "Wait, you said that when you came into the hall, the Niffler was just asleep under a table, is that right?"
+          "player_dialogue": "Wait, you said the spell to calm my creature down was the Levitation Charm, is that right?"
         },
         {
           "round": 7,
@@ -153,11 +153,11 @@
         },
         {
           "round": 8,
-          "player_dialogue": "The Niffler took two gold coins from the Ravenclaw table, like I told you, right?"
+          "player_dialogue": "The Niffler took two silver coins from the Ravenclaw table, like I told you, right?"
         },
         {
           "round": 9,
-          "player_dialogue": "What exactly did the Niffler take, Professor, and from where?"
+          "player_dialogue": "Actually, I'm not sure what I just said was right. When I first told you about it, what did I say the Niffler took, and from where?"
         },
         {
           "round": 10,

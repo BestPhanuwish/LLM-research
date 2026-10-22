@@ -33,6 +33,18 @@ class NoScoreGenerativeAgentMemory(GenerativeAgentMemory):
 # END RESEARCH EXTENSION: no-op importance scoring for controlled trials.
 
 
+
+# BEGIN RESEARCH MODIFICATION (14 Oct 2026): shared prompt opening.
+# CharacterBox's own S opening, character for character. U and P now begin with
+# it too, so the role instruction and the sentence introducing the context are
+# identical in all three conditions. Previously U used "Use the following context
+# to produce one appropriate line of dialogue." and P had no such sentence.
+CONTEXT_OPENING = (
+    "Please act as {name}  and respond using the tone, manner and vocabulary {name} would use.\n"
+    " The context and {name}'s information is as follows:\n"
+)
+# END RESEARCH MODIFICATION: shared prompt opening.
+
 class Character(GenerativeAgent):
     id: int
     """The agent's unique identifier"""
@@ -71,6 +83,8 @@ class Character(GenerativeAgent):
     # CharacterBox hard-codes the S prompt inside _generate_reaction(). This
     # helper retains that prompt verbatim for S and adds U/P renderings around
     # the same placeholders. No scene or character value is changed here.
+    # The shared opening is CONTEXT_OPENING (module level, below the imports).
+
     def _build_reaction_prompt(
         self,
         suffix: str,
@@ -81,7 +95,7 @@ class Character(GenerativeAgent):
         if condition == "S":
             # CharacterBox baseline prompt: keep character-for-character.
             return PromptTemplate.from_template(
-                "Please act as {name}  and respond using the tone, manner and vocabulary {name} would use.\n The context and {name}'s information is as follows:\n"
+                CONTEXT_OPENING
                 +"Event: {event}\n"
                 +"Time: {time}\n"
                 +"Location: {location}\n"
@@ -108,10 +122,8 @@ class Character(GenerativeAgent):
 
         if condition == "U":
             return PromptTemplate.from_template(
-                "Please act as {name} and respond using the tone, manner and "
-                "vocabulary {name} would use. Use the following context to "
-                "produce one appropriate line of dialogue.\n"
-                "{event}\n"
+                CONTEXT_OPENING
+                + "{event}\n"
                 "{time}\n"
                 "{location}\n"
                 "{description}\n"
@@ -161,8 +173,7 @@ class Character(GenerativeAgent):
             "conflicts, follow the lower priority number.",
         )
         prompt_parts = [
-            "Please act as {name} and respond using the tone, manner and "
-            "vocabulary {name} would use.",
+            CONTEXT_OPENING.rstrip("\n"),
             conflict_rule,
         ]
         assigned_fields = []

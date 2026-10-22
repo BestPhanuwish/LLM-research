@@ -14,6 +14,8 @@ from evaluate_characterbox import (
     METRICS,
     RATE_LIMIT_MAX_ATTEMPTS,
     SCORING_CRITERIA,
+    TARGET_ONLY_CRITIC_NOTE,
+    TARGET_ONLY_SCORE_NOTE,
     build_critic_prompt,
     build_score_prompt,
     evaluate_trajectory,
@@ -218,6 +220,36 @@ class CharacterBoxEvaluationTests(TestCase):
         self.assertIn(
             "Your resposne must follow the format provided below.", score_prompt
         )
+
+    def test_prompts_name_only_the_target_character(self):
+        record = trajectory("U")
+        critic_prompt = build_critic_prompt(record)
+        score_prompt = build_score_prompt(record, "No serious issue.")
+        name = record["target"]["name"]
+
+        self.assertIn(TARGET_ONLY_CRITIC_NOTE.format(name=name), critic_prompt)
+        self.assertIn(TARGET_ONLY_SCORE_NOTE.format(name=name), score_prompt)
+        # The note follows the retained CharacterBox opening line in each prompt.
+        self.assertLess(
+            critic_prompt.index("strict evaluation criteria:"),
+            critic_prompt.index(f"Evaluate only {name}'s"),
+        )
+        self.assertLess(
+            score_prompt.index("critique and evaluation criteria."),
+            score_prompt.index(f"Score only {name};"),
+        )
+
+    def test_character_block_includes_position_and_state_when_supplied(self):
+        record = trajectory("U")
+        record["target"]["position"] = "Hiding behind a large rock."
+        record["target"]["states"] = "Nervous but determined."
+        for prompt in (build_critic_prompt(record), build_score_prompt(record, "No serious issue.")):
+            self.assertIn("Position: Hiding behind a large rock.", prompt)
+            self.assertIn("State: Nervous but determined.", prompt)
+
+        bare = build_critic_prompt(trajectory("U"))
+        self.assertNotIn("Position:", bare)
+        self.assertNotIn("State:", bare)
 
     def test_evaluation_runs_critique_then_strict_scoring(self):
         judge = FakeJudge(["No serious issue.", "bad format", VALID_RESPONSE])

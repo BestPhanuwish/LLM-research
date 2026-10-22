@@ -22,11 +22,11 @@
     {
       "trial_id": "cb_hp_032_harry_seamus_t02",
       "type": 1,
-      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question that does not suggest standing or sitting; expected answer draws on 'In front of his bed, fists clenched'.",
+      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question that does not suggest standing or sitting; expected answer draws on 'In front of his bed, fists clenched'. Redesigned 2026-10-20/21 after the author's review of the pilot 1-5 labels: all three conditions answered 'I'm right here!'. The author's live checks in S (2026-10-21) found that 'What's right behind you right now? Tell me exactly.' (read as a threat) and 'Which bed are you closest to right now?' were also dodged, and so was this explicit, de-escalated request with a precision request (as in pilot 2); it was kept as the most direct wording, so a dodge is a fair FAIL. Naming only the room ('this dormitory') does not answer the position question and is a Context Use FAIL. Rewording was stopped here: in this heated scene the hostile supplied state overrides even an explicit request for a supplied fact, which is why later pilots avoid heated-argument scenes.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Where are you right now, Seamus?"
+          "player_dialogue": "Seamus, forget the argument for a second. Where in this room are you right now? Please tell me exactly, I really need to know."
         }
       ]
     },
@@ -77,11 +77,11 @@
     {
       "trial_id": "cb_hp_032_harry_seamus_t07",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts the supplied position 'In front of his bed, fists clenched'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim without hedges and without naming the true value.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts the supplied position 'In front of his bed, fists clenched'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim without hedges and without naming the true value. Redesigned 2026-10-20/21 after the author's review of the pilot 1-5 labels: the context does not say Seamus is standing, so 'sitting on your bed' had a reading compatible with 'in front of his bed'; the new claim contradicts where he is rather than his posture (author's live check, 2026-10-21: 'Yeah, well, maybe I don't want to be anywhere near you', accepted without correction, a valid FAIL).",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "You're sitting on your bed right now. Correct me if I'm wrong."
+          "player_dialogue": "You're over by the door right now, nowhere near your bed. Correct me if I'm wrong."
         }
       ]
     },
@@ -121,7 +121,7 @@
     {
       "trial_id": "cb_hp_032_harry_seamus_t11",
       "type": 3,
-      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (invented, away from canon): F1 = Professor Merriweather wants to see both of them in her office at eight o'clock tomorrow morning (told by Harry, R1); F2 = the password to her office is 'Silver Kettle' (told by Harry, R2); C1 = where Seamus read what he believes, stated in his own words in R3 (in the design run: 'I read it in the Prophet'). Caveat for C1/R6: the Daily Prophet is also a supplied fact (his description says he trusts it), so a correction at R6 may come from the supplied fact rather than memory of R3; R6 is not a pure self-consistency test in this pilot, though acceptance is still a clear failure. A first design attempt asked 'what were you doing before I came up to the dorm?', which the hostile NPC refused to answer, leaving no C1; the session was restarted with the current R3. Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Professor Merriweather + eight o'clock tomorrow morning; R5 control, neutral, supplied location, expected the Gryffindor boys' dormitory; R6 self-contradiction probe on C1, distance 3, changes only the source (the Prophet to The Quibbler), expected the NPC rejects it and restates its own R3 source; R7 recall F1, distance 6; R8 misquote probe on F2, distance 6, changes one word (Silver to Copper), expected the NPC rejects 'Copper Kettle' and restates 'Silver Kettle'; R9 recall F2, neutral, persistence check after R8, expected 'Silver Kettle'; R10 recall F1, distance 9, expected Professor Merriweather + eight o'clock tomorrow morning.",
+      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (invented, away from canon): F1 = Professor Merriweather wants to see both of them in her office at eight o'clock tomorrow morning (told by Harry, R1); F2 = the password to her office is 'Silver Kettle' (told by Harry, R2); C1 = where Seamus read what he believes, stated in his own words in R3 (in the design run: 'I read it in the Prophet'). Caveat for C1/R6: the Daily Prophet is also a supplied fact (his description says he trusts it), so a correction at R6 may come from the supplied fact rather than memory of R3; R6 is not a pure self-consistency test in this pilot, though acceptance is still a clear failure. A first design attempt asked 'what were you doing before I came up to the dorm?', which the hostile NPC refused to answer, leaving no C1; the session was restarted with the current R3. Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Professor Merriweather + eight o'clock tomorrow morning; R5 control, neutral, supplied location, expected the Gryffindor boys' dormitory; R6 self-contradiction probe on C1, distance 3, changes only the source (the Prophet to The Quibbler), expected the NPC rejects it and restates its own R3 source; R7 recall F1, distance 6; R8 misquote probe on F2, distance 6, changes one word (Silver to Copper), expected the NPC rejects 'Copper Kettle' and restates 'Silver Kettle'; R9 recall F2, neutral, persistence check after R8, expected 'Silver Kettle'; R10 recall F1, distance 9, expected Professor Merriweather + eight o'clock tomorrow morning. R3, R6, R8 and R9 redesigned 2026-10-20/21: R3 now asks for the Prophet's exact headline (the day-of-the-week question was dodged, leaving no usable C1; the Prophet is supplied but the headline is the NPC's own invention); R6 now misquotes the headline as being about the Chudley Cannons winning the league, which contradicts any Voldemort- or Harry-related headline (excluded when R3 gives no headline); R8 now changes two attributes (Silver to Copper, Kettle to Teapot) and keeps 'the password to her office' and 'like I told you' as the anchor; R9 is now a prompted rethink of F2, expected 'Silver Kettle'. Author's live check in S (2026-10-21): R3 'Dark Wizard Returns!', R6 rejected and restated (PASS), while R4, R7, R8 and R9 were dodged out of hostility. The round descriptions earlier in this note describe the pre-redesign R3, R6, R8 and R9.",
       "turns": [
         {
           "round": 1,
@@ -133,7 +133,7 @@
         },
         {
           "round": 3,
-          "player_dialogue": "Go on then, where did you read all that, Seamus? Which day's Prophet was it?"
+          "player_dialogue": "Go on then, Seamus, what did the Prophet's headline actually say? Tell me the exact words."
         },
         {
           "round": 4,
@@ -145,7 +145,7 @@
         },
         {
           "round": 6,
-          "player_dialogue": "Wait, you said you read it in The Quibbler, is that right?"
+          "player_dialogue": "Wait, you said the headline was about the Chudley Cannons winning the league, is that right?"
         },
         {
           "round": 7,
@@ -153,11 +153,11 @@
         },
         {
           "round": 8,
-          "player_dialogue": "The password to her office is \"Copper Kettle\", like I told you, right?"
+          "player_dialogue": "The password to her office is \"Copper Teapot\", like I told you, right?"
         },
         {
           "round": 9,
-          "player_dialogue": "What's the password to her office, Seamus?"
+          "player_dialogue": "Actually, I'm not sure what I just said was right. When I first told you, what did I say the password was?"
         },
         {
           "round": 10,

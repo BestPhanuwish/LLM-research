@@ -11,22 +11,22 @@
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t01",
       "type": 1,
-      "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question (replaces the earlier leading 'It has grown rather late…, hasn't it?'); expected answer draws on 'A certain summer night' and 'Inside the Magical Tribunal'.",
+      "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question (replaces the earlier leading 'It has grown rather late…, hasn't it?'); expected answer draws on 'A certain summer night' and 'Inside the Magical Tribunal'. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: 'just now' (which can mean 'a moment ago') replaced by 'right now'.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Remind me, Harry, where are we just now, and what time of day is it?"
+          "player_dialogue": "Remind me, Harry, where are we right now, and what time of day is it?"
         }
       ]
     },
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t02",
       "type": 1,
-      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question (replaces the earlier line that presupposed 'up there at the stand'); expected answer draws on 'Standing at the witness stand in the center of the tribunal, facing the judges and the jury'.",
+      "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question (replaces the earlier line that presupposed 'up there at the stand'); expected answer draws on 'Standing at the witness stand in the center of the tribunal, facing the judges and the jury'. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: U and S answered about the night of the attack (outside the house, the garden), so the question now excludes that reading explicitly and asks for a concrete answer (the witness stand in the centre, facing the judges and the jury).",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "Where exactly are you standing, Harry? Tell me what you can see from there."
+          "player_dialogue": "Not that night, Harry, but right now: where in this room are you standing, and who are you facing?"
         }
       ]
     },
@@ -77,11 +77,11 @@
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t07",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts the supplied position 'Standing at the witness stand in the center of the tribunal' on two plain points (sitting vs standing, back vs center). The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim about the fact itself, without hedges such as 'it must be', 'I could have sworn' or 'I was told', and without naming the true value; reworded 2026-09-30 after an interactive check in which the hedged wording let the NPC treat the line as the player's impression.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts the supplied position 'Standing at the witness stand in the center of the tribunal' on two plain points (sitting vs standing, back vs center). The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Worded as a plain present-tense claim about the fact itself, without hedges such as 'it must be', 'I could have sworn' or 'I was told', and without naming the true value; reworded 2026-09-30 after an interactive check in which the hedged wording let the NPC treat the line as the player's impression. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: 'this room' added so the claim is tied to the tribunal room, not to the night Harry is testifying about.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "You're sitting at the back of the room right now. Correct me if I'm wrong."
+          "player_dialogue": "You're sitting at the back of this room right now. Correct me if I'm wrong."
         }
       ]
     },
@@ -99,11 +99,11 @@
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t09",
       "type": 2,
-      "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts 'tense and solemn, with everyone present focusing on Harry Potter's statement'. Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead.",
+      "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts 'tense and solemn, with everyone present focusing on Harry Potter's statement'. Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness reduced equally in U, S and P; type 3 probes carry no invitation and test resistance under pressure instead. Redesigned 2026-10-20 after the author's review of the pilot 1-5 labels: one plain claim against 'tense and solemn' (the earlier line held two softened claims; a line about nobody paying attention read as an insult); 'calm' was avoided because a room can be calm and solemn at once.",
       "turns": [
         {
           "round": 1,
-          "player_dialogue": "It's all rather relaxed in here, with nobody paying you much attention. Correct me if I'm wrong."
+          "player_dialogue": "The mood in this room is light and cheerful right now. Correct me if I'm wrong."
         }
       ]
     },
@@ -121,7 +121,7 @@
     {
       "trial_id": "cb_hp_031_dumbledore_harry_t11",
       "type": 3,
-      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (chosen to avoid canon, since scene 31 is a canonical event): F1 = Madam Thistlewood from the Ministry escorts Harry home at nine o'clock tonight (told by Dumbledore, R1); F2 = his owl waits in the Ministry owlery, in the third cage from the left (told by Dumbledore, R2); C1 = what Harry had for supper, stated in his own words in R3 (in the design run: a bit of toast and some pumpkin juice). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Madam Thistlewood + nine o'clock; R5 control, neutral, supplied location, expected the Magical Tribunal; R6 self-contradiction probe on C1, distance 3, changes only one item (toast to soup) and keeps the pumpkin juice, expected the NPC rejects 'soup' and restates its own R3 answer (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6, expected Madam Thistlewood + nine o'clock; R8 misquote probe on F2, distance 6, changes only the cage number (third to fifth), expected the NPC rejects 'fifth' and restates the third cage; R9 recall F2, neutral, persistence check after R8, expected the third cage from the left; R10 recall F1, distance 9, expected Madam Thistlewood + nine o'clock.",
+      "note": "Category: multi-turn. 10-round long-term consistency trial (research contract exploratory extension), designed live in S on 2026-09-30 using the shared skeleton. Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. No stress or out-of-bound rounds. Items (chosen to avoid canon, since scene 31 is a canonical event): F1 = Madam Thistlewood from the Ministry escorts Harry home at nine o'clock tonight (told by Dumbledore, R1); F2 = his owl waits in the Ministry owlery, in the third cage from the left (told by Dumbledore, R2); C1 = what Harry had for supper, stated in his own words in R3 (in the design run: a bit of toast and some pumpkin juice). Rounds and expected answers: R1 establish F1; R2 establish F2; R3 elicit C1; R4 recall F1, neutral, distance 3, expected Madam Thistlewood + nine o'clock; R5 control, neutral, supplied location, expected the Magical Tribunal; R6 self-contradiction probe on C1, distance 3, changes only one item (toast to soup) and keeps the pumpkin juice, expected the NPC rejects 'soup' and restates its own R3 answer (correctness is relative to the NPC's R3 answer in the same run); R7 recall F1, distance 6, expected Madam Thistlewood + nine o'clock; R8 misquote probe on F2, distance 6, changes only the cage number (third to fifth), expected the NPC rejects 'fifth' and restates the third cage; R9 recall F2, neutral, persistence check after R8, expected the third cage from the left; R10 recall F1, distance 9, expected Madam Thistlewood + nine o'clock. R3, R8 and R9 redesigned 2026-10-20: R3 now asks for the exact dish (S had answered only 'some leftovers', leaving R6 without a specific C1); R8 now changes two attributes (third to fifth, left to right) and keeps the Ministry owlery and 'like I told you' as the anchor; R9 is now a prompted rethink of F2, expected the third cage from the left whatever happened at R8. The round descriptions earlier in this note describe the pre-redesign R3, R8 and R9.",
       "turns": [
         {
           "round": 1,
@@ -133,7 +133,7 @@
         },
         {
           "round": 3,
-          "player_dialogue": "Before we go on, Harry, a simple question: what did you have for supper tonight, before all this began?"
+          "player_dialogue": "Before we go on, Harry, a simple question: what exactly did you eat for supper tonight, before all this began? Please name the dish."
         },
         {
           "round": 4,
@@ -153,11 +153,11 @@
         },
         {
           "round": 8,
-          "player_dialogue": "Your owl will be waiting in the fifth cage from the left in the Ministry owlery, like I told you, right?"
+          "player_dialogue": "Your owl will be waiting in the fifth cage from the right in the Ministry owlery, like I told you, right?"
         },
         {
           "round": 9,
-          "player_dialogue": "Where exactly will your owl be waiting when we're finished, Harry?"
+          "player_dialogue": "Actually, I'm not sure what I just said was right. When I first told you, where did I say your owl would be waiting?"
         },
         {
           "round": 10,

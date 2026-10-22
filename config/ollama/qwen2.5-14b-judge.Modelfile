@@ -1,0 +1,7 @@
+# Local judge for the bake-off (21 Oct 2026): qwen2.5:14b with a 16k context window.
+# Ollama's default context is only a few thousand tokens and silently truncates the
+# start of a longer prompt; the longest H1 judge prompt is ~5.7k tokens (o200k count)
+# plus up to 4,000 output tokens, so 16,384 leaves room.
+# Build once with: ollama create qwen2.5-14b-judge -f config/ollama/qwen2.5-14b-judge.Modelfile
+FROM qwen2.5:14b
+PARAMETER num_ctx 16384

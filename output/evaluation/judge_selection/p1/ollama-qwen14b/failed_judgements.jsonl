@@ -1,0 +1,1 @@
+{"hypothesis": "H1", "judge_model": "qwen2.5-14b-judge", "generation_run_id": "cb_hp_019_luna_neville-1792504500491458000", "key": ["cb_hp_019_luna_neville_t11", "S", 9], "error": "Judge did not return a valid H1 decision: no_contradiction requires evidence when decision is PASS"}

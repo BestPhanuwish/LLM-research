@@ -303,6 +303,26 @@ class CharacterBoxStructuredResponseTests(TestCase):
         self.assertEqual(response, "I have not seen him today.")
         self.assertEqual(memory.saved_contexts[0][1]["add_memory"], "Mira: I have not seen him today.")
 
+    def test_all_conditions_share_the_characterbox_opening(self):
+        # Added 14 Oct 2026: U, S and P must begin with the same role instruction
+        # and context-introducing sentence, so that only the presentation of the
+        # 13 fields differs between conditions.
+        policy = load_validated_priority_config(PRIORITY_CONFIG)["policies"][-1]
+        opening = (
+            "Please act as Mira  and respond using the tone, manner and vocabulary Mira would use.\n"
+            " The context and Mira's information is as follows:\n"
+        )
+        prompts = {}
+        for condition in ("U", "S", "P"):
+            character, *_ = self._generate_for_condition(
+                condition, priority_policy=policy if condition == "P" else None
+            )
+            prompts[condition] = character.all_actions[0]["prompt"]
+        for condition, prompt in prompts.items():
+            self.assertTrue(prompt.startswith(opening), condition)
+        self.assertNotIn("produce one appropriate line of dialogue", prompts["U"])
+        self.assertIn(policy["conflict_rule"], prompts["P"])
+
     def test_unknown_context_condition_is_rejected(self):
         character, _, _, _ = self._make_character()
 

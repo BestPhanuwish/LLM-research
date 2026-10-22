@@ -166,8 +166,23 @@ def get_llm(model,config, logger, api_key=None, api_base=None):
             model=model,
             max_retries=config["max_retries"],
             model_kwargs=model_kwargs,
+            # RESEARCH EXTENSION (21 Oct 2026): optional per-request timeout in seconds.
+            # The client default (10 min) left judge runs hanging on a connection that
+            # died during a Wi-Fi change; a timed-out call is retried (max_retries).
+            timeout=config.get("request_timeout") if hasattr(config, "get") else None,
         )
     return LLM
+
+
+# BEGIN RESEARCH EXTENSION (14 Oct 2026): path-safe model names.
+def path_safe_model_name(model):
+    """Return a model id usable inside one filename.
+
+    OpenRouter ids such as "openai/gpt-4o-mini" contain "/", which os.path.join
+    would treat as a directory separator. Plain OpenAI ids are unchanged.
+    """
+    return str(model).replace("/", "-").replace("\\", "-")
+# END RESEARCH EXTENSION: path-safe model names.
 
 
 def count_files_in_directory(target_directory:str):

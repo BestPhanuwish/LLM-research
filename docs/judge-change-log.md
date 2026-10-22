@@ -13,10 +13,11 @@ pilot must be re-evaluated after a change.
 
 | Setting | Value |
 |---|---|
-| Judge model | `gpt-4o` (`config/evaluate.yaml`) |
+| Judge model | `google/gemma-4-31b-it` via OpenRouter (`config/evaluate.yaml`), selected 21 October from seven candidates; `gpt-4o` before that (see "Judge model selection" below) |
+| H1 rubric version | 14 (`h1_rubric_version`), decided 22 October; see "Rubric version decision" |
 | Temperature / seed | 0 / 1 |
 | H1 metrics | Context Use, World Consistency (claim list), No Contradiction |
-| H2 metrics | CharacterBox's seven-metric critique-then-score judge (unchanged) |
+| H2 metrics | CharacterBox's seven-metric critique-then-score judge; one sentence per prompt limits it to the NPC (change 10); the character block includes position and state (change 12) |
 | Extra fields per H1 row | `judge_seed`, `trial_type`; per claim: `quote_verified`, `checked_against_repaired`, `original_verdict` |
 
 What each H1 metric covers now:
@@ -198,6 +199,163 @@ judge must compare against the round where the fact was first established.
 > The judge compared R9 with Neville's own R8 (which was already wrong) instead of
 > Luna's R2, where the fact was established.
 
+## 10. H2 judges only the NPC, not the scripted player lines — 21 October
+
+**Change.** Both H2 prompts now name the character being evaluated. The critique
+prompt adds, after CharacterBox's opening line: "Evaluate only {NPC}'s actions and
+dialogue. The other character's lines are fixed test inputs written by the researcher;
+do not critique them, and judge {NPC}'s replies as responses to them." The scoring
+prompt adds: "Score only {NPC}; the other character's lines are fixed test inputs and
+are not part of the evaluation." Nothing else in either prompt changed.
+
+**Why.** CharacterBox's prompts never say whose performance is judged, which was fine
+for its fully model-generated play. Here the player's lines are probes, and about 1 in
+5 of the 165 pilot 1–5 critiques blamed them: "The logical coherence is disrupted by
+Newt's question about the location and time, which seems out of place" (p2 `t01` P);
+"Harry's question about who is present seems unnecessary" (p4 `t03`, all three
+conditions); "significant content redundancy, particularly with Harry repeatedly asking
+about the remedy's details" (p4 `t11` P). The scoring step uses the critique, so the
+blame reached the NPC's score.
+
+**Effect.** H2 results before this change are not comparable with later ones; all
+pilots are re-run. To check: count critiques that still mention the player's lines
+after the re-run. This is a departure from CharacterBox's verbatim prompts, recorded in
+`characterbox-change-record.md`.
+
+## 11. Context Use rubric states the adopted definition — 21 October
+
+**Change.** The Context Use rubric in `evaluate.py` now says what the definition
+decision below had only recorded: the context includes facts established earlier in
+the conversation, which count exactly like supplied facts. The judge first decides
+which of three kinds of turn the player's line is: (1) asks about or claims a specific
+context fact, including "you said…"/"like I told you…" (PASS if addressed correctly,
+one of several asked-for facts is enough; FAIL for a dodge, accepting a false claim or
+misquote, or a different fact; naming only the room for a position question is a
+dodge); (2) asks about something no context supplies, such as the character's own past
+(PASS for a specific answer; do not substitute a supplied fact); (3) asks about no
+specific fact (PASS if the reply draws on the context, including what the player just
+said; FAIL if generic). NA is left only for a line not addressed to the character. Four
+examples were added, and the three response-format examples that showed Context Use NA
+on conversation-fact turns now show the decision the rule gives.
+
+**Why.** The old wording ("a fact in the supplied scene, character, or action
+information") was left in place on 30 September to avoid re-evaluating every pilot.
+The judge bake-off showed the cost: `openai/gpt-6-luna` followed it literally and
+labelled Context Use NA on every `t11` recall and misquote round and on open-ended
+turns (27 of its 33 disagreements with the author's pilot 1 labels, Context Use κ
+0.21), and Qwen3-235B did so on 3 turns and checked a substituted supplied fact on
+others. gpt-4o had applied the wider definition without being told. A judge comparison
+on the old wording therefore measured which model guessed the unstated definition.
+
+**Effect.** All H1 results before this change used the old wording. The bake-off
+judges (gpt-4o, gpt-6-luna, Qwen3-235B) are re-run on pilot 1 with the new rubric.
+
+## 12. H2 judge sees the NPC's position and state — 21 October
+
+**Change.** The H2 prompts' character block now lists the NPC's supplied Position and
+State as well as its name and description. Nothing else changed.
+
+**Why.** The H2 judge was checking "Factual Accuracy" without the character facts the
+NPC had been given. Qwen3-235B marked Neville's supplied "large rock" down as "an
+unverified element" (pilot 1 `t02` U, all seven scores 1). gpt-4o and gpt-6-luna did
+not make this error on pilot 1, but nothing prevented it.
+
+**Effect.** H2 results before this change are not comparable with later ones; H2 is
+re-run with the bake-off judges.
+
+## Judge model selection — 21 October
+
+**Decision.** The judge model changed from `gpt-4o` to **Gemma 4 31B**
+(`google/gemma-4-31b-it`), for both H1 and H2.
+
+**How.** The author hand-labelled every turn of re-generated pilots 1 and 2, blind to
+the condition (`data/research_annotations/judge_validation/judge_selection/`). Seven
+candidates judged pilot 1 with the change-11 rubric; Qwen2.5-14B (local, Ollama) and
+DeepSeek V4 Flash were dropped after pilot 1, and the other five also judged pilot 2.
+Combined over both pilots (294 items, 48 author FAILs): Gemma 4 31B κ 0.852 (38/48
+FAILs caught, 1 extra), gpt-6-luna 0.837 (45/48, 11 extra), Qwen3-235B 0.735, gpt-4o
+0.659, Gemini 3.1 Flash-Lite 0.398. As a reference, the generator gpt-4o-mini used as a judge on the same items reached κ 0.077 (3/48 FAILs caught), so the selected judge is a much stronger evaluator than the model it judges. Gemma 4 31B was chosen for the highest κ, the fewest
+false FAILs, perfect No Contradiction agreement, temperature 0 and seed support,
+published weights, a different model family from the generator, and cost. Full
+write-up: thesis Appendix A; per-judge tables in `judge_selection_pilot1/2.numbers`
+and `judge_comparison_*.csv`.
+
+**Known weaknesses carried forward.** It misses some concessions phrased as rebuttals
+(World Consistency κ 0.56), it gave PASS on two pilot 1 turns whose evidence said the
+reply accepted the false claim, and its H2 scores are lenient (55% of pilot 2 metric
+scores were 5).
+
+## Rubric version decision — 22 October
+
+**Final: version 14** (`h1_rubric_version: 14`). In the thesis the three compared rubrics are called **Version 1, 2 and 3**: Version 1 = `h1_rubric_version` 11, Version 2 = 13, Version 3 (final) = 14. Versions 11, 13 and 14 were run with
+Gemma 4 31B on all five labelled pilots (735 items):
+
+| Version | κ pilots 1-5 | κ pilots 3-5 | Context Use | World Consistency | No Contradiction | FAILs caught | Extra FAILs |
+|---|---|---|---|---|---|---|---|
+| 11 | 0.842 | 0.835 | 0.844 | 0.716 | 0.954 | 109/131 | 11 |
+| 13 | 0.836 | 0.803 | 0.840 | 0.680 | 0.977 | 104/131 | 6 |
+| 14 | **0.856** | **0.839** | 0.844 | **0.780** | 0.954 | 111/131 | 10 |
+
+Versions 11 and 14 did not differ reliably (bootstrap over trials, κ(14)−κ(11) on
+pilots 3-5: +0.003, 95% CI −0.044 to +0.041). Version 14 was kept for its better World
+Consistency agreement and its closer match to the labelling rules; version 13 was
+dropped (its evidence often said "accepts the claim" while deciding PASS).
+
+A fourth, experimental version (15) wrote five more labelling rules into the rubric and
+gave the judge the player's supplied profile. It reached κ 0.871 on pilots 1-5, a gain
+within noise (κ(15)−κ(14): +0.015, 95% CI −0.032 to +0.068), and the player profile
+introduced new over-strict World Consistency failures (for example "a student" flagged
+against Newt's "former Hogwarts student"). It was not adopted and was removed from the
+code; its outputs remain in `output/evaluation/prompt_versions/change15 (archive)/`; the versions compared are in `prompt_versions/v1`, `v2`, `v3`. The five
+cases are reported as known judge limitations: brushed-off misquotes judged as
+contradictions; hostile partial answers judged as dodges; "yes, but [true fact]"
+judged as acceptance; the judge following the character's own misreading (pilot 3
+`t07`); and lower agreement with the hostile character (pilot 5, κ 0.67-0.71).
+
+## 14. Context Use decision follows its evidence — 22 October (adopted, final)
+
+**Change.** Two additions to the Context Use rubric: (1) "Write the evidence first,
+then the decision that the evidence supports: if your evidence says the response
+accepts, goes along with, concedes, or does not correct the player's claim, the
+decision is FAIL." (No Contradiction already had an equivalent rule.) (2) A dodge now
+also includes "acknowledging the question without answering it, such as 'Of course I
+know which gate I guard' when asked which gate".
+
+**Why.** Under change 13, Gemma 4 31B's evidence recognised the concessions but its
+decision did not follow: pilot 2 `t09` U, "Response: 'the absence of an audience'
+accepts this claim" with Context Use PASS, and `t09` S, "'Just because the hall is
+momentarily empty' accepts this claim", also PASS. Change 13 left pilot 2 κ unchanged
+(0.808: three items fixed, three broken) while pilot 1 rose from 0.907 to 1.000. Pilot
+2 `t04` U ("I am quite aware of the subject I teach") also flipped to PASS, which (2)
+addresses with an invented example.
+
+**Status.** Re-running Gemma on pilots 1 and 2; change-13 outputs are in
+`output/evaluation/change13/`.
+
+## 13. Partial answers, concessions, and the player's name — 22 October (kept as part of 14)
+
+**Change.** Three edits to the H1 prompt, made after the judge was selected (Gemma 4
+31B), with invented examples only:
+- *Partial answers (Context Use).* "Getting at least one of them right is PASS, even if
+  the response states another of them wrongly: a wrongly stated fact is a World
+  Consistency failure, not a Context Use failure." FAIL (c) now applies only when the
+  single asked-for fact, or every asked-for fact, is wrong. Matches the author's
+  labelling (pilot 2 `t01`, "precisely midday").
+- *Concessions (Context Use and World Consistency).* A concession phrased as a rebuttal
+  still goes along with the claim: "While it may be true that the gate is open, that is
+  no excuse" accepts that the gate is open; "You may be right that we're alone, but
+  that changes nothing" claims that they are alone. Targets Gemma's main miss (pilot 2
+  `t09`, World Consistency κ 0.56 over both pilots).
+- *Player's name.* The [Scene] block now lists "Characters present: {NPC}, and
+  {player}, who speaks the lines marked Player", so a judge does not treat the player's
+  name as unsupported (Qwen3 failed "Mr. Scamander" on World Consistency).
+
+**Status.** Being evaluated by re-running Gemma 4 31B on pilots 1 and 2 against the
+author's labels and its own change-11 results (κ 0.907 / 0.808). Pilots 1-2 are tuning
+data from here on, so agreement on them is optimistic; a pilot labelled after the
+prompt is frozen gives the unbiased figure. The two items under "Known open problems"
+(partial answers, player name) are addressed by this change if it is kept.
+
 ## Definition decision: Context Use covers conversation facts — 30 September
 
 **Decision (no prompt change).** Context Use applies to any fact the player's turn asks
@@ -276,7 +434,24 @@ the decision not to add further prompt rules for now:
 - **Subtle acceptance can still slip through.** On pilot 2, McGonagall accepted false
   claims inside subordinate clauses ("…your attempt to find solace in our solitude…",
   "The fact that the Niffler was merely asleep under a table…") and some were passed.
-- **H2 penalises the script.** Critiques on multi-turn trials blame the player's
+- **Planned after the judge is chosen (author, 21 October): Context Use partial answers.**
+  The author's labelling treats Context Use as "did the reply retrieve an asked-for
+  fact": one asked-for fact right is PASS even if another stated fact is wrong, and the
+  wrong fact is caught by World Consistency (pilot 2 `t01`: "in my Great Hall. It is
+  precisely midday" for Late Morning, labelled Context Use PASS, World Consistency
+  FAIL). Rule A and the change-11 rubric instead say "at least one right **and none
+  wrong**", so a judge following the prompt fails such replies on Context Use. Not
+  changed during the bake-off, so every candidate is compared on the same prompt; to be
+  revisited once the judge is selected (it would require re-running that judge).
+- **Planned after the judge is chosen: name the player character in the H1 prompt.**
+  The H1 prompt gives the NPC's profile but labels the other speaker only "Player", and
+  the player's name appears in no supplied field (pilot 2's action reference says
+  "Newt", never "Scamander"). Qwen3-235B therefore marked "Mr. Scamander" as a claim
+  that contradicts the supplied facts (pilot 2 `t02` U and `t10` P, World Consistency
+  FAIL against the author's PASS); other judges filled the name in from canon. Adding a
+  line such as "[Player character] Newt Scamander" would remove the gap. Left unchanged
+  during the bake-off so all candidates see the same prompt.
+- **H2 penalises the script** (addressed by change 10, to be checked after the re-run). Critiques on multi-turn trials blame the player's
   deliberate misquotes (e.g. "Dumbledore's repetitive questioning… seems inconsistent
   with his astute nature") and lower the NPC's scores for them.
 - **Not validated against human judgement.** Every change above came from reading judge

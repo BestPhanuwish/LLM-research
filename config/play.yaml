@@ -2,8 +2,10 @@
 # Research configuration changes are recorded in docs/characterbox-change-record.md.
 
 # name of LLM model, 'custom' for custom model
-narrator_llm: gpt-4o-mini
-character_llm: gpt-4o-mini
+# OpenRouter ids since 14 Oct 2026 (same gpt-4o-mini, routed to OpenAI).
+# Pilots 1-5 used the plain OpenAI id "gpt-4o-mini" via api.openai.com.
+narrator_llm: openai/gpt-4o-mini
+character_llm: openai/gpt-4o-mini
 # path for scenes data
 scene_path: data/generated_data/Harry_Potter.json
 # scene id
@@ -20,7 +22,7 @@ target_character_id: 1
 action_id: 1
 dataset_source: characterbox_generated
 trial_id: null
-context_condition: S
+context_condition: P
 priority_config_path: config/context_priorities.json
 priority_policy_id: primary_five_level
 # Reusable run-config auto-loaded whenever --pilot selects a manifest. It
@@ -43,12 +45,13 @@ seed: 1
 verbose: True
 
 # API credentials must be supplied securely at runtime; never commit them here.
+# OPENAI_API_KEY (or CHARACTER_API_KEY / NARRATOR_API_KEY) holds the OpenRouter key.
 character_api_key: ""
-character_api_base: "https://api.openai.com/v1"
+character_api_base: "https://openrouter.ai/api/v1"
 narrator_api_key: ""
-narrator_api_base: "https://api.openai.com/v1"
+narrator_api_base: "https://openrouter.ai/api/v1"
 
-# The id of the character played by human (Harry Potter in pilot scene 32).
+# The id of the character played by human (Harry in pilot 5, scene 32; NPC = Seamus, target 1, action 1).
 play_role: 0
 
 # path to save records

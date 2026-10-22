@@ -6,6 +6,9 @@ from __future__ import annotations
 # Original copyright (c) 2023 Lei Wang; MIT licensed.
 # The critic text, scoring prompt/rubric, seven metric names, 1/3/5 anchors,
 # response example, and critique-then-score sequence are retained verbatim.
+# Exception: one sentence naming the evaluated character is added to each
+# prompt (TARGET_ONLY_CRITIC_NOTE / TARGET_ONLY_SCORE_NOTE, 2026-10-21).
+# The character block also lists the NPC's Position and State (2026-10-21).
 # Input normalisation, paired-run selection, blinding, validation, output
 # schema, CLI, and provider invocation are research adaptations.
 # See docs/characterbox-provenance.md and characterbox-change-record.md.
@@ -196,10 +199,14 @@ def format_trajectory(record):
         f"Location: {scene['location']}\n"
         f"Description: {scene['description']}\n"
     )
-    character_text = (
-        f"Name: {target['name']}\n"
-        f"Description: {target['description']}\n"
-    )
+    # Research adaptation (2026-10-21): Position and State are added so the judge
+    # can tell supplied facts from invented ones (a Qwen judge marked Neville's
+    # supplied "large rock" down as unverified). Omitted when a record lacks them.
+    character_text = f"Name: {target['name']}\nDescription: {target['description']}\n"
+    if target.get("position"):
+        character_text += f"Position: {target['position']}\n"
+    if target.get("states"):
+        character_text += f"State: {target['states']}\n"
     behavior_parts = []
     for turn in record["turns"]:
         behavior_parts.extend(
@@ -213,10 +220,30 @@ def format_trajectory(record):
     return scene_text, character_text, "\n".join(behavior_parts) + "\n"
 
 
+# Research adaptation (2026-10-21): CharacterBox evaluated free multi-agent play,
+# where every line in a trajectory was model-generated. Here the other
+# character's lines are fixed researcher-written probes, and the judge was found
+# to critique them (about 1 in 5 pilot 1-5 critiques faulted the player's
+# question), so both prompts now name the evaluated character and exclude the
+# probes. Everything else in both prompts is unchanged. See
+# docs/characterbox-change-record.md.
+TARGET_ONLY_CRITIC_NOTE = (
+    "Evaluate only {name}'s actions and dialogue. The other character's lines "
+    "are fixed test inputs written by the researcher; do not critique them, and "
+    "judge {name}'s replies as responses to them."
+)
+TARGET_ONLY_SCORE_NOTE = (
+    "Score only {name}; the other character's lines are fixed test inputs and "
+    "are not part of the evaluation."
+)
+
+
 def build_critic_prompt(record):
     scene, character, behavior = format_trajectory(record)
+    target_note = TARGET_ONLY_CRITIC_NOTE.format(name=record["target"]["name"])
     return f"""
 Please execute the following role-play and identify any issues based on these strict evaluation criteria:
+{target_note}
 
 - Scene Description: \n{scene}\n
 - Character Description:\n {character}\n
@@ -232,6 +259,7 @@ def build_score_prompt(record, critique):
         "Please evaluate the role-playing ability of the character based on "
         "actions across multiple turns based on scene, character information, "
         "critique and evaluation criteria.\n"
+        f"{TARGET_ONLY_SCORE_NOTE.format(name=record['target']['name'])}\n"
         f"[Scene]:\n{scene}\n"
         f"[Character]:\n{character}\n"
         f"[Multi-turn Actions]:\n{behavior}\n"

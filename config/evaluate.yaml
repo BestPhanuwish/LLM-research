@@ -1,11 +1,24 @@
 # Shared judge config for evaluate.py's H1 (per-turn consistency) and
 # H2 (per-trial realism) lanes.
-judger_llm: gpt-4o
+# Selected judge (21 Oct 2026): Gemma 4 31B, chosen from seven candidates by
+# agreement with the author's blind labels on pilots 1-2 (combined kappa 0.85).
+# See thesis Appendix A and data/research_annotations/judge_validation/judge_selection/.
+judger_llm: google/gemma-4-31b-it
+# H1 rubric version: 14 is final (22 Oct 2026, judge change log "Rubric version
+# decision"); 11 and 13 are kept for reproducibility. Override with --h1-rubric-version.
+h1_rubric_version: 14
 temperature: 0
 # Best-effort reproducible judging (OpenAI seed; not a hard guarantee). null disables.
 seed: 1
-max_token: 1200
+# 4000 since the gpt-6-luna test (a reasoning model needs room for hidden
+# reasoning); only a length cap, so kept for every candidate.
+max_token: 4000
 max_retries: 2
+# Per-request timeout (s): a dead connection fails and is retried instead of
+# hanging for the client's 10-minute default. The slowest judge call seen was ~96 s.
+request_timeout: 180
 score_retries: 4
+# OpenRouter (since 14 Oct 2026).
+# OPENAI_API_KEY holds the OpenRouter key.
 api_key_env: OPENAI_API_KEY
-api_base: https://api.openai.com/v1
+api_base: https://openrouter.ai/api/v1

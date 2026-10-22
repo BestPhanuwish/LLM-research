@@ -327,6 +327,9 @@ class Simulator:
                 "character_model": self.config["character_llm"],
                 "temperature": self.config.get("temperature"),
                 "max_token": self.config.get("max_token"),
+                # RESEARCH EXTENSION (22 Oct 2026): the sampling seed, so runs with
+                # different seeds can be told apart from the record alone.
+                "seed": self.config.get("seed"),
                 "duration_seconds": self.duration,
             },
             "source_dataset": (
@@ -393,22 +396,32 @@ class Simulator:
         # END RESEARCH EXTENSION: identify controlled experimental records.
 
         # 记录结果
+        # BEGIN RESEARCH MODIFICATION (14 Oct 2026): path-safe record names.
+        # OpenRouter model ids contain "/" (e.g. openai/gpt-4o-mini), which would
+        # otherwise turn the record filename into missing subdirectories.
+        record_prefix = (
+            utils.path_safe_model_name(self.config['narrator_llm'])
+            + "_"
+            + utils.path_safe_model_name(self.config['character_llm'])
+            + "_"
+        )
+        # END RESEARCH MODIFICATION: path-safe record names.
         if self.config['save_record']:
             utils.ensure_dir(os.path.join(self.config["record_dir"], title,"plot"))
-            with open(os.path.join(self.config["record_dir"], title,"plot", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["plot_record_path"]), "a", encoding='utf8') as f:
+            with open(os.path.join(self.config["record_dir"], title,"plot", record_prefix+self.config["plot_record_path"]), "a", encoding='utf8') as f:
                 data={"title":title,"scene_id":self.config['scene_id'],"scene":self.data.init_scene,"characters":self.data.init_characters,"record":self.plot_record,**research_metadata}
                 json.dump(data, f, default=lambda o: o.__dict__,  ensure_ascii=False)
                 f.write("\n")
 
-            print("Plot record saved in:",os.path.join(self.config["record_dir"], title,"plot", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["plot_record_path"]))
+            print("Plot record saved in:",os.path.join(self.config["record_dir"], title,"plot", record_prefix+self.config["plot_record_path"]))
 
             utils.ensure_dir(os.path.join(self.config["record_dir"], title,"character"))
-            with open(os.path.join(self.config["record_dir"], title,"character", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["character_record_path"]), "a", encoding='utf8') as f:
+            with open(os.path.join(self.config["record_dir"], title,"character", record_prefix+self.config["character_record_path"]), "a", encoding='utf8') as f:
                 data={"title":title,"scene_id":self.config['scene_id'],"scene":self.data.init_scene,"characters":self.data.init_characters,"record":self.character_record,**research_metadata}
                 json.dump(data, f, default=lambda o: o.__dict__,  ensure_ascii=False)
                 f.write("\n")
 
-            print("Character record saved in:",os.path.join(self.config["record_dir"], title,"character", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["character_record_path"]))
+            print("Character record saved in:",os.path.join(self.config["record_dir"], title,"character", record_prefix+self.config["character_record_path"]))
 
             # BEGIN RESEARCH EXTENSION: canonical controlled trajectory export.
             # CharacterBox's separate record categories remain untouched. This
@@ -421,12 +434,15 @@ class Simulator:
                 utils.ensure_dir(trajectory_dir)
                 trajectory_path = os.path.join(
                     trajectory_dir,
-                    self.config["narrator_llm"]
-                    + "_"
-                    + self.config["character_llm"]
-                    + "_"
+                    record_prefix
                     + self.config.get("trajectory_record_path", "trajectory.jsonl"),
                 )
+                # RESEARCH EXTENSION (22 Oct 2026): --trajectory-output writes the
+                # trajectory to an explicit file (one per seed and scene in the
+                # final study) instead of the shared default file.
+                if self.config.get("trajectory_output"):
+                    trajectory_path = self.config["trajectory_output"]
+                    utils.ensure_dir(os.path.dirname(trajectory_path) or ".")
                 trajectory = self._build_controlled_trajectory_record(
                     research_metadata
                 )
@@ -437,23 +453,23 @@ class Simulator:
             # END RESEARCH EXTENSION: canonical controlled trajectory export.
 
             utils.ensure_dir(os.path.join(self.config["record_dir"], title,"round"))
-            with open(os.path.join(self.config["record_dir"], title,"round", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["round_record_path"]), "a", encoding='utf8') as f:
+            with open(os.path.join(self.config["record_dir"], title,"round", record_prefix+self.config["round_record_path"]), "a", encoding='utf8') as f:
                 data={"title":title,"scene_id":self.config['scene_id'],"scene":self.data.init_scene,"characters":self.data.init_characters,"record":self.records,**research_metadata}
                 json.dump(data, f, default=lambda o: o.__dict__,  ensure_ascii=False)
                 f.write("\n")
                 
-            print("Round record saved in:",os.path.join(self.config["record_dir"], title,"round", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["round_record_path"]))
+            print("Round record saved in:",os.path.join(self.config["record_dir"], title,"round", record_prefix+self.config["round_record_path"]))
 
             utils.ensure_dir(os.path.join(self.config["record_dir"], title,"narrator"))
-            with open(os.path.join(self.config["record_dir"], title,"narrator", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["narrator_record_path"]), "a", encoding='utf8') as f:
+            with open(os.path.join(self.config["record_dir"], title,"narrator", record_prefix+self.config["narrator_record_path"]), "a", encoding='utf8') as f:
                 data={"title":title,"scene_id":self.config['scene_id'],"scene":self.data.init_scene,"characters":self.data.init_characters,"record":self.narrator_record,**research_metadata}
                 json.dump(data, f, default=lambda o: o.__dict__, ensure_ascii=False)
                 f.write("\n")
-            print("Narrator record saved in:",os.path.join(self.config["record_dir"], title,"narrator", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["narrator_record_path"]))
+            print("Narrator record saved in:",os.path.join(self.config["record_dir"], title,"narrator", record_prefix+self.config["narrator_record_path"]))
 
 
             utils.ensure_dir(os.path.join(self.config["record_dir"], title,"all"))
-            with open(os.path.join(self.config["record_dir"], title,"all", self.config['narrator_llm']+"_"+self.config['character_llm']+"_"+self.config["all_record_path"]), "a", encoding='utf8') as f:
+            with open(os.path.join(self.config["record_dir"], title,"all", record_prefix+self.config["all_record_path"]), "a", encoding='utf8') as f:
                 # BEGIN RESEARCH EXTENSION: controlled model-call collection.
                 # Dynamic play retains CharacterBox's original Narrator-plus-all-
                 # agents collection. Controlled play has no Narrator and only the
@@ -1001,6 +1017,16 @@ def parse_args():
     parser.add_argument(
         "-i", "--scene_id", type=int, default=None, help="Path to config file"
     )
+    # BEGIN RESEARCH EXTENSION (22 Oct 2026): final-study runs.
+    parser.add_argument(
+        "--seed", type=int, default=None,
+        help="Sampling seed; overrides `seed` in the config",
+    )
+    parser.add_argument(
+        "--trajectory-output", type=str, default=None,
+        help="Write the trajectory JSONL to this file instead of the shared default",
+    )
+    # END RESEARCH EXTENSION: final-study runs.
     parser.add_argument(
         "-l", "--log_file", type=str, default="", help="Path to log file"
     )
@@ -1142,10 +1168,18 @@ def main():
         config['scene_path']=args.scene_path
     if args.scene_id is not None:
         config['scene_id']=args.scene_id
+    # BEGIN RESEARCH EXTENSION (22 Oct 2026): final-study runs.
+    if args.seed is not None:
+        config["seed"] = args.seed
+    if args.trajectory_output:
+        config["trajectory_output"] = str(Path(args.trajectory_output).resolve())
+    # END RESEARCH EXTENSION: final-study runs.
     title=config['scene_path'].split("/")[-1].split(".")[0]
     if args.log_file=="":
         utils.ensure_dir("output/log/simulation/"+title)
-        args.log_file=f"simulation/{title}/{config['narrator_llm']}_{config['character_llm']}_{config['scene_id']}_character_simulation.log"
+        # RESEARCH MODIFICATION (14 Oct 2026): path-safe model names, as in
+        # save_record(), so OpenRouter ids ("openai/...") do not become folders.
+        args.log_file=f"simulation/{title}/{utils.path_safe_model_name(config['narrator_llm'])}_{utils.path_safe_model_name(config['character_llm'])}_{config['scene_id']}_character_simulation.log"
     logger = utils.set_logger(args.log_file, args.log_name)
     logger.info(f"os.getpid()={os.getpid()}")
     logger.info(f"\n{config_for_logging(config)}")

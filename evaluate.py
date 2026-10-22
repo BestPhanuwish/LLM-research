@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import re
+import time
 from pathlib import Path
 
 from yacs.config import CfgNode
@@ -46,21 +47,32 @@ _CONVERSATION_CITATION = re.compile(
 
 H1_METRIC_CRITERIA = f"""
 [Context Use]
-Does the response use the supplied fact that the player's current turn calls for?
-- PASS: The player's turn asks about, or makes a claim about, a fact in the supplied scene, character, or action information, and the response addresses that fact using the supplied information (a paraphrase or clear reference counts). If the player's claim is false, the response corrects it with the supplied fact.
-- FAIL: The player's turn calls for a supplied fact and the response does any of the following: (a) dodges — ignores the question or claim, changes the subject, or answers only vaguely without the fact; (b) goes along with a false claim from the player, or leaves it uncorrected; (c) states something different from the supplied fact. Dodging is a failure, not a neutral outcome.
-- NA: The player's turn does not ask about or make a claim about any specific supplied fact (casual talk, no direct question, purely emotional exchange).
-Steps: name the supplied fact the player's turn calls for; find the part of the response that addresses it; quote both. If no part of the response addresses that fact, the decision is FAIL, never PASS. The response quote in the evidence must be the part that addresses the fact, not an unrelated line.
+Does the response use the context that the player's current turn calls for?
+The context is the supplied scene, character, and action information AND every fact established earlier in this conversation — something the player stated in an earlier turn, or something this character said in an earlier turn. A fact from the conversation counts exactly like a supplied fact.
+Decide which of three kinds of turn the player's line is, then apply its rule:
+(1) The player's turn asks about, or makes a claim about, a specific fact in the context (supplied or from the conversation, including "you said..." or "like I told you..." about an earlier turn).
+- PASS: the response addresses that fact correctly (a paraphrase or clear reference counts). If the player's claim is false, the response corrects it with the true fact. If the turn asks for several facts, getting at least one of them right is PASS, even if the response states another of them wrongly: a wrongly stated fact is a World Consistency failure, not a Context Use failure.
+- FAIL: (a) dodges — ignores the question or claim, changes the subject, or answers only vaguely without the fact (for example "I'm right here" when asked where the character is, naming only the room when asked for the character's position, or acknowledging the question without answering it, such as "Of course I know which gate I guard" when asked which gate); (b) goes along with a false claim, or leaves it uncorrected, including a misquote of an earlier turn — a concession phrased as a rebuttal still goes along with the claim (for example "While it may be true that the gate is open, that is no excuse" accepts that the gate is open); (c) states something different from the fact, when that was the only fact asked for or every asked-for fact is wrong. Dodging is a failure, not a neutral outcome, whatever the character's mood.
+(2) The player's turn asks about something no context supplies, such as the character's own past ("How did you get here?", "What did you eat?"). Do not substitute a different supplied fact as the one being asked about.
+- PASS: the response gives a specific answer. FAIL: it gives no specific answer (evasive, vague, or "I don't remember").
+(3) The player's turn asks about no specific fact: an open question or remark, casual or emotional talk, or the player telling new information.
+- PASS: the response draws on the context — the scene, the character, the situation, earlier turns, or the information the player has just given. FAIL: the response is generic and could be said in any scene.
+- NA: only if the player's line is not addressed to the character at all.
+Steps: say which kind of turn it is; name the fact the player's turn calls for (for kind 3, the context the response draws on); find the part of the response that addresses it; quote both. For kind 1, if no part of the response addresses that fact, the decision is FAIL, never PASS. Write the evidence first, then the decision that the evidence supports: if your evidence says the response accepts, goes along with, concedes, or does not correct the player's claim, the decision is FAIL. The response quote in the evidence must be the part that addresses the fact, not an unrelated line.
 Examples (invented scene; supplied time: Dusk):
 - Player: "It's still morning, isn't it? Correct me if I'm wrong." Response: "We should hurry, the guards change soon." -> FAIL (dodge: the time is never addressed). Evidence: "Elicited fact: Time = Dusk. Response: none addresses it."
 - Same player turn. Response: "Morning, and a lovely one too." -> FAIL (goes along with the false claim).
 - Same player turn. Response: "Morning? No, the sun's nearly down." -> PASS. Evidence: "Elicited fact: Time = Dusk. Response: 'the sun's nearly down'."
+- Round 1, Player: "The ferry leaves at noon." Round 4, Player: "When does the ferry leave?" Response: "At noon, you said." -> PASS (kind 1, a conversation fact). Evidence: "Elicited fact: Round 1, player: ferry at noon. Response: 'At noon'."
+- Round 4, Player: "The ferry leaves at dusk, like I told you, right?" Response: "Aye, dusk." -> FAIL (kind 1: goes along with a misquote of round 1).
+- Player: "How did you get past the guards?" Response: "Over the north wall, while they changed shifts." -> PASS (kind 2: a specific answer). Response: "Does it matter?" -> FAIL.
+- Player: "What's on your mind?" Response: "This fog, and the gate I'm meant to be watching." -> PASS (kind 3: draws on the scene). Response: "Oh, nothing much." -> FAIL (generic).
 
 [World Consistency]
 Does the response avoid making any claim that contradicts the supplied scene, character, or action information?
 List every separate factual claim the response makes, in the order they appear — do not stop at the first one, and do not select only the safest or most obviously-true claim. A "claim" is anything the response asserts as true (about the scene, the world, another character, or itself), not just the one the player's line was probing for.
 Build each claim from the response, not from the supplied facts: first copy "quote" — the exact word-for-word fragment of the character's response, copied character-for-character, not paraphrased, summarized, or reworded — and then write "claim" as what that quote itself asserts. Never write a supplied fact as the claim unless the quote actually says it; checking a supplied fact against itself hides what the character said.
-Going along with the player counts as a claim. If the response accepts, plays along with, jokes along with, or builds on something the player asserted, list that acceptance as a claim, even when the response never states it outright (for example, answering "Is that a tree you're behind?" with "the bravest tree in the forest!" claims the character is behind a tree).
+Going along with the player counts as a claim. If the response accepts, plays along with, jokes along with, or builds on something the player asserted, list that acceptance as a claim, even when the response never states it outright (for example, answering "Is that a tree you're behind?" with "the bravest tree in the forest!" claims the character is behind a tree). A concession phrased as a rebuttal is also acceptance: "You may be right that we're alone, but that changes nothing" claims that they are alone.
 For each claim, decide whether it is consistent with the supplied scene/character/action information, and always name the specific supplied fact you checked it against in "checked_against" — every claim requires this, not only inconsistent ones. "checked_against" must come from the [Scene], [Character], or [Action Reference] sections only. Never cite the player's lines, current or earlier, as the fact a claim was checked against: the player may be mistaken or deliberately deceptive, so agreeing with the player never makes a claim consistent. Facts that appear only in the conversation — said by the player or by the character, in any round — are not supplied facts and are never cited here, by round number or otherwise: if the only support or conflict for a claim is something said in the conversation, mark it consistent with exactly "{NO_SUPPLIED_FACT}"; conversation facts are checked under No Contradiction instead. When the claim is inconsistent, this must be the fact it conflicts with (wrong location, inconsistent trait, denies something already established, references an ability/item/person inconsistent with what is supplied, or asserts something no supplied fact supports and the supplied facts imply otherwise). When the claim is consistent, cite the specific supplied fact that supports it; if no supplied fact addresses this claim at all, write the exact text "{NO_SUPPLIED_FACT}" instead of leaving it blank or inventing one. Never use that exact text for an inconsistent claim — an inconsistent claim always names a real, specific fact it conflicts with. If the response makes no checkable claim at all, the claim list is empty.
 Do not report a decision label yourself for this metric — only the claim list. The overall decision is derived automatically from it: any single inconsistent claim makes the whole turn FAIL, regardless of how many other claims were consistent.
 
@@ -100,7 +112,7 @@ The examples below use an invented scene, not the scene being evaluated: Mira, a
 
 [Response Format Example — a response that stays consistent with an earlier turn, with no supplied fact addressing that one claim]
 {{
-  "context_use": {{"evidence": null, "decision": "NA"}},
+  "context_use": {{"evidence": "Kind 3: the response draws on the context. Response: 'I'll be here' keeps Mira at the gate she guards.", "decision": "PASS"}},
   "world_consistency": {{"claims": [{{"quote": "the road's clear now", "claim": "the road is clear", "consistent": true, "checked_against": "{NO_SUPPLIED_FACT}"}}]}},
   "no_contradiction": {{"evidence": "Round 1: 'I'll keep the gate shut until you return.' This response: 'Go on, the road's clear now; I'll be here.' Both keep the same promise; no conflict.", "contradicted_round": null, "decision": "PASS"}}
 }}
@@ -129,7 +141,7 @@ Player: "Is that the west gate you're guarding? Correct me if I'm wrong." Respon
 [Response Format Example — accepting a changed version of a fact the player established earlier]
 Round 1, Player: "The ferry leaves at noon." Mira: "Keep your voice down." Round 4, Player: "The ferry leaves at dusk, like I told you, right?" Mira: "Aye, dusk. Now hush." Mira never repeated "noon", but the player established it in round 1, so accepting "dusk" contradicts it:
 {{
-  "context_use": {{"evidence": null, "decision": "NA"}},
+  "context_use": {{"evidence": "Kind 1, a conversation fact. Elicited fact: Round 1, player: the ferry leaves at noon. Response: 'Aye, dusk' goes along with the misquote.", "decision": "FAIL"}},
   "world_consistency": {{"claims": [{{"quote": "Aye, dusk", "claim": "the ferry leaves at dusk", "consistent": true, "checked_against": "{NO_SUPPLIED_FACT}"}}]}},
   "no_contradiction": {{"evidence": "Round 1, player: 'The ferry leaves at noon.' This response: 'Aye, dusk.' accepts the later, changed version.", "contradicted_round": 1, "decision": "FAIL"}}
 }}
@@ -137,7 +149,7 @@ Round 1, Player: "The ferry leaves at noon." Mira: "Keep your voice down." Round
 [Response Format Example — the changed version persists after a neutral question]
 Same conversation, round 5, Player: "When does the ferry leave?" Mira: "At dusk, as we said." The question is neutral, and the answer matches Mira's own round 4 answer, but that round 4 answer was already a contradiction; repeating it still contradicts round 1, where the time was established:
 {{
-  "context_use": {{"evidence": null, "decision": "NA"}},
+  "context_use": {{"evidence": "Kind 1, a conversation fact. Elicited fact: Round 1, player: the ferry leaves at noon. Response: 'At dusk' states something different.", "decision": "FAIL"}},
   "world_consistency": {{"claims": [{{"quote": "At dusk", "claim": "the ferry leaves at dusk", "consistent": true, "checked_against": "{NO_SUPPLIED_FACT}"}}]}},
   "no_contradiction": {{"evidence": "Round 1, player: 'The ferry leaves at noon.' This response: 'At dusk, as we said.' repeats the changed version.", "contradicted_round": 1, "decision": "FAIL"}}
 }}
@@ -146,6 +158,37 @@ Same conversation, round 5, Player: "When does the ferry leave?" Mira: "At dusk,
 """
 
 DECISION_TO_SCORE = {"PASS": 1, "FAIL": 0, "NA": None}
+
+
+# H1 rubric versions (judge change log, changes 11, 13 and 14). The current text is
+# version 14; older versions are rebuilt by undoing the later edits, so every version
+# stays reproducible from this file. Select with `h1_rubric_version` in the config.
+H1_RUBRIC_VERSIONS = (11, 13, 14)
+_UNDO_CHANGE_14 = (
+    (" Write the evidence first, then the decision that the evidence supports: if your evidence says the response accepts, goes along with, concedes, or does not correct the player's claim, the decision is FAIL.", ""),
+    (', naming only the room when asked for the character\'s position, or acknowledging the question without answering it, such as "Of course I know which gate I guard" when asked which gate);',
+     ', or naming only the room when asked for the character\'s position);'),
+)
+_UNDO_CHANGE_13 = (
+    ("getting at least one of them right is PASS, even if the response states another of them wrongly: a wrongly stated fact is a World Consistency failure, not a Context Use failure.",
+     "getting at least one right and none wrong is PASS."),
+    (" — a concession phrased as a rebuttal still goes along with the claim (for example \"While it may be true that the gate is open, that is no excuse\" accepts that the gate is open);", ";"),
+    ("(c) states something different from the fact, when that was the only fact asked for or every asked-for fact is wrong.", "(c) states something different from the fact."),
+    (' A concession phrased as a rebuttal is also acceptance: "You may be right that we\'re alone, but that changes nothing" claims that they are alone.', ""),
+)
+
+
+def h1_rubric_text(version=14):
+    """The H1 metric criteria for one rubric version."""
+    if version not in H1_RUBRIC_VERSIONS:
+        raise ValueError(f"h1_rubric_version must be one of {H1_RUBRIC_VERSIONS}")
+    text = H1_METRIC_CRITERIA
+    undo = (_UNDO_CHANGE_14 if version < 14 else ()) + (_UNDO_CHANGE_13 if version < 13 else ())
+    for new, old in undo:
+        if text.count(new) != 1:
+            raise RuntimeError(f"Rubric text for version {version} could not be rebuilt: {new[:60]!r}")
+        text = text.replace(new, old)
+    return text
 
 
 def format_turn_context(record, round_number):
@@ -159,6 +202,11 @@ def format_turn_context(record, round_number):
         f"Location: {scene['location']}\n"
         f"Description: {scene['description']}\n"
     )
+    # Change 13: name the player character, whose name otherwise appears in no
+    # supplied field, so a judge does not treat it as an unsupported claim.
+    player_name = (record.get("player") or {}).get("name")
+    if player_name:
+        scene_text += f"Characters present: {target['name']}, and {player_name}, who speaks the lines marked Player\n"
     character_text = (
         f"Position: {target['position']}\n"
         f"Current State: {target['states']}\n"
@@ -182,10 +230,16 @@ def format_turn_context(record, round_number):
     return scene_text, character_text, record["action_reference"], prior_text, current_text
 
 
-def build_h1_prompt(record, round_number):
+def build_h1_prompt(record, round_number, rubric_version=14):
     scene_text, character_text, action_reference, prior_text, current_text = (
         format_turn_context(record, round_number)
     )
+    if rubric_version < 13:
+        # The player-name line was added in change 13.
+        scene_text = "".join(
+            line for line in scene_text.splitlines(keepends=True)
+            if not line.startswith("Characters present:")
+        )
     name = record["target"]["name"]
     return f"""Please evaluate one turn of {name}'s dialogue against the supplied scene and character information, and against the character's own earlier turns in this conversation.
 
@@ -201,7 +255,7 @@ def build_h1_prompt(record, round_number):
 
 [Current turn — evaluate this response only]
 {current_text}
-{H1_METRIC_CRITERIA}{H1_RESPONSE_FORMAT}"""
+{h1_rubric_text(rubric_version)}{H1_RESPONSE_FORMAT}"""
 
 
 _QUOTE_NORMALIZE_TABLE = str.maketrans({
@@ -219,7 +273,10 @@ def _quote_is_verbatim(quote, npc_dialogue):
     """Whether `quote` actually appears in the NPC's real dialogue for this turn,
     modulo whitespace/curly-quote normalization -- catches a claim's "quote" being
     paraphrased or invented outright instead of copied from the actual response."""
-    return _normalize_quote_text(quote) in _normalize_quote_text(npc_dialogue)
+    # Case-insensitive (21 Oct 2026): judges often lower-case a quote taken from the
+    # start of a sentence ("we've got each other" for "We've got each other"), which
+    # flagged correct quotes as unverified in the judge bake-off.
+    return _normalize_quote_text(quote).casefold() in _normalize_quote_text(npc_dialogue).casefold()
 
 
 def parse_world_consistency_claims(entry, npc_dialogue):
@@ -326,9 +383,11 @@ def _extract_json_object(text):
     return stripped
 
 
-def parse_h1_response(response_text, npc_dialogue):
+def parse_h1_response(response_text, npc_dialogue, round_number=None):
     """Parse and validate one strict H1 decision object. `npc_dialogue` is the actual
-    response text this decision is about, used to verify World Consistency's quotes."""
+    response text this decision is about, used to verify World Consistency's quotes.
+    On round 1 the judge's No Contradiction answer is not validated: evaluate_h1_turn()
+    replaces it with NA anyway, so a malformed one must not fail the turn."""
     try:
         data = json.loads(response_text)
     except json.JSONDecodeError:
@@ -340,6 +399,8 @@ def parse_h1_response(response_text, npc_dialogue):
     required_metrics = {"context_use", "world_consistency", "no_contradiction"}
     if not isinstance(data, dict) or set(data) != required_metrics:
         raise ValueError(f"Expected exactly the keys {sorted(required_metrics)}")
+    if round_number == 1:
+        data["no_contradiction"] = {"decision": "NA", "evidence": None, "contradicted_round": None}
 
     parsed = {}
     for metric in ("context_use", "no_contradiction"):
@@ -385,14 +446,16 @@ def compute_consistency(decisions):
     return sum(applicable) / len(applicable)
 
 
-def evaluate_h1_turn(record, round_number, llm, retries=4):
+def evaluate_h1_turn(record, round_number, llm, retries=4, rubric_version=14):
     """Evaluate one turn's Context Use / World Consistency / No Contradiction."""
-    prompt = build_h1_prompt(record, round_number)
+    prompt = build_h1_prompt(record, round_number, rubric_version)
     npc_dialogue = next(
         turn["npc_dialogue"] for turn in record["turns"] if turn["round"] == round_number
     )
     last_error = None
     response_text = ""
+    # Wall-clock time for the whole turn, retries included (judge speed comparison).
+    started = time.perf_counter()
     for attempt in range(1, retries + 1):
         raw_text = None
         # With temperature 0 and a fixed seed, resending the same prompt tends to
@@ -407,7 +470,7 @@ def evaluate_h1_turn(record, round_number, llm, retries=4):
         try:
             raw_text = judge_text(llm, attempt_prompt)
             response_text = raw_text
-            decisions = parse_h1_response(response_text, npc_dialogue)
+            decisions = parse_h1_response(response_text, npc_dialogue, round_number)
             break
         except ValueError as error:
             last_error = error
@@ -419,6 +482,7 @@ def evaluate_h1_turn(record, round_number, llm, retries=4):
                 print(f"    raw judge response: {raw_text!r}")
     else:
         raise ValueError(f"Judge did not return a valid H1 decision: {last_error}")
+    judge_seconds = round(time.perf_counter() - started, 2)
 
     decisions_out = {}
     for metric, entry in decisions.items():
@@ -465,13 +529,19 @@ def evaluate_h1_turn(record, round_number, llm, retries=4):
         "consistency": compute_consistency(decisions_out),
         "prompt": prompt,
         "judge_response": response_text,
+        "h1_rubric_version": rubric_version,
+        "judge_attempts": attempt,
+        "judge_seconds": judge_seconds,
     }
 
 
 def evaluate_h2_trial(record, llm, score_retries=4):
     """H2 realism: CharacterBox's seven-metric trajectory evaluator, unchanged."""
+    started = time.perf_counter()
     result = characterbox_evaluate_trajectory(record, llm, score_retries=score_retries)
     result["hypothesis"] = "H2"
+    # Wall-clock time for the critique and scoring calls together, retries included.
+    result["judge_seconds"] = round(time.perf_counter() - started, 2)
     return result
 
 
@@ -486,7 +556,55 @@ def parse_args():
     parser.add_argument(
         "--h2-output", type=Path, default=Path("output/evaluation/h2_realism.jsonl")
     )
+    only = parser.add_mutually_exclusive_group()
+    only.add_argument("--h1-only", action="store_true", help="run only H1 (per-turn consistency)")
+    only.add_argument("--h2-only", action="store_true", help="run only H2 (per-trial realism)")
+    parser.add_argument(
+        "--h1-rubric-version", type=int, choices=(11, 13, 14),
+        help="H1 rubric version (judge change log); overrides h1_rubric_version in the config",
+    )
     return parser.parse_args()
+
+
+def _write_row(file, row):
+    """One whole JSONL line per write, flushed, so an interrupt cannot leave half a row."""
+    file.write(json.dumps(row, ensure_ascii=False) + "\n")
+    file.flush()
+
+
+def _drop_partial_last_line(path):
+    """Remove a final line cut off by an interrupt in a run before _write_row existed."""
+    text = path.read_text(encoding="utf-8")
+    if not text or text.endswith("\n"):
+        return
+    kept = text[: text.rfind("\n") + 1]
+    print(f"Removing an incomplete last line from {path} before resuming.")
+    path.write_text(kept, encoding="utf-8")
+
+
+def _already_scored(path, judge_model, key_fields):
+    """Keys (generation_run_id, *key_fields) this judge already has in an output file."""
+    if not path.exists():
+        return set()
+    _drop_partial_last_line(path)
+    done = set()
+    with path.open(encoding="utf-8") as file:
+        for line in file:
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            if row.get("judge_model") == judge_model:
+                done.add((row["generation_run_id"], *(row[field] for field in key_fields)))
+    return done
+
+
+def _log_failure(path, hypothesis, judge_model, key, error):
+    print(f"  [{hypothesis} FAILED] {' '.join(map(str, key[1:]))}: {error} (skipped)")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as file:
+        json.dump({"hypothesis": hypothesis, "judge_model": judge_model,
+                   "generation_run_id": key[0], "key": list(key[1:]), "error": str(error)}, file)
+        file.write("\n")
 
 
 def main():
@@ -501,30 +619,61 @@ def main():
     logger = utils.set_logger("evaluation/evaluation.log", "evaluate")
     llm = utils.get_llm(config["judger_llm"], config, logger, api_key, config.get("api_base"))
 
+    run_h1, run_h2 = not args.h2_only, not args.h1_only
+    rubric_version = args.h1_rubric_version or int(config.get("h1_rubric_version", 14))
     trials = load_trajectory_run(args.trajectory, args.generation_run_id)
     total_records = sum(len(trial) for trial in trials)
     total_turns = sum(len(record["turns"]) for trial in trials for record in trial)
+    planned = []
+    if run_h1:
+        planned.append(f"H1 ~{total_turns} judge call(s) (1 per turn)")
+    if run_h2:
+        planned.append(f"H2 ~{total_records * 2} judge call(s) (critique + score per record)")
     print(
         f"Evaluating run {trials[0][0]['generation_run_id']} with {config['judger_llm']} — "
-        f"{len(trials)} trial(s), {total_records} condition-record(s): "
-        f"H1 ~{total_turns} judge call(s) (1 per turn), "
-        f"H2 ~{total_records * 2} judge call(s) (critique + score per record)."
+        f"{len(trials)} trial(s), {total_records} condition-record(s), H1 rubric version {rubric_version}: "
+        + ", ".join(planned) + "."
     )
 
-    args.h1_output.parent.mkdir(parents=True, exist_ok=True)
-    args.h2_output.parent.mkdir(parents=True, exist_ok=True)
+    # Resume: turns and records this judge already scored for this run are skipped,
+    # so an interrupted run can be restarted with the same command.
+    judge_model = getattr(llm, "model_name", config["judger_llm"])
+    done_h1 = _already_scored(args.h1_output, judge_model, ("trial_id", "context_condition", "round")) if run_h1 else set()
+    done_h2 = _already_scored(args.h2_output, judge_model, ("trial_id", "context_condition")) if run_h2 else set()
+    if done_h1 or done_h2:
+        print(f"Resuming: skipping {len(done_h1)} H1 turn(s) and {len(done_h2)} H2 record(s) already scored.")
+    # A turn the judge cannot score after every retry is logged here and skipped,
+    # instead of stopping the whole run.
+    failed_path = (args.h1_output if run_h1 else args.h2_output).with_name("failed_judgements.jsonl")
+    failures = 0
 
-    with args.h1_output.open("a", encoding="utf-8") as h1_file, args.h2_output.open(
-        "a", encoding="utf-8"
-    ) as h2_file:
+    # A skipped lane's file is not opened, so it is neither created nor appended to.
+    h1_file = h2_file = None
+    if run_h1:
+        args.h1_output.parent.mkdir(parents=True, exist_ok=True)
+        h1_file = args.h1_output.open("a", encoding="utf-8")
+    if run_h2:
+        args.h2_output.parent.mkdir(parents=True, exist_ok=True)
+        h2_file = args.h2_output.open("a", encoding="utf-8")
+
+    try:
         for trial in trials:
             for record in trial:
-                for turn in record["turns"]:
-                    result = evaluate_h1_turn(
-                        record, turn["round"], llm, retries=config.get("score_retries", 4)
-                    )
-                    json.dump(result, h1_file, ensure_ascii=False)
-                    h1_file.write("\n")
+                run_id = record["generation_run_id"]
+                for turn in record["turns"] if run_h1 else ():
+                    key = (run_id, record["trial_id"], record["context_condition"], turn["round"])
+                    if key in done_h1:
+                        continue
+                    try:
+                        result = evaluate_h1_turn(
+                            record, turn["round"], llm, retries=config.get("score_retries", 4),
+                            rubric_version=rubric_version,
+                        )
+                    except ValueError as error:
+                        failures += 1
+                        _log_failure(failed_path, "H1", judge_model, key, error)
+                        continue
+                    _write_row(h1_file, result)
                     summary = ", ".join(
                         f"{metric}={entry['decision']}"
                         for metric, entry in result["decisions"].items()
@@ -535,11 +684,20 @@ def main():
                         f"consistency={result['consistency']}"
                     )
 
-                h2_result = evaluate_h2_trial(
-                    record, llm, score_retries=config.get("score_retries", 4)
-                )
-                json.dump(h2_result, h2_file, ensure_ascii=False)
-                h2_file.write("\n")
+                if not run_h2 or (run_id, record["trial_id"], record["context_condition"]) in done_h2:
+                    continue
+                try:
+                    h2_result = evaluate_h2_trial(
+                        record, llm, score_retries=config.get("score_retries", 4)
+                    )
+                except ValueError as error:
+                    failures += 1
+                    _log_failure(
+                        failed_path, "H2", judge_model,
+                        (run_id, record["trial_id"], record["context_condition"]), error,
+                    )
+                    continue
+                _write_row(h2_file, h2_result)
                 score_summary = ", ".join(
                     f"{name}={score}" for name, score in h2_result["scores"].items()
                 )
@@ -547,9 +705,18 @@ def main():
                     f"[H2] {h2_result['trial_id']} {h2_result['context_condition']}: "
                     f"{score_summary}, Average={h2_result['average']:.3f}"
                 )
+    finally:
+        for file in (h1_file, h2_file):
+            if file is not None:
+                file.close()
 
-    print("H1 (consistency) results saved in:", args.h1_output)
-    print("H2 (realism) results saved in:", args.h2_output)
+    if failures:
+        print(f"{failures} judgement(s) failed every retry and were skipped; see {failed_path}. "
+              "Re-run the same command to retry only the missing ones.")
+    if run_h1:
+        print("H1 (consistency) results saved in:", args.h1_output)
+    if run_h2:
+        print("H2 (realism) results saved in:", args.h2_output)
 
 
 if __name__ == "__main__":
