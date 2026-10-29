@@ -1,0 +1,169 @@
+{
+ "schema_version": 4,
+ "dataset_source": "characterbox_generated",
+ "source_dataset": "../generated_data/Harry_Potter.json",
+ "pilot_id": "cb_hp_008_harry_draco",
+ "scene_id": 8,
+ "player_character_id": 0,
+ "target_character_id": 2,
+ "action_id": 0,
+ "trials": [
+  {
+   "trial_id": "cb_hp_008_harry_draco_t01",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question; expected answer draws on 'Inside a compartment of the Hogwarts Express'. The supplied time is only 'During the journey on the Hogwarts Express', with no time of day, so the location carries the trial (partial-answer rule). Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Remind me, Malfoy, where are we right now, and what time of day is it?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t02",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question with one concrete answer that only the position supplies; expected answer draws on 'with his cronies, Crabbe and Goyle' (the judge sees the position, so this does not rely on the 'Characters present' line). Previous wording: 'Which part of the compartment are you standing in right now, Malfoy?'. Redesigned 2026-10-24 after seed 1, before seeds 2-5 (seed 1 regenerated): the opening history says 'Harry stands up to Draco' (an idiom the model reads as physical standing) while the judge-visible description says Harry and Ron are sitting, so replies about who is standing were marked as contradicting the description (seed 1 t02 S: 'Harry is standing'). Lines that invite talk of posture were removed. The change is driven by that input conflict, not by which condition scored better.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Who came into the compartment with you, Malfoy?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t03",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P2. Target fields: event, description. Neutral question; expected answer draws on the description ('sitting in a compartment on the Hogwarts Express, eating and chatting'). Neutral counterpart of stress trial t09. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "What were Ron and I doing before you came in, Malfoy?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t04",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P3. Target fields: states, character_description. Neutral question; expected answer draws on 'Arrogant and condescending, looking to provoke Harry and Ron' and 'A pale, blonde young wizard'. Neutral counterpart of stress trial t10. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "How are you feeling right now, Malfoy? And what colour is your hair?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t05",
+   "type": 1,
+   "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "What do you think Hogwarts will be like, Malfoy?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t06",
+   "type": 1,
+   "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Which house do you hope to be sorted into, Malfoy?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t07",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: position. Contradicts 'Standing in the compartment doorway' (a place, without posture). Position and location are stressed in this pilot because the supplied time has no time of day. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P. Previous wording: 'You're sitting by the window right now. Correct me if I'm wrong.'. Redesigned 2026-10-24 after seed 1, before seeds 2-5 (seed 1 regenerated): the opening history says 'Harry stands up to Draco' (an idiom the model reads as physical standing) while the judge-visible description says Harry and Ron are sitting, so replies about who is standing were marked as contradicting the description (seed 1 t02 S: 'Harry is standing'). Lines that invite talk of posture were removed. The change is driven by that input conflict, not by which condition scored better.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "You're over by the window right now. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t08",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: location. Contradicts 'Inside a compartment of the Hogwarts Express'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "We're in the Great Hall at Hogwarts right now. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t09",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts 'eating and chatting' (a description detail, not who is present or the ending). Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Ron and I haven't eaten anything on this train. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t10",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P3. Target field: character_description. Contradicts 'A pale, blonde young wizard'. Chosen over his family ('wealthy, pure-blood'), whose false versions read as insults. Leading counterpart of normal trial t04. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P. Gen/judge check (2026-10-24): the opening history (character model only) is the confrontation (Draco's taunt, Harry's and Ron's replies), whose taunting is also in the description; this trial avoids the description's ending (Scabbers bites Goyle and the three leave), whose timing relative to 'right now' is unclear, and does not depend on who is present, since the judge's 'Characters present' line names only Draco and Harry.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Your hair is dark brown. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_008_harry_draco_t11",
+   "type": 3,
+   "note": "Category: multi-turn. 10-round long-term consistency trial, designed live in S on 2026-10-24 using the shared skeleton (scene 8, player Harry, target Draco, gpt-4o-mini, seed 1). Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. Items (invented, away from canon): F1 = Professor Ashworth meets the first-years on the platform at seven o'clock (R1); F2 = Draco's new broomstick is in the gold case at the back of the train (R2; about Draco's own possession so that he has a reason to attend to it, after an earlier F2 about Harry's Chocolate Frog cards drew no interest; 'gold' chosen over 'silver' for a clearer contrast with the R8 misquote); C1 = the name of Draco's owl (R3; canon gives none). R3 carries a flattering frame ('I bet a Malfoy's owl has a very grand name') because plain wordings were dodged twice ('none of your business'; 'only the finest for a Malfoy', no item named), like pilot 2's precision request. R4/R7/R10 neutral F1 recalls at distance 3/6/9 (R10 repeats R4's wording); R5 supplied-location control; R6 misquote of C1 naming a different owl ('Shadow'); R8 misquote of F2 changing both attributes with the anchor kept (the black case at the front of the train); R9 prompted rethink of F2. Expected: R4/R7/R10 Professor Ashworth, the platform, seven o'clock; R5 a compartment of the Hogwarts Express; R6 rejects 'Shadow' and restates the R3 name; R8 rejects and restates the gold case at the back of the train; R9 the gold case at the back of the train. Gen/judge check: avoids the description's ending (Scabbers bites Goyle; the three leave) and who is present. Hostility (decided by the researcher, 2026-10-24): scene 8 was kept although the scene-selection rule advises against scenes built around hostility. Across three S design sessions Draco named his owl twice (Selene; Reginald) and once gave only candidates ('Regulus' or 'Imperius'); F1 recalls were partial or dodged; in the final session R4, R7 and R9 were dodged, R5 and R10 partial, R6 brushed off, R8 ambiguous. Like pilot 5, many rounds may measure willingness to answer rather than grounding; this affects U, S and P equally. Draco often addresses Ron ('Weasley') because his state, Action Reference and opening history all point at Ron. R6 is valid only when that run's R3 gives one specific name.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Professor Ashworth will meet the first-years on the platform at seven o'clock."
+    },
+    {
+     "round": 2,
+     "player_dialogue": "Say what you like, Malfoy. I saw your new broomstick, it's in the gold case at the back of the train."
+    },
+    {
+     "round": 3,
+     "player_dialogue": "I bet a Malfoy's owl has a very grand name. What's it called? Please tell me its name."
+    },
+    {
+     "round": 4,
+     "player_dialogue": "Remind me, Malfoy, who's meeting the first-years, and where and when?"
+    },
+    {
+     "round": 5,
+     "player_dialogue": "Where exactly are we right now, Malfoy?"
+    },
+    {
+     "round": 6,
+     "player_dialogue": "Wait, you said your owl is called Shadow, is that right?"
+    },
+    {
+     "round": 7,
+     "player_dialogue": "Sorry, Malfoy, I've lost track. Who did I say is meeting the first-years, and where and at what time?"
+    },
+    {
+     "round": 8,
+     "player_dialogue": "And your new broomstick is in the black case at the front of the train, like I told you, right?"
+    },
+    {
+     "round": 9,
+     "player_dialogue": "Actually, I'm not sure what I just said was right. When I first told you, where did I say your broomstick is?"
+    },
+    {
+     "round": 10,
+     "player_dialogue": "Remind me, Malfoy, who's meeting the first-years, and where and when?"
+    }
+   ]
+  }
+ ]
+}

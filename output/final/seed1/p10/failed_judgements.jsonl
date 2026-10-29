@@ -1,0 +1,1 @@
+{"hypothesis": "H1", "judge_model": "google/gemma-4-31b-it", "generation_run_id": "cb_hp_008_harry_draco-1792840512500186000", "key": ["cb_hp_008_harry_draco_t01", "P", 1], "error": "Judge did not return a valid H1 decision: Judge did not return valid JSON: Expecting value: line 1 column 1 (char 0)"}

@@ -9,7 +9,7 @@ character_llm: openai/gpt-4o-mini
 # path for scenes data
 scene_path: data/generated_data/Harry_Potter.json
 # scene id
-scene_id: 32
+scene_id: 8
 # number of rounds
 round: 10
 # False for controlled one-human/one-NPC trials. If omitted, Simulator keeps
@@ -18,11 +18,11 @@ dynamic_play: False
 # YAML-only controlled-play selectors. These keep ordinary simulator execution
 # independent from fixed pilot manifests. The target/action values are source
 # IDs in the selected CharacterBox scene, not duplicated source content.
-target_character_id: 1
-action_id: 1
+target_character_id: 2
+action_id: 0
 dataset_source: characterbox_generated
 trial_id: null
-context_condition: P
+context_condition: S
 priority_config_path: config/context_priorities.json
 priority_policy_id: primary_five_level
 # Reusable run-config auto-loaded whenever --pilot selects a manifest. It
@@ -51,7 +51,7 @@ character_api_base: "https://openrouter.ai/api/v1"
 narrator_api_key: ""
 narrator_api_base: "https://openrouter.ai/api/v1"
 
-# The id of the character played by human (Harry in pilot 5, scene 32; NPC = Seamus, target 1, action 1).
+# The id of the character played by human (Harry in pilot 10, scene 8; NPC = Draco, target 2, action 0).
 play_role: 0
 
 # path to save records

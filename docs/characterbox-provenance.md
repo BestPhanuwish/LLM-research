@@ -767,3 +767,21 @@ All three are recorded in `t13`'s `note` field and in `docs/limitations.md`.
 - Verification: `python -m unittest discover -s tests` passes (161 tests, 8 new in `tests/test_run_final.py`); the dashboard executes headless on seed 1; `tools/judge_agreement_table.py` on the copied seed-1 files reproduces κ 1.000 (pilot 4) and 0.674 (pilot 5).
 - Licence notice: CharacterBox MIT licence covers the retained simulator code; the additions are original.
 
+### 2026-10-24 — Action Reference must be the target's last action; pilot 6 switched to action 3
+
+- CharacterBox source: n/a (trial data and validation only).
+- Reuse category: Original (research data validation).
+- Modifications: `validate_sidecar()` in `dataloader/research_sidecar.py` rejects a manifest whose `action_id` is not the target character's last action in the scene. `characterbox_pilot6.json` changes `action_id` from 1 ("Voices his initial reluctance to return") to 3 ("Agrees to return to Hogwarts"); no trial line changes. The first seed-1 run of pilot 6 (`output/final/seed1/p06/`, action 1) was discarded and is to be regenerated. `docs/trial-design-guide.md` records the rule; `docs/judge-change-log.md` records two related judge limitations ("Characters present" lists only the two speakers; the judge does not see the opening history).
+- Research rationale: Found by the researcher's inspection of pilot 6 seed 1. Every condition's Observation contains all scene actions as the opening history; in scene 41 that includes Slughorn's later agreement ("I'll return"), contradicting the action-1 Action Reference. The H1 judge, which sees the Action Reference but not the history, marked replies that mentioned returning as World Consistency FAIL in all three conditions. The fix removes a contradiction in the supplied inputs and is not based on which condition scored better. Pilots 1–5 and 7 already satisfy the rule.
+- Verification: `python -m unittest discover -s tests` passes (162 tests, one new: `test_rejects_action_that_is_not_targets_last`); all seven manifests validate.
+- Licence notice: n/a.
+
+### 2026-10-24 — Pilot 10 t02/t07 reworded to avoid a history/description conflict; seed 1 regenerated
+
+- CharacterBox source: n/a (trial data only).
+- Reuse category: Original (research data).
+- Modifications: `characterbox_pilot10.json` `t02` ("Which part of the compartment are you standing in right now, Malfoy?" → "Who came into the compartment with you, Malfoy?") and `t07` ("You're sitting by the window right now." → "You're over by the window right now.", invitation unchanged). The first seed-1 run of pilot 10 was set aside (not deleted) and is to be regenerated. `docs/trial-design-guide.md` adds the rule to check the opening history against the description for every character. Also recorded: pilot 9 seed 1 U answered R3 with the R6 misquote value (Jelly-Legs Jinx); the researcher decided to keep such R6 turns as scored.
+- Research rationale: Scene 8's description has Harry and Ron sitting; its opening history (character model only) says Harry and Ron "stand up to" Draco. The model read the idiom as physical standing, and the H1 judge, which sees the description but not the history, marked "Harry is standing" (seed 1 `t02` S) as a contradiction. Both reworded lines removed posture from the question. The researcher chose to keep scene 8 rather than replace it. The change is driven by the input conflict; `t07` was among the trials P failed in seed 1, which is disclosed here. Pilots 1–9 have no history/description conflict for any character (checked).
+- Verification: all ten manifests validate.
+- Licence notice: n/a.
+

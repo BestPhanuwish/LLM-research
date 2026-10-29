@@ -488,9 +488,12 @@ about NPCs whose supplied state is openly hostile to the player.
 
 ### The priority policy does not rank conversation facts against each other
 
-`primary_five_level` places all conversation input at P5. When the player establishes a
-fact (F2 at R2) and later misquotes it (R8), both are P5 conversation facts, and the
-policy has no rule preferring the earlier one or the one the NPC acknowledged. In a
+`primary_five_level` places conversation input in its two lowest tiers: earlier turns
+reach the model through Recent Memory (P4) and the current line through Observation
+(P5). (Correction, 23 Oct 2026: an earlier version of this entry said all conversation
+input was at P5.) The conflict rule therefore technically prefers an earlier turn over a
+later misquote, but the policy gives conversation facts no special weight compared with
+the scene, and nothing marks which earlier statement was the established one. In a
 live check of the redesigned pilot 2 (P, 20 October 2026), McGonagall did not reject
 "two silver coins" at R8 and, asked at R9 what Newt had first said, answered "You
 initially stated that your Niffler pilfered two silver coins": the misquote had
@@ -517,6 +520,20 @@ is generic) and to `t11` R3 (PASS for a specific answer about the NPC's own past
 `judge-change-log.md`. The judge's PASS verdicts on open-ended and R1–R2 turns match
 this rule. On R3 the judge sometimes checks the wrong fact (pilot 1: all three
 conditions failed against Neville's hiding position).
+
+### P is evaluated as a package; its components are not separated
+
+Condition P differs from S in several ways at once: the 13 fields are regrouped and
+reordered into five tiers, each tier has a heading and an instruction, a general
+conflict rule precedes the tiers, and the Priority 5 instruction also says that other
+characters' statements are "their claims, not verified facts" that the NPC "may correct
+in character". The last instruction speaks directly to the stress trials (t07-t10) and the
+misquote probes. A P vs S difference therefore shows the effect of the prioritised
+presentation as a whole, not of the tier ranking alone. No ablation that separates these
+parts is run (researcher's decision, 23 Oct 2026); the thesis treats the tier
+instructions as part of prioritisation and states the limitation in Threats to
+Validity (internal validity) and Limitations, without proposing a specific extra
+condition.
 
 ## Related, previously documented limitations (cross-referenced, not repeated in full)
 

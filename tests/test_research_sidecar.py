@@ -160,6 +160,17 @@ class ResearchSidecarTests(unittest.TestCase):
         ):
             validate_sidecar(sidecar, self.dataset)
 
+    def test_rejects_action_that_is_not_targets_last(self):
+        # Scene 41: Slughorn's action 1 (reluctance) is followed by his action 3
+        # (agrees to return), which every condition sees in the opening history.
+        with (REPOSITORY_ROOT / "data" / "research_annotations" / "characterbox_pilot6.json").open(encoding="utf-8") as file:
+            sidecar = json.load(file)
+        validate_sidecar(sidecar, self.dataset)
+        sidecar["action_id"] = 1
+
+        with self.assertRaisesRegex(SidecarValidationError, "not the target's last action"):
+            validate_sidecar(sidecar, self.dataset)
+
     def test_rejects_missing_player_character(self):
         sidecar = copy.deepcopy(self.sidecar)
         sidecar["player_character_id"] = 999

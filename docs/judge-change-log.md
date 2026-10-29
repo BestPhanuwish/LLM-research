@@ -411,6 +411,20 @@ After changes 5–7, `t11` R6 failed No Contradiction in all three conditions, b
 
 ## Known open problems
 
+- **"Characters present" lists only the two speakers** (found 24 October, pilot 6;
+  not changed, since the final rubric is validated against the researcher's labels).
+  Change 13 added "Characters present: {NPC}, and {player}" to name the player, but the
+  line reads as a complete list: other characters in the scene appear only in the
+  Description (pilot 4: Hermione and Ron; pilot 6: Dumbledore). It may make the judge
+  more lenient on "just the two of us" claims (pilot 6 seed 1 `t09` P was passed on
+  Context Use while accepting the claim; pilot 4 `t09` was judged correctly in
+  validation). Reported as a judge limitation.
+- **The judge does not see the opening history.** The character model's Observation
+  contains all the scene's actions; the H1 judge sees only the Action Reference. A
+  reply that uses a fact from the history can be marked as contradicting the Action
+  Reference when the two disagree. The trial-design rule that the Action Reference is
+  the target's last action (24 October) removes the one known case (pilot 6).
+
 Documented as limitations in [limitations.md](limitations.md) on 30 September, with
 the decision not to add further prompt rules for now:
 

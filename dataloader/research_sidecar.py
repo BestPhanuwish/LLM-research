@@ -105,6 +105,19 @@ def validate_sidecar(sidecar, dataset):
         matching_actions[0].get("character_id") == target_character_id,
         f"{pilot_id}: action does not belong to target character",
     )
+    # Every condition receives all of the scene's actions as its opening history,
+    # so a later action by the target would contradict an earlier Action
+    # Reference (pilot 6, scene 41: "reluctance" vs a later "I'll return").
+    later_target_actions = [
+        action.get("action_id") for action in actions
+        if action.get("character_id") == target_character_id
+        and isinstance(action.get("action_id"), int) and action["action_id"] > action_id
+    ]
+    _require(
+        not later_target_actions,
+        f"{pilot_id}: action_id {action_id!r} is not the target's last action in the scene "
+        f"(later target actions: {later_target_actions})",
+    )
 
     trials = sidecar.get("trials")
     _require(isinstance(trials, list) and trials, f"{pilot_id}: trials must be a non-empty list")

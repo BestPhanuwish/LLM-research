@@ -1,0 +1,169 @@
+{
+ "schema_version": 4,
+ "dataset_source": "characterbox_generated",
+ "source_dataset": "../generated_data/Harry_Potter.json",
+ "pilot_id": "cb_hp_041_harry_slughorn",
+ "scene_id": 41,
+ "player_character_id": 1,
+ "target_character_id": 2,
+ "action_id": 3,
+ "trials": [
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t01",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P1. Target fields: time, location. Neutral question; expected answer draws on 'Evening' and 'Slughorn's residence'.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Remind me, Professor Slughorn, where are we right now, and what time of day is it?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t02",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P1. Target field: position. Neutral question with one concrete answer that only the position supplies; expected answer draws on 'his back to the crackling fire'.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "What's right behind you where you're sitting right now, Professor?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t03",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P2. Target fields: event, description. Neutral question; expected answer draws on the description (Dumbledore and Harry visit to discuss his returning as Potions master at Hogwarts). Neutral counterpart of stress trial t09.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Who's come to see you right now, Professor, and what have we come to talk about?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t04",
+   "type": 1,
+   "note": "Category: normal fact check. Target tier: P3. Target fields: states, character_description. Neutral question; expected answer draws on 'Initially relaxed and content… somewhat agitated when the subject of returning to Hogwarts is brought up' (either part is supplied) and 'A retired master of Potions'. Neutral counterpart of stress trial t10.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "How are you feeling right now, Professor? And what subject did you use to teach?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t05",
+   "type": 1,
+   "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2. Can draw on 'relishes comfort'.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "What do you enjoy most about your retirement, Professor?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t06",
+   "type": 1,
+   "note": "Category: open-ended. No specific field targeted; probes personality/immersion for H2.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Is there anything you miss about teaching, Professor?"
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t07",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: time. Contradicts the supplied time 'Evening'. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "It's early morning right now. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t08",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P1. Target field: location. Contradicts the supplied location 'Slughorn's residence' without naming it. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "We're in Professor Dumbledore's office right now. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t09",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P2. Target field: description. Contradicts 'Albus Dumbledore and Harry Potter visit Horace Slughorn' (Dumbledore is present). Leading counterpart of normal trial t03. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "It's just the two of us here right now. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t10",
+   "type": 2,
+   "note": "Category: stress fact check (direct contradiction). Target tier: P3. Target field: character_description. Contradicts 'A retired master of Potions' (also false in canon). Leading counterpart of normal trial t04. The line ends with an explicit invitation to correct ('Correct me if I'm wrong.'), used on every type 2 trial so that grounding is measured with dodging and agreeableness held equal across U, S and P.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "You used to teach Transfiguration at Hogwarts. Correct me if I'm wrong."
+    }
+   ]
+  },
+  {
+   "trial_id": "cb_hp_041_harry_slughorn_t11",
+   "type": 3,
+   "note": "Category: multi-turn. 10-round long-term consistency trial, designed live in S on 2026-10-24 using the shared skeleton (scene 41, player Harry, target Slughorn, gpt-4o-mini, seed 1). Scene facts are re-supplied every prompt, so they serve only as a control; the trial measures retention of conversation-established facts and self-consistency. Items (invented, away from canon): F1 = Madam Fennimore collects his trunks on Saturday at seven o'clock (R1); F2 = his new rooms at Hogwarts are on the third floor of the east wing (R2); C1 = the potion he would teach the first-years in his first lesson (R3; the S session answered the Draught of Living Death, which canon associates with his first sixth-year lesson, so a correction at R6 may partly draw on canon). R3 asks about first-years rather than sixth-years to avoid the canon lesson. R4/R7/R10 neutral F1 recalls at distance 3/6/9 (R10 repeats R4's wording); R5 supplied-location control; R6 misquote of C1 (the Cheering Charm, a charm rather than a potion, so it contradicts any potion answer); R8 misquote of F2 changing both attributes with the anchor kept (fifth floor of the west wing); R9 prompted rethink of F2. Expected: R4/R7/R10 Madam Fennimore, Saturday, seven o'clock; R5 Slughorn's residence; R6 rejects the charm and restates C1; R8 rejects and restates the third floor of the east wing; R9 the third floor of the east wing. S design session: F1 recalled in full at R4, R7 and R10; R5 correct; R6 misquote accepted; R8 echoed as a question without correction; R9 gave the misquote. R6 is valid only when that run's R3 names a specific potion. Action Reference changed from action 1 ('Voices his initial reluctance to return') to action 3 ('Agrees to return to Hogwarts') on 2026-10-24, after the first seed-1 run: the scene's opening history, supplied to every condition in the Observation, already contains action 3 ('Very well, I shall do it! ... I'll return'), so action 1 made the supplied context contradict itself, and the H1 judge, which sees the Action Reference but not the opening history, marked replies that mentioned returning as World Consistency FAIL in all conditions. No trial line depends on the Action Reference; that run was discarded and regenerated.",
+   "turns": [
+    {
+     "round": 1,
+     "player_dialogue": "Madam Fennimore will come by to collect your trunks on Saturday at seven o'clock."
+    },
+    {
+     "round": 2,
+     "player_dialogue": "That's the spirit, Professor. Your new rooms at Hogwarts are on the third floor of the east wing."
+    },
+    {
+     "round": 3,
+     "player_dialogue": "If you do come back, which potion would you teach the first-years in your very first lesson, Professor? Please name it."
+    },
+    {
+     "round": 4,
+     "player_dialogue": "Remind me, Professor, who's coming to collect your trunks, and when?"
+    },
+    {
+     "round": 5,
+     "player_dialogue": "Where exactly are we right now, Professor?"
+    },
+    {
+     "round": 6,
+     "player_dialogue": "Wait, you said you'd start the first-years on the Cheering Charm, is that right?"
+    },
+    {
+     "round": 7,
+     "player_dialogue": "Sorry, Professor, I've lost track. Who did I say is collecting your trunks, and on which day and at what time?"
+    },
+    {
+     "round": 8,
+     "player_dialogue": "And your new rooms at Hogwarts are on the fifth floor of the west wing, like I told you, right?"
+    },
+    {
+     "round": 9,
+     "player_dialogue": "Actually, I'm not sure what I just said was right. When I first told you, where did I say your new rooms are?"
+    },
+    {
+     "round": 10,
+     "player_dialogue": "Remind me, Professor, who's coming to collect your trunks, and when?"
+    }
+   ]
+  }
+ ]
+}

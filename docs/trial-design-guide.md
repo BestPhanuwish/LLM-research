@@ -267,6 +267,24 @@ student") without establishing who they are — this is exactly the seam categor
 named-entity variant is built to test, so read the scene description for these seams
 specifically when designing that category.
 
+**The Action Reference must be the target's last action in the scene** (rule added
+24 October 2026; enforced by `dataloader/research_sidecar.py`). Every condition
+receives *all* of the scene's actions as the opening history in the Observation, so a
+later action by the target is part of what the character is told. Pilot 6 (scene 41)
+first used Slughorn's action 1, "Voices his initial reluctance to return", while the
+history already contained his action 3, "Very well, I shall do it! … I'll return": the
+supplied context contradicted itself, and the H1 judge, which sees the Action
+Reference but not the opening history, marked every reply that mentioned returning as
+a World Consistency FAIL. Also read the whole action list for other changes of mind
+or outcomes that a trial line could collide with.
+
+**Check the opening history against the description for every character**, not only
+the target (rule added 24 October 2026). The H1 judge sees the description but not the
+history. Pilot 10 (scene 8): the description has Harry and Ron "sitting", while the
+history says "Harry stands up to Draco" (an idiom the model read as physical standing),
+so a reply about Harry standing was marked as contradicting the description. Avoid
+lines that invite talk of whatever the two sources disagree on (here, posture).
+
 ## Mechanics
 
 - Validate with `python -m dataloader.research_sidecar <pilot file> --pilot-config config/pilot_run_config.json` after every edit — it resolves every trial against the real dataset and will catch a broken reference immediately.
