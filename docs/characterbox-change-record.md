@@ -23,8 +23,6 @@ The separate [characterbox-provenance.md](characterbox-provenance.md) records co
 ### Added in this project
 
 - `.gitignore`
-- `AI_HANDOFF.md`
-- `ROADMAP.md`
 - `evaluate_characterbox.py`
 - `evaluate.py`
 
@@ -50,12 +48,6 @@ The separate [characterbox-provenance.md](characterbox-provenance.md) records co
 - Purpose: Excludes the local virtual environment, Python caches, compiled Python files, and macOS metadata.
 - Runtime consequence: None.
 
-### `AI_HANDOFF.md`
-
-- Status: Added by this project; CharacterBox has no counterpart.
-- Purpose: Provides a credential-free transfer prompt and current-state memory for moving the research collaboration to another AI system. It prominently identifies CharacterBox as the heavily reused/adapted implementation foundation, requires academically accurate attribution and minimal inherited-code changes, defines an explicit approval-gated one-step-at-a-time coding protocol, and distinguishes implemented behavior, binding experimental/workflow rules, the proposed but unimplemented two-lane evaluation direction, unresolved decisions, commands, and primary files.
-- Behavioral consequence: Documentation only. It does not modify generation or evaluation behavior and explicitly requires code to take precedence over stale descriptive status text.
-
 ### `README.md`
 
 - Status: Project-specific replacement of the CharacterBox root README.
@@ -63,11 +55,6 @@ The separate [characterbox-provenance.md](characterbox-provenance.md) records co
 - Current implementation: Explains the U/S/P research question, current build status, dual-source dataset decision, CharacterBox relationship, security boundary, and approval workflow.
 - Behavioral consequence: Documentation only; it does not change runtime behavior.
 
-### `ROADMAP.md`
-
-- Status: Added by this project; CharacterBox has no counterpart.
-- Purpose: Defines the approved implementation order, CharacterBox reuse boundary, U/S/P controls, field/value equivalence, global priority policy, paired runner, and evaluation checkpoints.
-- Behavioral consequence: Documentation only, but implementation work is not considered complete unless it follows the approval and record-update rules stated here.
 
 ### `requirements.txt`
 

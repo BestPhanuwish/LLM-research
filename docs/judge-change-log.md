@@ -306,7 +306,7 @@ gave the judge the player's supplied profile. It reached κ 0.871 on pilots 1-5,
 within noise (κ(15)−κ(14): +0.015, 95% CI −0.032 to +0.068), and the player profile
 introduced new over-strict World Consistency failures (for example "a student" flagged
 against Newt's "former Hogwarts student"). It was not adopted and was removed from the
-code; its outputs remain in `output/evaluation/prompt_versions/change15 (archive)/`; the versions compared are in `prompt_versions/v1`, `v2`, `v3`. The five
+code, and its outputs were not kept; the versions compared are in `prompt_versions/v1`, `v2`, `v3`. The five
 cases are reported as known judge limitations: brushed-off misquotes judged as
 contradictions; hostile partial answers judged as dodges; "yes, but [true fact]"
 judged as acceptance; the judge following the character's own misreading (pilot 3

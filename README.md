@@ -31,7 +31,7 @@ The dashboard reports H1 (single-turn consistency, t01–t10), H2 (realism), and
 
 ## Project status
 
-**As of 7 Nov 2026 the study is complete.** All ten pilots have been generated with five seeds (1–5) and judged by both judges, and these saved outputs are what the thesis reports. 162 tests pass.
+**The study was completed on 6 Nov 2026.** All ten pilots have been generated with five seeds (1–5) and judged by both judges, and these saved outputs are what the thesis reports. 162 tests pass.
 
 ## Where the outputs are
 
@@ -64,7 +64,7 @@ Other outputs:
 | `output/evaluation/judge_selection/` | Candidate consistency judges compared on pilots 1–2 (thesis Appendix E) |
 | `output/evaluation/prompt_versions/v1, v2, v3/` | Consistency rubric development runs (thesis Appendix F); `docs/judge-change-log.md` records every rubric change and why |
 | `output/comparison/` | Judge disagreement exports and run comparisons |
-| `output/record/`, `output/log/` | CharacterBox's own call records and logs, including every raw prompt and response |
+| `output/record/` | CharacterBox's own call records for the 50 final runs (10 pilots x 5 seeds), including every raw generation prompt and response; the trial inspector reads the prompts from here. Each new run appends to these files. Run logs go to `output/log/`, which is created when you run and is not committed, since logs can contain API keys |
 
 ## Setup
 
@@ -114,7 +114,15 @@ Pilots 1–5 were used to develop the trials and the consistency rubric. Pilots 
 
 ### Run
 
-Generate and judge one seed for any pilots:
+**The whole thesis experiment** (pilots 1–10, seeds 1–5, generation plus both judges) is one command:
+
+```bash
+for seed in 1 2 3 4 5; do python tools/run_final.py --seed $seed --pilot 1 2 3 4 5 6 7 8 9 10; done
+```
+
+Because completed steps are skipped, this does nothing while the saved thesis outputs are in `output/final/`. To regenerate everything from scratch, move them aside first (`mv output/final output/final_thesis`). The full run makes about 3,000 generation calls and 3,000 consistency-judge calls, plus the realism judge.
+
+To generate and judge a single seed for any pilots:
 
 ```bash
 python tools/run_final.py --seed 2 --pilot 1 2 3 4 5 6 7 8 9 10
@@ -200,6 +208,15 @@ A new condition (another way to lay out the same fields) needs changes in these 
 
 The judges never see the condition label, so `evaluate.py` and `evaluate_characterbox.py` need no change. The `S-plus` branch is a worked example: it adds an exploratory condition, S+, which is S plus P's "statements are claims, not verified facts" sentence, together with `--out-dir` and `--pilot-config` options for `run_final.py` so that such runs go to a separate folder.
 
+### 4. Add a new dataset
+
+The thesis uses only CharacterBox's generated Harry Potter scenes, which the model may already know from the novels. A dataset from an original story world would remove that knowledge, and the code already allows for it (`dataset_source` may be `characterbox_generated` or `original_story`).
+
+1. **Write the scenes in CharacterBox's format**, as one JSON file such as `data/original_story/My_World.json`, with a `title` and a list of `scenes`. Each scene has an `id`, `event`, `time`, `location`, `description`, `plot`, a list of `characters` (`id`, `name`, `gender`, `description`, `position`, `states`), and a list of `actions` (`action_id`, `character`, `character_id`, `action`, `dialogue`). `data/generated_data/Harry_Potter.json` is the reference; `dataloader/data.py` loads it.
+2. **Point a pilot manifest at it** with `"dataset_source": "original_story"` and `"source_dataset"` set to the file's path relative to the manifest (for example `"../original_story/My_World.json"`), then design the trials as in [Add a new pilot](#1-add-a-new-pilot).
+3. **Name the manifest** `characterbox_pilot{N}.json` so that `run_final.py` finds it by number, or change `pilot_manifest()` in `tools/run_final.py` to another naming scheme.
+4. **Validate and run** as for any pilot. CharacterBox's own records go to `output/record/<title>/`, named after the dataset file, while the final-study outputs keep the `output/final/seedN/pNN/` layout.
+
 ## Other ways to run
 
 ### Ad hoc play
@@ -249,7 +266,6 @@ The tests check, among other things, that the S prompt matches CharacterBox's or
 - [docs/limitations.md](docs/limitations.md): known limitations found during development.
 - [docs/characterbox-provenance.md](docs/characterbox-provenance.md): how CharacterBox code is reused and attributed.
 - [docs/characterbox-change-record.md](docs/characterbox-change-record.md): every folder-, file-, and symbol-level difference from the inspected CharacterBox repository.
-- [ROADMAP.md](ROADMAP.md): the implementation sequence followed during the project.
 
 ## CharacterBox relationship
 
