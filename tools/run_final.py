@@ -41,8 +41,8 @@ def pilot_manifest(number):
     return PILOT_DIR / name
 
 
-def run_dir(seed, number):
-    return FINAL_DIR / f"seed{seed}" / f"p{number:02d}"
+def run_dir(seed, number, out_dir=None):
+    return Path(out_dir or FINAL_DIR) / f"seed{seed}" / f"p{number:02d}"
 
 
 def count_rows(path):
@@ -52,10 +52,10 @@ def count_rows(path):
         return sum(1 for line in file if line.strip())
 
 
-def expected_trajectory_rows(manifest):
+def expected_trajectory_rows(manifest, run_config=None):
     with open(manifest, encoding="utf8") as file:
         trials = json.load(file)["trials"]
-    with open(PILOT_RUN_CONFIG, encoding="utf8") as file:
+    with open(run_config or PILOT_RUN_CONFIG, encoding="utf8") as file:
         conditions = json.load(file)["conditions"]
     return len(trials) * len(conditions)
 
@@ -70,11 +70,13 @@ def run_pilot(seed, number, args):
     manifest = pilot_manifest(number)
     if not manifest.exists():
         raise SystemExit(f"No manifest for pilot {number}: {manifest}")
-    folder = run_dir(seed, number)
+    out_dir = getattr(args, "out_dir", None)
+    pilot_config = getattr(args, "pilot_config", None) or PILOT_RUN_CONFIG
+    folder = run_dir(seed, number, out_dir)
     trajectory = folder / "trajectory.jsonl"
     print(f"\n=== seed {seed}, pilot {number} -> {folder} ===", flush=True)
 
-    expected = expected_trajectory_rows(manifest)
+    expected = expected_trajectory_rows(manifest, pilot_config)
     rows = count_rows(trajectory)
     if args.skip_generation or rows == expected:
         print(f"generation: skipped ({rows}/{expected} trajectory rows)")
@@ -84,7 +86,8 @@ def run_pilot(seed, number, args):
         )
     else:
         run([sys.executable, "simulator.py", "-c", PLAY_CONFIG, "--pilot", manifest,
-             "--seed", str(seed), "--trajectory-output", trajectory], args.dry_run)
+             "--seed", str(seed), "--trajectory-output", trajectory,
+             "--pilot-config", pilot_config], args.dry_run)
 
     if not args.dry_run and count_rows(trajectory) != expected:
         raise SystemExit(f"{trajectory} has {count_rows(trajectory)}/{expected} rows; not judging.")
@@ -106,6 +109,10 @@ def main():
     judges = parser.add_mutually_exclusive_group()
     judges.add_argument("--h1-only", action="store_true", help="run only the H1 consistency judge")
     judges.add_argument("--h2-only", action="store_true", help="run only the H2 realism judge")
+    parser.add_argument("--out-dir", type=Path, default=None,
+                        help="output root (default output/final)")
+    parser.add_argument("--pilot-config", type=Path, default=None,
+                        help="run config listing the conditions (default config/pilot_run_config.json)")
     parser.add_argument("--dry-run", action="store_true", help="print the commands without running them")
     args = parser.parse_args()
     for number in args.pilot:

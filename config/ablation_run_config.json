@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "conditions": [
+    "S+"
+  ],
+  "priority_policy_id": "primary_five_level"
+}

@@ -165,8 +165,8 @@ class Simulator:
                 )
 
             condition = self.config["context_condition"]
-            if condition not in {"U", "S", "P"}:
-                raise ValueError("context_condition must be U, S, or P")
+            if condition not in {"U", "S", "P", "S+"}:
+                raise ValueError("context_condition must be U, S, P, or S+")
 
             # Pilot runs resolve their priority policy from the auto-loaded
             # run-config; YAML-only ad hoc controlled runs keep using the
@@ -1026,6 +1026,10 @@ def parse_args():
         "--trajectory-output", type=str, default=None,
         help="Write the trajectory JSONL to this file instead of the shared default",
     )
+    parser.add_argument(
+        "--pilot-config", type=str, default=None,
+        help="Run config (conditions) to use instead of play.yaml's pilot_config_path",
+    )
     # END RESEARCH EXTENSION: final-study runs.
     parser.add_argument(
         "-l", "--log_file", type=str, default="", help="Path to log file"
@@ -1160,6 +1164,8 @@ def main():
     # play.yaml never activates a manifest by itself. --pilot deliberately
     # overlays fixed experiment selectors while retaining YAML provider/model
     # and output settings.
+    if args.pilot_config:
+        config["pilot_config_path"] = args.pilot_config
     pilot = apply_pilot_overrides(config, args.pilot)
     # END RESEARCH EXTENSION: explicit pilot invocation.
     if args.character_llm is not None:

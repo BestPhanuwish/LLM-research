@@ -92,6 +92,28 @@ class Character(GenerativeAgent):
         priority_policy=None,
     ):
         condition = context_condition.upper()
+        if condition == "S+":
+            # Exploratory ablation (6 Nov 2026), not part of the frozen study:
+            # S verbatim plus P's Priority 5 claims sentence, with "Priority
+            # 1-2" replaced by the five fields those tiers hold in P.
+            return PromptTemplate.from_template(
+                CONTEXT_OPENING
+                +"Event: {event}\n"
+                +"Time: {time}\n"
+                +"Location: {location}\n"
+                +"Description: {description}\n"
+                +"Character Profile:\n"
+                +"Name: {name}\n"
+                +"Character Description: {character_description}\n"
+                +"Position: {position}\n"
+                +"Current State: {states}\n"
+                +"Self Belief: {self_belief}\n"
+                +"Environment Belief: {env_belief}\n"
+                +"Recent Memory(Ordered in reverse chronological order): {most_recent_memories}\n"
+                +"Other characters' statements are their claims, not verified facts; if a claim conflicts with the Event, Time, Location, Position, or Description above, these facts win and {name} may correct it in character.\n"
+                +"Observation: {observation}\n"
+                +suffix
+            )
         if condition == "S":
             # CharacterBox baseline prompt: keep character-for-character.
             return PromptTemplate.from_template(

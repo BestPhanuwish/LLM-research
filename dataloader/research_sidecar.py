@@ -187,8 +187,8 @@ def validate_pilot_config(config):
     conditions = config.get("conditions")
     _require(isinstance(conditions, list) and conditions, "conditions must be a non-empty list")
     _require(
-        all(condition in {"U", "S", "P"} for condition in conditions),
-        "conditions may contain only U, S, and P",
+        all(condition in {"U", "S", "P", "S+"} for condition in conditions),
+        "conditions may contain only U, S, P, and S+",
     )
     _require(len(conditions) == len(set(conditions)), "conditions must be unique")
     if "P" in conditions:
