@@ -1,0 +1,11 @@
+# Extra packages for the analysis notebooks in notebooks/ (results dashboard,
+# trial inspector, judge agreement). They read saved outputs only and make no
+# model calls. Install after requirements.txt:
+#   python -m pip install -r requirements-analysis.txt
+numpy==1.26.4
+pandas==3.0.5
+scipy==1.17.1
+matplotlib==3.11.1
+seaborn==0.13.2
+jupyterlab==4.6.3
+ipykernel==7.3.0
